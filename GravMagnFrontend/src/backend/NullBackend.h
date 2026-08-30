@@ -25,6 +25,14 @@ public:
     bool readGridFileHead(const std::string& filePath, GridFileHead& head, BackendError& error) override;
     bool processCmpsFilter(const CmpsFilterParams& params, BackendError& error) override;
     bool processDownward(const DownwardParams& params, BackendError& error) override;
+    bool processGradient(const GradientParams& params, BackendError& error) override;
+    bool processGradward(const GradwardParams& params, BackendError& error) override;
+    bool processHorzGrad(const HorzGradParams& params, BackendError& error) override;
+    bool processIterDrape(const IterDrapeParams& params, int& iterations, float& finalError, BackendError& error) override;
+    bool processIterward(const IterwardParams& params, int& iterations, float& finalError, BackendError& error) override;
+    bool processMaxiGrad(const MaxiGradParams& params, BackendError& error) override;
+    bool processMultiCpn(const MultiCpnParams& params, BackendError& error) override;
+    bool processNormFilter(const NormFilterParams& params, BackendError& error) override;
 
 private:
     // ===== 私有工具函数（.grd 文件头解析，对应原 MFC 工程 CContourFile::AReadFile1~4）=====

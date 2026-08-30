@@ -19,6 +19,13 @@
 
 #include "dlg/FreqDomainCmpsFilterDlg.h"
 #include "dlg/FreqDomainDownwardDlg.h"
+#include "dlg/FreqDomainGradwardDlg.h"
+#include "dlg/FreqDomainHorzGradDlg.h"
+#include "dlg/FreqDomainIterDrapeDlg.h"
+#include "dlg/FreqDomainIterwardDlg.h"
+#include "dlg/FreqDomainMaxiGradDlg.h"
+#include "dlg/FreqDomainMultiCpnDlg.h"
+#include "dlg/FreqDomainNormFilterDlg.h"
 
 // 功能按钮的固定尺寸（与原工程 71*20 对话框单位按钮比例协调，
 // 宽度取值保证“归一化标准差垂向导数”等长名称完整显示）
@@ -75,17 +82,17 @@ void CGravMagnMainWindow::initUi()
     QGridLayout* pLayout2 = createGroupLayout(pMainLayout, QString::fromUtf8("频率域重磁数据处理"));
     addFunctionButton(pLayout2, 0, 0, QString::fromUtf8("向上延拓"), FunctionNotImplemented);
     addFunctionButton(pLayout2, 0, 1, QString::fromUtf8("向下延拓"), FunctionDownward);        // 已实现：频率域向下延拓
-    addFunctionButton(pLayout2, 0, 2, QString::fromUtf8("逐次向下延拓"), FunctionNotImplemented);
-    addFunctionButton(pLayout2, 0, 3, QString::fromUtf8("迭代向下延拓"), FunctionNotImplemented);
-    addFunctionButton(pLayout2, 0, 4, QString::fromUtf8("迭代曲化平"), FunctionNotImplemented);
+    addFunctionButton(pLayout2, 0, 2, QString::fromUtf8("逐次向下延拓"), FunctionGradward);    // 已实现：频率域逐次向下延拓(正则化滤波)
+    addFunctionButton(pLayout2, 0, 3, QString::fromUtf8("迭代向下延拓"), FunctionIterward);    // 已实现：频率域迭代向下延拓
+    addFunctionButton(pLayout2, 0, 4, QString::fromUtf8("迭代曲化平"), FunctionIterDrape);     // 已实现：频率域迭代曲化平
     addFunctionButton(pLayout2, 0, 5, QString::fromUtf8("一阶导数"), FunctionNotImplemented);
     addFunctionButton(pLayout2, 0, 6, QString::fromUtf8("变磁倾角化极"), FunctionNotImplemented);
     addFunctionButton(pLayout2, 0, 7, QString::fromUtf8("二阶导数"), FunctionNotImplemented);
-    addFunctionButton(pLayout2, 1, 0, QString::fromUtf8("总水平方向导数"), FunctionNotImplemented);
+    addFunctionButton(pLayout2, 1, 0, QString::fromUtf8("总水平方向导数"), FunctionHorzGrad);   // 已实现：频率域总水平方向导数
     addFunctionButton(pLayout2, 1, 1, QString::fromUtf8("解析信号"), FunctionNotImplemented);
     addFunctionButton(pLayout2, 1, 2, QString::fromUtf8("三分量转换"), FunctionNotImplemented);
-    addFunctionButton(pLayout2, 1, 3, QString::fromUtf8("任意方向分量转换"), FunctionNotImplemented);
-    addFunctionButton(pLayout2, 1, 4, QString::fromUtf8("正则化滤波"), FunctionNotImplemented);
+    addFunctionButton(pLayout2, 1, 3, QString::fromUtf8("任意方向分量转换"), FunctionMultiCpn); // 已实现：任意磁化方向分量转换
+    addFunctionButton(pLayout2, 1, 4, QString::fromUtf8("正则化滤波"), FunctionNormFilter);     // 已实现：频率域正则化滤波
     addFunctionButton(pLayout2, 1, 5, QString::fromUtf8("Dz 化极"), FunctionNotImplemented);
     addFunctionButton(pLayout2, 1, 6, QString::fromUtf8("磁源重力异常"), FunctionNotImplemented);
     addFunctionButton(pLayout2, 1, 7, QString::fromUtf8("线性构造增强"), FunctionNotImplemented);
@@ -125,7 +132,7 @@ void CGravMagnMainWindow::initUi()
     addFunctionButton(pLayout4, 0, 7, QString::fromUtf8("三维磁性界面反演"), FunctionNotImplemented);
     addFunctionButton(pLayout4, 1, 0, QString::fromUtf8("倾斜角"), FunctionNotImplemented);
     addFunctionButton(pLayout4, 1, 1, QString::fromUtf8("倾斜角总水平方向导数"), FunctionNotImplemented);
-    addFunctionButton(pLayout4, 1, 2, QString::fromUtf8("最大水平方向导数"), FunctionNotImplemented);
+    addFunctionButton(pLayout4, 1, 2, QString::fromUtf8("最大水平方向导数"), FunctionMaxiGrad);  // 已实现：频率域最大水平方向导数
     addFunctionButton(pLayout4, 1, 3, QString::fromUtf8("Theta 图"), FunctionNotImplemented);
     addFunctionButton(pLayout4, 1, 4, QString::fromUtf8("归一化标准差"), FunctionNotImplemented);
     addFunctionButton(pLayout4, 1, 5, QString::fromUtf8("归一化总水平导数垂向导数"), FunctionNotImplemented);
@@ -198,6 +205,41 @@ void CGravMagnMainWindow::addFunctionButton(QGridLayout* pLayout, int nRow, int 
         // 已实现：打开“频率域向下延拓”对话框
         connect(pButton, &QPushButton::clicked, this, &CGravMagnMainWindow::onOpenDownwardClicked);
     }
+    else if (eType == FunctionGradward)
+    {
+        // 已实现：打开“频率域逐次向下延拓(正则化滤波)”对话框
+        connect(pButton, &QPushButton::clicked, this, &CGravMagnMainWindow::onOpenGradwardClicked);
+    }
+    else if (eType == FunctionHorzGrad)
+    {
+        // 已实现：打开“频率域总水平方向导数”对话框
+        connect(pButton, &QPushButton::clicked, this, &CGravMagnMainWindow::onOpenHorzGradClicked);
+    }
+    else if (eType == FunctionIterDrape)
+    {
+        // 已实现：打开“频率域迭代曲化平”对话框
+        connect(pButton, &QPushButton::clicked, this, &CGravMagnMainWindow::onOpenIterDrapeClicked);
+    }
+    else if (eType == FunctionIterward)
+    {
+        // 已实现：打开“频率域迭代向下延拓”对话框
+        connect(pButton, &QPushButton::clicked, this, &CGravMagnMainWindow::onOpenIterwardClicked);
+    }
+    else if (eType == FunctionMaxiGrad)
+    {
+        // 已实现：打开“频率域最大水平方向导数”对话框
+        connect(pButton, &QPushButton::clicked, this, &CGravMagnMainWindow::onOpenMaxiGradClicked);
+    }
+    else if (eType == FunctionMultiCpn)
+    {
+        // 已实现：打开“频率域任意方向分量转换(多分量)”对话框
+        connect(pButton, &QPushButton::clicked, this, &CGravMagnMainWindow::onOpenMultiCpnClicked);
+    }
+    else if (eType == FunctionNormFilter)
+    {
+        // 已实现：打开“频率域正则化滤波”对话框
+        connect(pButton, &QPushButton::clicked, this, &CGravMagnMainWindow::onOpenNormFilterClicked);
+    }
     else
     {
         // 未实现：统一提示“该功能前端尚未开发”
@@ -227,6 +269,76 @@ void CGravMagnMainWindow::openDownwardDlg()
     dlg.exec();
 }
 
+// 功能：打开频率域逐次向下延拓(正则化滤波)对话框（模态）
+void CGravMagnMainWindow::openGradwardDlg()
+{
+    CFreqDomainGradwardDlg dlg(this);
+    // 连接对话框的“显示”请求信号（等值线显示由前端后续版本提供）
+    connect(&dlg, &CFreqDomainGradwardDlg::viewGridFileRequested,
+        this, &CGravMagnMainWindow::onViewGridFileRequested);
+    dlg.exec();
+}
+
+// 功能：打开频率域总水平方向导数对话框（模态）
+void CGravMagnMainWindow::openHorzGradDlg()
+{
+    CFreqDomainHorzGradDlg dlg(this);
+    // 连接对话框的“显示”请求信号（等值线显示由前端后续版本提供）
+    connect(&dlg, &CFreqDomainHorzGradDlg::viewGridFileRequested,
+        this, &CGravMagnMainWindow::onViewGridFileRequested);
+    dlg.exec();
+}
+
+// 功能：打开频率域迭代曲化平对话框（模态）
+void CGravMagnMainWindow::openIterDrapeDlg()
+{
+    CFreqDomainIterDrapeDlg dlg(this);
+    // 连接对话框的“显示”请求信号（等值线显示由前端后续版本提供）
+    connect(&dlg, &CFreqDomainIterDrapeDlg::viewGridFileRequested,
+        this, &CGravMagnMainWindow::onViewGridFileRequested);
+    dlg.exec();
+}
+
+// 功能：打开频率域迭代向下延拓对话框（模态）
+void CGravMagnMainWindow::openIterwardDlg()
+{
+    CFreqDomainIterwardDlg dlg(mStrFileNames, this);
+    // 连接对话框的“显示”请求信号（等值线显示由前端后续版本提供）
+    connect(&dlg, &CFreqDomainIterwardDlg::viewGridFileRequested,
+        this, &CGravMagnMainWindow::onViewGridFileRequested);
+    dlg.exec();
+}
+
+// 功能：打开频率域最大水平方向导数对话框（模态）
+void CGravMagnMainWindow::openMaxiGradDlg()
+{
+    CFreqDomainMaxiGradDlg dlg(this);
+    // 连接对话框的“显示”请求信号（等值线显示由前端后续版本提供）
+    connect(&dlg, &CFreqDomainMaxiGradDlg::viewGridFileRequested,
+        this, &CGravMagnMainWindow::onViewGridFileRequested);
+    dlg.exec();
+}
+
+// 功能：打开频率域任意方向分量转换(多分量)对话框（模态）
+void CGravMagnMainWindow::openMultiCpnDlg()
+{
+    CFreqDomainMultiCpnDlg dlg(this);
+    // 连接对话框的“显示”请求信号（等值线显示由前端后续版本提供）
+    connect(&dlg, &CFreqDomainMultiCpnDlg::viewGridFileRequested,
+        this, &CGravMagnMainWindow::onViewGridFileRequested);
+    dlg.exec();
+}
+
+// 功能：打开频率域正则化滤波对话框（模态）
+void CGravMagnMainWindow::openNormFilterDlg()
+{
+    CFreqDomainNormFilterDlg dlg(this);
+    // 连接对话框的“显示”请求信号（等值线显示由前端后续版本提供）
+    connect(&dlg, &CFreqDomainNormFilterDlg::viewGridFileRequested,
+        this, &CGravMagnMainWindow::onViewGridFileRequested);
+    dlg.exec();
+}
+
 // 功能：打开“补偿圆滑滤波”（频率域组合滤波）对话框
 void CGravMagnMainWindow::onOpenCmpsFilterClicked()
 {
@@ -239,6 +351,48 @@ void CGravMagnMainWindow::onOpenDownwardClicked()
     openDownwardDlg();
 }
 
+// 功能：打开“频率域逐次向下延拓(正则化滤波)”对话框
+void CGravMagnMainWindow::onOpenGradwardClicked()
+{
+    openGradwardDlg();
+}
+
+// 功能：打开“频率域总水平方向导数”对话框
+void CGravMagnMainWindow::onOpenHorzGradClicked()
+{
+    openHorzGradDlg();
+}
+
+// 功能：打开“频率域迭代曲化平”对话框
+void CGravMagnMainWindow::onOpenIterDrapeClicked()
+{
+    openIterDrapeDlg();
+}
+
+// 功能：打开“频率域迭代向下延拓”对话框
+void CGravMagnMainWindow::onOpenIterwardClicked()
+{
+    openIterwardDlg();
+}
+
+// 功能：打开“频率域最大水平方向导数”对话框
+void CGravMagnMainWindow::onOpenMaxiGradClicked()
+{
+    openMaxiGradDlg();
+}
+
+// 功能：打开“频率域任意方向分量转换(多分量)”对话框
+void CGravMagnMainWindow::onOpenMultiCpnClicked()
+{
+    openMultiCpnDlg();
+}
+
+// 功能：打开“频率域正则化滤波”对话框
+void CGravMagnMainWindow::onOpenNormFilterClicked()
+{
+    openNormFilterDlg();
+}
+
 // 功能：提示该功能前端尚未开发（未实现功能统一回调）
 void CGravMagnMainWindow::onNotImplementedClicked()
 {
@@ -249,7 +403,10 @@ void CGravMagnMainWindow::onNotImplementedClicked()
         return;
     }
     QMessageBox::information(this, QString::fromUtf8("功能尚未开发"),
-        QString::fromUtf8("“%1”功能前端尚未开发。\n\n已实现功能：补偿圆滑滤波、频率域向下延拓。")
+        QString::fromUtf8("“%1”功能前端尚未开发。\n\n已实现功能：补偿圆滑滤波、频率域向下延拓、\n"
+            "频率域逐次向下延拓、频率域总水平方向导数、频率域迭代曲化平、\n"
+            "频率域迭代向下延拓、频率域最大水平方向导数、\n"
+            "频率域任意方向分量转换、频率域正则化滤波。")
             .arg(pButton->text()));
 }
 

@@ -407,3 +407,87 @@ bool CNullRgisBackend::processDownward(const DownwardParams& params, BackendErro
     error.message = "算法后端尚未接入：频率域向下延拓功能等待后端实现。";
     return false;
 }
+
+// 功能：频率域梯度（梯度计算）处理（占位，等待正式算法后端实现）
+bool CNullRgisBackend::processGradient(const GradientParams& params, BackendError& error)
+{
+    (void)params;   // 参数暂不使用（占位实现）
+
+    error.code = 100;
+    error.message = "算法后端尚未接入：频率域梯度（梯度计算）功能等待后端实现。";
+    return false;
+}
+
+// 功能：频率域逐次向下延拓（正则化滤波）处理（占位，等待正式算法后端实现）
+bool CNullRgisBackend::processGradward(const GradwardParams& params, BackendError& error)
+{
+    (void)params;   // 参数暂不使用（占位实现）
+
+    error.code = 100;
+    error.message = "算法后端尚未接入：频率域逐次向下延拓（正则化滤波）功能等待后端实现。";
+    return false;
+}
+
+// 功能：频率域总水平方向导数处理（占位，等待正式算法后端实现）
+bool CNullRgisBackend::processHorzGrad(const HorzGradParams& params, BackendError& error)
+{
+    (void)params;   // 参数暂不使用（占位实现）
+
+    error.code = 100;
+    error.message = "算法后端尚未接入：频率域总水平方向导数功能等待后端实现。";
+    return false;
+}
+
+// 功能：频率域迭代曲化平（迭代下延计算）处理（占位，等待正式算法后端实现）
+bool CNullRgisBackend::processIterDrape(const IterDrapeParams& params, int& iterations, float& finalError, BackendError& error)
+{
+    (void)params;       // 参数暂不使用（占位实现）
+    iterations = 0;     // 出参清零（占位实现不产生结果）
+    finalError = 0.0f;  // 出参清零（占位实现不产生结果）
+
+    error.code = 100;
+    error.message = "算法后端尚未接入：频率域迭代曲化平（迭代下延计算）功能等待后端实现。";
+    return false;
+}
+
+// 功能：频率域迭代向下延拓处理（占位，等待正式算法后端实现）
+bool CNullRgisBackend::processIterward(const IterwardParams& params, int& iterations, float& finalError, BackendError& error)
+{
+    (void)params;       // 参数暂不使用（占位实现）
+    iterations = 0;     // 出参清零（占位实现不产生结果）
+    finalError = 0.0f;  // 出参清零（占位实现不产生结果）
+
+    error.code = 100;
+    error.message = "算法后端尚未接入：频率域迭代向下延拓功能等待后端实现。";
+    return false;
+}
+
+// 功能：频率域最大梯度（最大水平方向导数）处理（占位，等待正式算法后端实现）
+bool CNullRgisBackend::processMaxiGrad(const MaxiGradParams& params, BackendError& error)
+{
+    (void)params;   // 参数暂不使用（占位实现）
+
+    error.code = 100;
+    error.message = "算法后端尚未接入：频率域最大梯度（最大水平方向导数）功能等待后端实现。";
+    return false;
+}
+
+// 功能：频率域任意方向分量转换（多分量）处理（占位，等待正式算法后端实现）
+bool CNullRgisBackend::processMultiCpn(const MultiCpnParams& params, BackendError& error)
+{
+    (void)params;   // 参数暂不使用（占位实现）
+
+    error.code = 100;
+    error.message = "算法后端尚未接入：频率域任意方向分量转换（多分量）功能等待后端实现。";
+    return false;
+}
+
+// 功能：频率域正则化滤波处理（占位，等待正式算法后端实现）
+bool CNullRgisBackend::processNormFilter(const NormFilterParams& params, BackendError& error)
+{
+    (void)params;   // 参数暂不使用（占位实现）
+
+    error.code = 100;
+    error.message = "算法后端尚未接入：频率域正则化滤波功能等待后端实现。";
+    return false;
+}
