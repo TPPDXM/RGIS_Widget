@@ -6,6 +6,7 @@
 //   * 全程不使用 try/catch，错误一律通过返回值 + 消息框反馈，做足空指针检查。
 
 #include "FreqDomainIterDrapeDlg.h"
+#include "backend/RgisBackend.h"
 
 #include <vector>
 
@@ -83,15 +84,7 @@ CFreqDomainIterDrapeDlg::CFreqDomainIterDrapeDlg(QWidget* pParent)
     , mIterError(0.5)
     , mIterFactor(1.5)
     , mExpandMethod(ExpandCosFun)
-    , mBackend(NULL)
 {
-    // 取后端接口指针（从未注入时由服务返回内置占位实现，保证 mBackend 永不为 NULL）
-    mBackend = CBackendService::rgisBackend();
-    if (mBackend == NULL)
-    {
-        return;
-    }
-
     // 创建界面控件并连接信号槽
     initUi();
 }
@@ -373,7 +366,9 @@ void CFreqDomainIterDrapeDlg::loadFile(const QString& strFilePath)
     {
         return;
     }
-    if (mBackend == NULL)
+    // 后端接口按需从全局服务获取（不缓存为成员指针）
+    IRgisBackend* pBackend = CBackendService::rgisBackend();
+    if (pBackend == NULL)
     {
         return;
     }
@@ -386,7 +381,7 @@ void CFreqDomainIterDrapeDlg::loadFile(const QString& strFilePath)
     // 调用后端读取网格文件头（仅文件头，不读取数据体）
     GridFileHead head;
     BackendError error;
-    if (!mBackend->readGridFileHead(toBackendString(strFilePath), head, error))
+    if (!pBackend->readGridFileHead(toBackendString(strFilePath), head, error))
     {
         QMessageBox::warning(this, QString::fromUtf8("读取文件失败"), fromBackendString(error.message));
         return;
@@ -449,7 +444,9 @@ void CFreqDomainIterDrapeDlg::loadDemFile(const QString& strFilePath)
     {
         return;
     }
-    if (mBackend == NULL)
+    // 后端接口按需从全局服务获取（不缓存为成员指针）
+    IRgisBackend* pBackend = CBackendService::rgisBackend();
+    if (pBackend == NULL)
     {
         return;
     }
@@ -469,7 +466,7 @@ void CFreqDomainIterDrapeDlg::loadDemFile(const QString& strFilePath)
     // 调用后端读取网格文件头（仅文件头，不读取数据体）
     GridFileHead head;
     BackendError error;
-    if (!mBackend->readGridFileHead(toBackendString(strFilePath), head, error))
+    if (!pBackend->readGridFileHead(toBackendString(strFilePath), head, error))
     {
         QMessageBox::warning(this, QString::fromUtf8("读取文件失败"), fromBackendString(error.message));
         return;
@@ -883,7 +880,9 @@ bool CFreqDomainIterDrapeDlg::validateInputs(QString& strError)
 // 功能：组装参数并调用后端 processIterDrape（对应原工程 OnOK 主体逻辑）
 void CFreqDomainIterDrapeDlg::runProcess()
 {
-    if (mBackend == NULL)
+    // 后端接口按需从全局服务获取（不缓存为成员指针）
+    IRgisBackend* pBackend = CBackendService::rgisBackend();
+    if (pBackend == NULL)
     {
         QMessageBox::warning(this, QString::fromUtf8("处理失败"), QString::fromUtf8("后端接口未初始化。"));
         return;
@@ -918,7 +917,7 @@ void CFreqDomainIterDrapeDlg::runProcess()
     int iterations = 0;
     float finalError = 0.0f;
     QApplication::setOverrideCursor(Qt::WaitCursor);
-    bool bOk = mBackend->processIterDrape(params, iterations, finalError, error);
+    bool bOk = pBackend->processIterDrape(params, iterations, finalError, error);
     QApplication::restoreOverrideCursor();
 
     if (bOk)

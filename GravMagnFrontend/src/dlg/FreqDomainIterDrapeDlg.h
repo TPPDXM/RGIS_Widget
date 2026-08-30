@@ -184,5 +184,4 @@ private:
     double  mIterFactor;    // 迭代因子（原 m_fIterFactor）
     int     mExpandMethod;  // 数据扩边方法（对应 ExpandMethod 枚举，原单选按钮组）
 
-    IRgisBackend* mBackend; // 后端接口指针（算法/数据读写统一走后端，不允许为 NULL）
 };

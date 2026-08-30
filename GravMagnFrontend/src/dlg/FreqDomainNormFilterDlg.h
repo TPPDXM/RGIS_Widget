@@ -15,7 +15,6 @@
 
 #include <QDialog>
 
-#include "backend/RgisBackend.h"
 
 // 前置声明（减少头文件之间的相互包含）
 class QLineEdit;
@@ -146,5 +145,4 @@ private:
 
     int     mScaleOfRow;    // 水平几何尺度（原 m_nScaleOfRow，默认 10）
 
-    IRgisBackend* mBackend; // 后端接口指针（算法/数据读写统一走后端，不允许为 NULL）
 };

@@ -13,6 +13,7 @@
 //     后端实现与信息提示见 RgisBackend.h processIterward 契约。
 
 #include "FreqDomainIterwardDlg.h"
+#include "backend/RgisBackend.h"
 
 #include <QApplication>
 #include <QButtonGroup>
@@ -80,15 +81,7 @@ CFreqDomainIterwardDlg::CFreqDomainIterwardDlg(const QString& strFileNames, QWid
     , mIterFactor(1.5)
     , mMaxIterTimes(100)
     , mExpandMethod(ExpandCosFun)
-    , mBackend(NULL)
 {
-    // 取后端接口指针（从未注入时由服务返回内置占位实现，保证 mBackend 永不为 NULL）
-    mBackend = CBackendService::rgisBackend();
-    if (mBackend == NULL)
-    {
-        return;
-    }
-
     // 候选文件列表加入“数据文件输入”下拉框（分号分隔，与原工程 AddFilesToComboBox 一致）
     addCandidateFiles(strFileNames);
 
@@ -382,7 +375,9 @@ void CFreqDomainIterwardDlg::loadFile(const QString& strFilePath)
     {
         return;
     }
-    if (mBackend == NULL)
+    // 后端接口按需从全局服务获取（不缓存为成员指针）
+    IRgisBackend* pBackend = CBackendService::rgisBackend();
+    if (pBackend == NULL)
     {
         return;
     }
@@ -395,7 +390,7 @@ void CFreqDomainIterwardDlg::loadFile(const QString& strFilePath)
     // 调用后端读取网格文件头（仅文件头，不读取数据体）
     GridFileHead head;
     BackendError error;
-    if (!mBackend->readGridFileHead(toBackendString(strFilePath), head, error))
+    if (!pBackend->readGridFileHead(toBackendString(strFilePath), head, error))
     {
         QMessageBox::warning(this, QString::fromUtf8("读取文件失败"), fromBackendString(error.message));
         return;
@@ -637,7 +632,9 @@ bool CFreqDomainIterwardDlg::validateInputs(QString& strError)
 // 功能：组装参数并调用后端 processIterward（对应原工程 OnOK 主体逻辑）
 void CFreqDomainIterwardDlg::runProcess()
 {
-    if (mBackend == NULL)
+    // 后端接口按需从全局服务获取（不缓存为成员指针）
+    IRgisBackend* pBackend = CBackendService::rgisBackend();
+    if (pBackend == NULL)
     {
         QMessageBox::warning(this, QString::fromUtf8("处理失败"), QString::fromUtf8("后端接口未初始化。"));
         return;
@@ -660,7 +657,7 @@ void CFreqDomainIterwardDlg::runProcess()
     int iterations = 0;             // 实际迭代次数（后端出参）
     float finalError = 0.0f;        // 最终迭代均方差（后端出参）
     QApplication::setOverrideCursor(Qt::WaitCursor);
-    bool bOk = mBackend->processIterward(params, iterations, finalError, error);
+    bool bOk = pBackend->processIterward(params, iterations, finalError, error);
     QApplication::restoreOverrideCursor();
 
     if (bOk)

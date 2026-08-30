@@ -17,7 +17,6 @@
 
 #include <QDialog>
 
-#include "backend/RgisBackend.h"
 
 // 前置声明（减少头文件之间的相互包含）
 class QLineEdit;
@@ -131,5 +130,4 @@ private:
     int     mMinExCols;     // 最小扩边列数（读文件时计算，原 m_nMinExCols）
     int     mExpandMethod;  // 数据扩边方法（对应 ExpandMethod 枚举，原单选按钮组，仅 3 种）
 
-    IRgisBackend* mBackend; // 后端接口指针（算法/数据读写统一走后端，不允许为 NULL）
 };

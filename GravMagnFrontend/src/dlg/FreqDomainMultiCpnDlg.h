@@ -15,7 +15,6 @@
 
 #include <QDialog>
 
-#include "backend/RgisBackend.h"
 
 // 前置声明（减少头文件之间的相互包含）
 class QLineEdit;
@@ -155,5 +154,4 @@ private:
     double  mDtd0;          // 磁化偏角（原 m_fDTD0，默认 0.0）
     double  mDti0;          // 磁化倾角（原 m_fDTI0，默认 90.0）
 
-    IRgisBackend* mBackend; // 后端接口指针（算法/数据读写统一走后端，不允许为 NULL）
 };

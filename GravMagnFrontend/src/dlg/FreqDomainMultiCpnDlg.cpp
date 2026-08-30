@@ -6,6 +6,7 @@
 //   * 全程不使用 try/catch，错误一律通过返回值 + 消息框反馈，做足空指针检查。
 
 #include "FreqDomainMultiCpnDlg.h"
+#include "backend/RgisBackend.h"
 
 #include <QApplication>
 #include <QButtonGroup>
@@ -74,15 +75,7 @@ CFreqDomainMultiCpnDlg::CFreqDomainMultiCpnDlg(QWidget* pParent)
     , mTransDec(0.0)
     , mDtd0(0.0)
     , mDti0(90.0)
-    , mBackend(NULL)
 {
-    // 取后端接口指针（从未注入时由服务返回内置占位实现，保证 mBackend 永不为 NULL）
-    mBackend = CBackendService::rgisBackend();
-    if (mBackend == NULL)
-    {
-        return;
-    }
-
     // 创建界面控件并连接信号槽
     initUi();
 }
@@ -335,7 +328,9 @@ void CFreqDomainMultiCpnDlg::loadFile(const QString& strFilePath)
     {
         return;
     }
-    if (mBackend == NULL)
+    // 后端接口按需从全局服务获取（不缓存为成员指针）
+    IRgisBackend* pBackend = CBackendService::rgisBackend();
+    if (pBackend == NULL)
     {
         return;
     }
@@ -348,7 +343,7 @@ void CFreqDomainMultiCpnDlg::loadFile(const QString& strFilePath)
     // 调用后端读取网格文件头（仅文件头，不读取数据体）
     GridFileHead head;
     BackendError error;
-    if (!mBackend->readGridFileHead(toBackendString(strFilePath), head, error))
+    if (!pBackend->readGridFileHead(toBackendString(strFilePath), head, error))
     {
         QMessageBox::warning(this, QString::fromUtf8("读取文件失败"), fromBackendString(error.message));
         return;
@@ -584,7 +579,9 @@ bool CFreqDomainMultiCpnDlg::validateInputs(QString& strError)
 // 功能：组装参数并调用后端 processMultiCpn（对应原工程 OnOK 主体逻辑）
 void CFreqDomainMultiCpnDlg::runProcess()
 {
-    if (mBackend == NULL)
+    // 后端接口按需从全局服务获取（不缓存为成员指针）
+    IRgisBackend* pBackend = CBackendService::rgisBackend();
+    if (pBackend == NULL)
     {
         QMessageBox::warning(this, QString::fromUtf8("处理失败"), QString::fromUtf8("后端接口未初始化。"));
         return;
@@ -607,7 +604,7 @@ void CFreqDomainMultiCpnDlg::runProcess()
     // 同步调用后端处理（处理期间显示等待光标，与原工程 BeginWaitCursor 一致）
     BackendError error;
     QApplication::setOverrideCursor(Qt::WaitCursor);
-    bool bOk = mBackend->processMultiCpn(params, error);
+    bool bOk = pBackend->processMultiCpn(params, error);
     QApplication::restoreOverrideCursor();
 
     if (bOk)
