@@ -49,7 +49,7 @@ CGravMagnMainWindow::~CGravMagnMainWindow()
 // 功能：按参考布局创建全部功能按钮与分组
 void CGravMagnMainWindow::initUi()
 {
-    setWindowTitle(QString::fromUtf8("重磁数据预处理和处理"));
+    setWindowTitle(QStringLiteral("重磁数据预处理和处理"));
     setMinimumSize(1330, 780);
 
     // 中央部件与纵向主布局
@@ -60,102 +60,102 @@ void CGravMagnMainWindow::initUi()
     setCentralWidget(pCentralWidget);
 
     // ================= 分组 1：重磁数据预处理 =================
-    QGridLayout* pLayout1 = createGroupLayout(pMainLayout, QString::fromUtf8("重磁数据预处理"));
-    addFunctionButton(pLayout1, 0, 0, QString::fromUtf8("网格数据差分扩边"), FunctionNotImplemented);
-    addFunctionButton(pLayout1, 0, 1, QString::fromUtf8("网格数据差分补空"), FunctionNotImplemented);
-    addFunctionButton(pLayout1, 0, 2, QString::fromUtf8("空区还原"), FunctionNotImplemented);
-    addFunctionButton(pLayout1, 0, 3, QString::fromUtf8("五万中区地形改正"), FunctionNotImplemented);
-    addFunctionButton(pLayout1, 0, 4, QString::fromUtf8("磁化强度计算"), FunctionNotImplemented);
-    addFunctionButton(pLayout1, 0, 5, QString::fromUtf8("单点地磁要素计算"), FunctionNotImplemented);
-    addFunctionButton(pLayout1, 0, 6, QString::fromUtf8("多点地磁要素计算"), FunctionNotImplemented);
-    addFunctionButton(pLayout1, 0, 7, QString::fromUtf8("海陆连片重力地形改正"), FunctionNotImplemented);
-    addFunctionButton(pLayout1, 1, 0, QString::fromUtf8("观测系统误差计算"), FunctionNotImplemented);
-    addFunctionButton(pLayout1, 1, 1, QString::fromUtf8("延时改正"), FunctionNotImplemented);
-    addFunctionButton(pLayout1, 1, 2, QString::fromUtf8("一致性试验"), FunctionNotImplemented);
-    addFunctionButton(pLayout1, 1, 3, QString::fromUtf8("噪声试验"), FunctionNotImplemented);
-    addFunctionButton(pLayout1, 1, 4, QString::fromUtf8("不含基点正常场改正"), FunctionNotImplemented);
-    addFunctionButton(pLayout1, 1, 5, QString::fromUtf8("含基点正常场改正"), FunctionNotImplemented);
-    addFunctionButton(pLayout1, 1, 6, QString::fromUtf8("日变校正"), FunctionNotImplemented);
-    addFunctionButton(pLayout1, 1, 7, QString::fromUtf8("三维重磁自动反演"), FunctionNotImplemented);
+    QGridLayout* pLayout1 = createGroupLayout(pMainLayout, QStringLiteral("重磁数据预处理"));
+    addFunctionButton(pLayout1, 0, 0, QStringLiteral("网格数据差分扩边"), FunctionNotImplemented);
+    addFunctionButton(pLayout1, 0, 1, QStringLiteral("网格数据差分补空"), FunctionNotImplemented);
+    addFunctionButton(pLayout1, 0, 2, QStringLiteral("空区还原"), FunctionNotImplemented);
+    addFunctionButton(pLayout1, 0, 3, QStringLiteral("五万中区地形改正"), FunctionNotImplemented);
+    addFunctionButton(pLayout1, 0, 4, QStringLiteral("磁化强度计算"), FunctionNotImplemented);
+    addFunctionButton(pLayout1, 0, 5, QStringLiteral("单点地磁要素计算"), FunctionNotImplemented);
+    addFunctionButton(pLayout1, 0, 6, QStringLiteral("多点地磁要素计算"), FunctionNotImplemented);
+    addFunctionButton(pLayout1, 0, 7, QStringLiteral("海陆连片重力地形改正"), FunctionNotImplemented);
+    addFunctionButton(pLayout1, 1, 0, QStringLiteral("观测系统误差计算"), FunctionNotImplemented);
+    addFunctionButton(pLayout1, 1, 1, QStringLiteral("延时改正"), FunctionNotImplemented);
+    addFunctionButton(pLayout1, 1, 2, QStringLiteral("一致性试验"), FunctionNotImplemented);
+    addFunctionButton(pLayout1, 1, 3, QStringLiteral("噪声试验"), FunctionNotImplemented);
+    addFunctionButton(pLayout1, 1, 4, QStringLiteral("不含基点正常场改正"), FunctionNotImplemented);
+    addFunctionButton(pLayout1, 1, 5, QStringLiteral("含基点正常场改正"), FunctionNotImplemented);
+    addFunctionButton(pLayout1, 1, 6, QStringLiteral("日变校正"), FunctionNotImplemented);
+    addFunctionButton(pLayout1, 1, 7, QStringLiteral("三维重磁自动反演"), FunctionNotImplemented);
 
     // ================= 分组 2：频率域重磁数据处理 =================
-    QGridLayout* pLayout2 = createGroupLayout(pMainLayout, QString::fromUtf8("频率域重磁数据处理"));
-    addFunctionButton(pLayout2, 0, 0, QString::fromUtf8("向上延拓"), FunctionNotImplemented);
-    addFunctionButton(pLayout2, 0, 1, QString::fromUtf8("向下延拓"), FunctionDownward);        // 已实现：频率域向下延拓
-    addFunctionButton(pLayout2, 0, 2, QString::fromUtf8("逐次向下延拓"), FunctionGradward);    // 已实现：频率域逐次向下延拓(正则化滤波)
-    addFunctionButton(pLayout2, 0, 3, QString::fromUtf8("迭代向下延拓"), FunctionIterward);    // 已实现：频率域迭代向下延拓
-    addFunctionButton(pLayout2, 0, 4, QString::fromUtf8("迭代曲化平"), FunctionIterDrape);     // 已实现：频率域迭代曲化平
-    addFunctionButton(pLayout2, 0, 5, QString::fromUtf8("一阶导数"), FunctionNotImplemented);
-    addFunctionButton(pLayout2, 0, 6, QString::fromUtf8("变磁倾角化极"), FunctionNotImplemented);
-    addFunctionButton(pLayout2, 0, 7, QString::fromUtf8("二阶导数"), FunctionNotImplemented);
-    addFunctionButton(pLayout2, 1, 0, QString::fromUtf8("总水平方向导数"), FunctionHorzGrad);   // 已实现：频率域总水平方向导数
-    addFunctionButton(pLayout2, 1, 1, QString::fromUtf8("解析信号"), FunctionNotImplemented);
-    addFunctionButton(pLayout2, 1, 2, QString::fromUtf8("三分量转换"), FunctionNotImplemented);
-    addFunctionButton(pLayout2, 1, 3, QString::fromUtf8("任意方向分量转换"), FunctionMultiCpn); // 已实现：任意磁化方向分量转换
-    addFunctionButton(pLayout2, 1, 4, QString::fromUtf8("正则化滤波"), FunctionNormFilter);     // 已实现：频率域正则化滤波
-    addFunctionButton(pLayout2, 1, 5, QString::fromUtf8("Dz 化极"), FunctionNotImplemented);
-    addFunctionButton(pLayout2, 1, 6, QString::fromUtf8("磁源重力异常"), FunctionNotImplemented);
-    addFunctionButton(pLayout2, 1, 7, QString::fromUtf8("线性构造增强"), FunctionNotImplemented);
-    addFunctionButton(pLayout2, 2, 0, QString::fromUtf8("补偿圆滑滤波"), FunctionCmpsFilter);   // 已实现：频率域组合滤波
-    addFunctionButton(pLayout2, 2, 1, QString::fromUtf8("化极"), FunctionNotImplemented);
-    addFunctionButton(pLayout2, 2, 2, QString::fromUtf8("低磁纬度化极"), FunctionNotImplemented);
-    addFunctionButton(pLayout2, 2, 3, QString::fromUtf8("分带变磁倾角化极"), FunctionNotImplemented);
-    addFunctionButton(pLayout2, 2, 4, QString::fromUtf8("三维重力相关成像"), FunctionNotImplemented);
-    addFunctionButton(pLayout2, 2, 5, QString::fromUtf8("三维磁力相关成像"), FunctionNotImplemented);
-    addFunctionButton(pLayout2, 2, 6, QString::fromUtf8("三维密度界面反演"), FunctionNotImplemented);
-    addFunctionButton(pLayout2, 2, 7, QString::fromUtf8("三维磁性界面反演"), FunctionNotImplemented);
+    QGridLayout* pLayout2 = createGroupLayout(pMainLayout, QStringLiteral("频率域重磁数据处理"));
+    addFunctionButton(pLayout2, 0, 0, QStringLiteral("向上延拓"), FunctionNotImplemented);
+    addFunctionButton(pLayout2, 0, 1, QStringLiteral("向下延拓"), FunctionDownward);        // 已实现：频率域向下延拓
+    addFunctionButton(pLayout2, 0, 2, QStringLiteral("逐次向下延拓"), FunctionGradward);    // 已实现：频率域逐次向下延拓(正则化滤波)
+    addFunctionButton(pLayout2, 0, 3, QStringLiteral("迭代向下延拓"), FunctionIterward);    // 已实现：频率域迭代向下延拓
+    addFunctionButton(pLayout2, 0, 4, QStringLiteral("迭代曲化平"), FunctionIterDrape);     // 已实现：频率域迭代曲化平
+    addFunctionButton(pLayout2, 0, 5, QStringLiteral("一阶导数"), FunctionNotImplemented);
+    addFunctionButton(pLayout2, 0, 6, QStringLiteral("变磁倾角化极"), FunctionNotImplemented);
+    addFunctionButton(pLayout2, 0, 7, QStringLiteral("二阶导数"), FunctionNotImplemented);
+    addFunctionButton(pLayout2, 1, 0, QStringLiteral("总水平方向导数"), FunctionHorzGrad);   // 已实现：频率域总水平方向导数
+    addFunctionButton(pLayout2, 1, 1, QStringLiteral("解析信号"), FunctionNotImplemented);
+    addFunctionButton(pLayout2, 1, 2, QStringLiteral("三分量转换"), FunctionNotImplemented);
+    addFunctionButton(pLayout2, 1, 3, QStringLiteral("任意方向分量转换"), FunctionMultiCpn); // 已实现：任意磁化方向分量转换
+    addFunctionButton(pLayout2, 1, 4, QStringLiteral("正则化滤波"), FunctionNormFilter);     // 已实现：频率域正则化滤波
+    addFunctionButton(pLayout2, 1, 5, QStringLiteral("Dz 化极"), FunctionNotImplemented);
+    addFunctionButton(pLayout2, 1, 6, QStringLiteral("磁源重力异常"), FunctionNotImplemented);
+    addFunctionButton(pLayout2, 1, 7, QStringLiteral("线性构造增强"), FunctionNotImplemented);
+    addFunctionButton(pLayout2, 2, 0, QStringLiteral("补偿圆滑滤波"), FunctionCmpsFilter);   // 已实现：频率域组合滤波
+    addFunctionButton(pLayout2, 2, 1, QStringLiteral("化极"), FunctionNotImplemented);
+    addFunctionButton(pLayout2, 2, 2, QStringLiteral("低磁纬度化极"), FunctionNotImplemented);
+    addFunctionButton(pLayout2, 2, 3, QStringLiteral("分带变磁倾角化极"), FunctionNotImplemented);
+    addFunctionButton(pLayout2, 2, 4, QStringLiteral("三维重力相关成像"), FunctionNotImplemented);
+    addFunctionButton(pLayout2, 2, 5, QStringLiteral("三维磁力相关成像"), FunctionNotImplemented);
+    addFunctionButton(pLayout2, 2, 6, QStringLiteral("三维密度界面反演"), FunctionNotImplemented);
+    addFunctionButton(pLayout2, 2, 7, QStringLiteral("三维磁性界面反演"), FunctionNotImplemented);
 
     // ================= 分组 3：空间域重磁数据处理 =================
-    QGridLayout* pLayout3 = createGroupLayout(pMainLayout, QString::fromUtf8("空间域重磁数据处理"));
-    addFunctionButton(pLayout3, 0, 0, QString::fromUtf8("向上延拓"), FunctionNotImplemented);
-    addFunctionButton(pLayout3, 0, 1, QString::fromUtf8("向下延拓"), FunctionNotImplemented);
-    addFunctionButton(pLayout3, 0, 2, QString::fromUtf8("曲化平"), FunctionNotImplemented);
-    addFunctionButton(pLayout3, 0, 3, QString::fromUtf8("水平一阶导数"), FunctionNotImplemented);
-    addFunctionButton(pLayout3, 0, 4, QString::fromUtf8("水平二阶导数"), FunctionNotImplemented);
-    addFunctionButton(pLayout3, 0, 5, QString::fromUtf8("垂向一阶导数"), FunctionNotImplemented);
-    addFunctionButton(pLayout3, 0, 6, QString::fromUtf8("线性回归分析"), FunctionNotImplemented);
-    addFunctionButton(pLayout3, 0, 7, QString::fromUtf8("滑动平均滤波"), FunctionNotImplemented);
-    addFunctionButton(pLayout3, 1, 0, QString::fromUtf8("垂向二阶导数"), FunctionNotImplemented);
-    addFunctionButton(pLayout3, 1, 1, QString::fromUtf8("趋势分析"), FunctionNotImplemented);
-    addFunctionButton(pLayout3, 1, 2, QString::fromUtf8("相关分析"), FunctionNotImplemented);
-    addFunctionButton(pLayout3, 1, 3, QString::fromUtf8("回归分析"), FunctionNotImplemented);
+    QGridLayout* pLayout3 = createGroupLayout(pMainLayout, QStringLiteral("空间域重磁数据处理"));
+    addFunctionButton(pLayout3, 0, 0, QStringLiteral("向上延拓"), FunctionNotImplemented);
+    addFunctionButton(pLayout3, 0, 1, QStringLiteral("向下延拓"), FunctionNotImplemented);
+    addFunctionButton(pLayout3, 0, 2, QStringLiteral("曲化平"), FunctionNotImplemented);
+    addFunctionButton(pLayout3, 0, 3, QStringLiteral("水平一阶导数"), FunctionNotImplemented);
+    addFunctionButton(pLayout3, 0, 4, QStringLiteral("水平二阶导数"), FunctionNotImplemented);
+    addFunctionButton(pLayout3, 0, 5, QStringLiteral("垂向一阶导数"), FunctionNotImplemented);
+    addFunctionButton(pLayout3, 0, 6, QStringLiteral("线性回归分析"), FunctionNotImplemented);
+    addFunctionButton(pLayout3, 0, 7, QStringLiteral("滑动平均滤波"), FunctionNotImplemented);
+    addFunctionButton(pLayout3, 1, 0, QStringLiteral("垂向二阶导数"), FunctionNotImplemented);
+    addFunctionButton(pLayout3, 1, 1, QStringLiteral("趋势分析"), FunctionNotImplemented);
+    addFunctionButton(pLayout3, 1, 2, QStringLiteral("相关分析"), FunctionNotImplemented);
+    addFunctionButton(pLayout3, 1, 3, QStringLiteral("回归分析"), FunctionNotImplemented);
 
     // ================= 分组 4：重磁数据预处理 =================
-    QGridLayout* pLayout4 = createGroupLayout(pMainLayout, QString::fromUtf8("重磁数据预处理"));
-    addFunctionButton(pLayout4, 0, 0, QString::fromUtf8("二维密度界面正演"), FunctionNotImplemented);
-    addFunctionButton(pLayout4, 0, 1, QString::fromUtf8("二维密度界面反演"), FunctionNotImplemented);
-    addFunctionButton(pLayout4, 0, 2, QString::fromUtf8("二维磁性界面正演"), FunctionNotImplemented);
-    addFunctionButton(pLayout4, 0, 3, QString::fromUtf8("二维磁性界面反演"), FunctionNotImplemented);
-    addFunctionButton(pLayout4, 0, 4, QString::fromUtf8("三维密度界面正演"), FunctionNotImplemented);
-    addFunctionButton(pLayout4, 0, 5, QString::fromUtf8("三维密度界面反演"), FunctionNotImplemented);
-    addFunctionButton(pLayout4, 0, 6, QString::fromUtf8("三维磁性界面正演"), FunctionNotImplemented);
-    addFunctionButton(pLayout4, 0, 7, QString::fromUtf8("三维磁性界面反演"), FunctionNotImplemented);
-    addFunctionButton(pLayout4, 1, 0, QString::fromUtf8("倾斜角"), FunctionNotImplemented);
-    addFunctionButton(pLayout4, 1, 1, QString::fromUtf8("倾斜角总水平方向导数"), FunctionNotImplemented);
-    addFunctionButton(pLayout4, 1, 2, QString::fromUtf8("最大水平方向导数"), FunctionMaxiGrad);  // 已实现：频率域最大水平方向导数
-    addFunctionButton(pLayout4, 1, 3, QString::fromUtf8("Theta 图"), FunctionNotImplemented);
-    addFunctionButton(pLayout4, 1, 4, QString::fromUtf8("归一化标准差"), FunctionNotImplemented);
-    addFunctionButton(pLayout4, 1, 5, QString::fromUtf8("归一化总水平导数垂向导数"), FunctionNotImplemented);
-    addFunctionButton(pLayout4, 1, 6, QString::fromUtf8("归一化标准差垂向导数"), FunctionNotImplemented);
-    addFunctionButton(pLayout4, 1, 7, QString::fromUtf8("归一化 Theta 图垂向导数"), FunctionNotImplemented);
+    QGridLayout* pLayout4 = createGroupLayout(pMainLayout, QStringLiteral("重磁数据预处理"));
+    addFunctionButton(pLayout4, 0, 0, QStringLiteral("二维密度界面正演"), FunctionNotImplemented);
+    addFunctionButton(pLayout4, 0, 1, QStringLiteral("二维密度界面反演"), FunctionNotImplemented);
+    addFunctionButton(pLayout4, 0, 2, QStringLiteral("二维磁性界面正演"), FunctionNotImplemented);
+    addFunctionButton(pLayout4, 0, 3, QStringLiteral("二维磁性界面反演"), FunctionNotImplemented);
+    addFunctionButton(pLayout4, 0, 4, QStringLiteral("三维密度界面正演"), FunctionNotImplemented);
+    addFunctionButton(pLayout4, 0, 5, QStringLiteral("三维密度界面反演"), FunctionNotImplemented);
+    addFunctionButton(pLayout4, 0, 6, QStringLiteral("三维磁性界面正演"), FunctionNotImplemented);
+    addFunctionButton(pLayout4, 0, 7, QStringLiteral("三维磁性界面反演"), FunctionNotImplemented);
+    addFunctionButton(pLayout4, 1, 0, QStringLiteral("倾斜角"), FunctionNotImplemented);
+    addFunctionButton(pLayout4, 1, 1, QStringLiteral("倾斜角总水平方向导数"), FunctionNotImplemented);
+    addFunctionButton(pLayout4, 1, 2, QStringLiteral("最大水平方向导数"), FunctionMaxiGrad);  // 已实现：频率域最大水平方向导数
+    addFunctionButton(pLayout4, 1, 3, QStringLiteral("Theta 图"), FunctionNotImplemented);
+    addFunctionButton(pLayout4, 1, 4, QStringLiteral("归一化标准差"), FunctionNotImplemented);
+    addFunctionButton(pLayout4, 1, 5, QStringLiteral("归一化总水平导数垂向导数"), FunctionNotImplemented);
+    addFunctionButton(pLayout4, 1, 6, QStringLiteral("归一化标准差垂向导数"), FunctionNotImplemented);
+    addFunctionButton(pLayout4, 1, 7, QStringLiteral("归一化 Theta 图垂向导数"), FunctionNotImplemented);
 
     // ================= 分组 5：重磁数据预处理（含退出按钮）=================
-    QGridLayout* pLayout5 = createGroupLayout(pMainLayout, QString::fromUtf8("重磁数据预处理"));
-    addFunctionButton(pLayout5, 0, 0, QString::fromUtf8("剖面数据插值"), FunctionNotImplemented);
-    addFunctionButton(pLayout5, 0, 1, QString::fromUtf8("剖面数据余弦函数扩边"), FunctionNotImplemented);
-    addFunctionButton(pLayout5, 0, 2, QString::fromUtf8("剖面数据曲化平"), FunctionNotImplemented);
-    addFunctionButton(pLayout5, 0, 3, QString::fromUtf8("剖面数据最小曲率扩边"), FunctionNotImplemented);
-    addFunctionButton(pLayout5, 0, 4, QString::fromUtf8("剖面数据最小曲率补空"), FunctionNotImplemented);
-    addFunctionButton(pLayout5, 0, 5, QString::fromUtf8("剖面数据圆滑"), FunctionNotImplemented);
-    addFunctionButton(pLayout5, 0, 6, QString::fromUtf8("剖面数据空间域向上延拓"), FunctionNotImplemented);
-    addFunctionButton(pLayout5, 0, 7, QString::fromUtf8("剖面数据空间域向下延拓"), FunctionNotImplemented);
-    addFunctionButton(pLayout5, 1, 0, QString::fromUtf8("网格数据最小曲率扩边"), FunctionNotImplemented);
-    addFunctionButton(pLayout5, 1, 1, QString::fromUtf8("网格数据最小曲率补空"), FunctionNotImplemented);
-    addFunctionButton(pLayout5, 1, 2, QString::fromUtf8("网格数据差分扩边"), FunctionNotImplemented);
-    addFunctionButton(pLayout5, 1, 3, QString::fromUtf8("网格数据差分补空"), FunctionNotImplemented);
+    QGridLayout* pLayout5 = createGroupLayout(pMainLayout, QStringLiteral("重磁数据预处理"));
+    addFunctionButton(pLayout5, 0, 0, QStringLiteral("剖面数据插值"), FunctionNotImplemented);
+    addFunctionButton(pLayout5, 0, 1, QStringLiteral("剖面数据余弦函数扩边"), FunctionNotImplemented);
+    addFunctionButton(pLayout5, 0, 2, QStringLiteral("剖面数据曲化平"), FunctionNotImplemented);
+    addFunctionButton(pLayout5, 0, 3, QStringLiteral("剖面数据最小曲率扩边"), FunctionNotImplemented);
+    addFunctionButton(pLayout5, 0, 4, QStringLiteral("剖面数据最小曲率补空"), FunctionNotImplemented);
+    addFunctionButton(pLayout5, 0, 5, QStringLiteral("剖面数据圆滑"), FunctionNotImplemented);
+    addFunctionButton(pLayout5, 0, 6, QStringLiteral("剖面数据空间域向上延拓"), FunctionNotImplemented);
+    addFunctionButton(pLayout5, 0, 7, QStringLiteral("剖面数据空间域向下延拓"), FunctionNotImplemented);
+    addFunctionButton(pLayout5, 1, 0, QStringLiteral("网格数据最小曲率扩边"), FunctionNotImplemented);
+    addFunctionButton(pLayout5, 1, 1, QStringLiteral("网格数据最小曲率补空"), FunctionNotImplemented);
+    addFunctionButton(pLayout5, 1, 2, QStringLiteral("网格数据差分扩边"), FunctionNotImplemented);
+    addFunctionButton(pLayout5, 1, 3, QStringLiteral("网格数据差分补空"), FunctionNotImplemented);
 
     // 退出按钮（原工程 IDOK，位于最后一组右下角）
-    QPushButton* pBtnExit = new QPushButton(QString::fromUtf8("退出"), this);
+    QPushButton* pBtnExit = new QPushButton(QStringLiteral("退出"), this);
     pBtnExit->setFixedSize(sFunctionButtonWidth, sFunctionButtonHeight);
     pBtnExit->setDefault(true);
     connect(pBtnExit, &QPushButton::clicked, this, &CGravMagnMainWindow::onExitClicked);
@@ -402,8 +402,8 @@ void CGravMagnMainWindow::onNotImplementedClicked()
     {
         return;
     }
-    QMessageBox::information(this, QString::fromUtf8("功能尚未开发"),
-        QString::fromUtf8("“%1”功能前端尚未开发。\n\n已实现功能：补偿圆滑滤波、频率域向下延拓、\n"
+    QMessageBox::information(this, QStringLiteral("功能尚未开发"),
+        QStringLiteral("“%1”功能前端尚未开发。\n\n已实现功能：补偿圆滑滤波、频率域向下延拓、\n"
             "频率域逐次向下延拓、频率域总水平方向导数、频率域迭代曲化平、\n"
             "频率域迭代向下延拓、频率域最大水平方向导数、\n"
             "频率域任意方向分量转换、频率域正则化滤波。")
@@ -419,6 +419,6 @@ void CGravMagnMainWindow::onExitClicked()
 // 功能：处理对话框的“显示”请求（等值线显示窗口将在前端后续版本实现）
 void CGravMagnMainWindow::onViewGridFileRequested(const QString& strFilePath)
 {
-    QMessageBox::information(this, QString::fromUtf8("等值线显示"),
-        QString::fromUtf8("等值线显示功能将在前端后续版本提供。\n文件：") + strFilePath);
+    QMessageBox::information(this, QStringLiteral("等值线显示"),
+        QStringLiteral("等值线显示功能将在前端后续版本提供。\n文件：") + strFilePath);
 }

@@ -23,7 +23,7 @@ class QLineEdit;
 class QPushButton;
 class QRadioButton;
 class QButtonGroup;
-class CPow2SpinBox;
+class QSpinBox;
 
 // 频率域最大梯度（最大水平方向导数）对话框
 class CFreqDomainMaxiGradDlg : public QDialog
@@ -82,7 +82,7 @@ private:
     void runProcess();                          // 功能：组装参数并调用后端 processMaxiGrad
 
     // ===== 工具 =====
-    void setSpinExtendSize(CPow2SpinBox* pSpin, int nSize); // 功能：同步设置扩边微调框下限与数值
+    void setSpinExtendSize(QSpinBox* pSpin, int nSize); // 功能：同步设置扩边微调框下限与数值
 
     // ===== 界面控件（数据文件输入）=====
     QLineEdit*      mEditOpenFile;      // 输入数据文件路径（可编辑文本，对应原 IDC_OpenFile）
@@ -96,8 +96,8 @@ private:
     QLineEdit*  mEditColStep;       // 网格列距（只读）
 
     // ===== 界面控件（数据扩边信息）=====
-    CPow2SpinBox*   mSpinExRows;     // 扩边行数微调框（2 的幂）
-    CPow2SpinBox*   mSpinExCols;     // 扩边列数微调框（2 的幂）
+    QSpinBox*   mSpinExRows;     // 扩边行数微调框（默认值为 2 的幂）
+    QSpinBox*   mSpinExCols;     // 扩边列数微调框（默认值为 2 的幂）
 
     // ===== 界面控件（数据扩边方法，单选，仅 3 种）=====
     QRadioButton*   mRadioCosFun;    // 余弦函数衰减（默认选中）

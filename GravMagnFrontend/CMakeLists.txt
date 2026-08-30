@@ -40,8 +40,6 @@ set(PROJECT_SOURCES
     src/core/BackendService.cpp
     src/core/BackendConvert.h
     src/core/ExtendGridSize.h
-    src/core/Pow2SpinBox.h
-    src/core/Pow2SpinBox.cpp
     src/dlg/FreqDomainCmpsFilterDlg.h
     src/dlg/FreqDomainCmpsFilterDlg.cpp
     src/dlg/FreqDomainDownwardDlg.h

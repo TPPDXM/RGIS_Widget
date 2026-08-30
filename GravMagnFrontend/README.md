@@ -26,8 +26,7 @@ GravMagnFrontend/
     ├── core/
     │   ├── BackendService.h / .cpp    # 后端实例注册与获取（CBackendService）
     │   ├── BackendConvert.h           # QString <-> std::string(UTF-8) 转换
-    │   ├── ExtendGridSize.h           # 默认扩边尺寸（2 的幂）计算
-    │   └── Pow2SpinBox.h / .cpp       # 2 的幂步进微调框（扩边行/列数）
+    │   └── ExtendGridSize.h           # 默认扩边尺寸（2 的幂）计算
     └── dlg/
         ├── FreqDomainCmpsFilterDlg.h / .cpp   # ★ 频率域组合滤波（补偿圆滑滤波）
         ├── FreqDomainDownwardDlg.h / .cpp     # ★ 频率域向下延拓
@@ -67,7 +66,7 @@ GravMagnFrontend/
 行为与 MFC 原工程保持一致（已核对源码）：
 
 * 默认输出文件名：输入文件 `xxx.grd` → `xxx_Reg.grd` / `xxx_Res.grd`（组合滤波）、`xxx_Pro.grd`（向下延拓）；
-* 默认扩边尺寸：读文件后按原工程规则取 2 的幂（`ExtendGridSize.h`），微调框向上翻倍（上限 65536）、向下减半（不得小于该最小尺寸）；
+* 默认扩边尺寸：读文件后按原工程规则取 2 的幂（`ExtendGridSize.h`），扩边行/列数使用普通微调框（范围为 [最小扩边尺寸, 65536]，步长 1）；
 * 默认扩边方法：余弦函数衰减；组合滤波默认补偿因子 20、指数因子 150；向下延拓默认高度 2 倍列距；
 * “确定”后同步调用后端处理（等待光标），完成后提示并**保持对话框打开**（与原工程一致，点“取消”退出）；
 * “显示”按钮：检查文件存在后发出 `viewGridFileRequested` 信号，由宿主处理（等值线显示窗口属前端后续版本实现）；
@@ -147,7 +146,9 @@ CBackendService::setRgisBackend(new CYourRgisBackend());
 * 所有回调均为**成员函数引用**（`connect(..., &类名::槽函数)`），**不使用 lambda**；
 * **不使用 try/catch**，错误通过返回值 + `BackendError` / 消息框反馈；
 * 成员函数与成员变量声明处均写明用途注释；
-* 界面布局与文本直接对照 `RGISGravMagnDataProcessing.rc`。
+* 界面布局与文本直接对照 `RGISGravMagnDataProcessing.rc`；
+* 中文字符串一律用 `QStringLiteral("***")` 构造（源码 UTF-8，MSVC 编译含 `/utf-8`），
+  避免运行时编码转换问题（`QString::fromUtf8` 仅保留给变量转换，见 `core/BackendConvert.h`）。
 
 ## 五、编译方法
 

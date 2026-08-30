@@ -26,7 +26,7 @@
 #include "core/BackendConvert.h"
 #include "core/BackendService.h"
 #include "core/ExtendGridSize.h"
-#include "core/Pow2SpinBox.h"
+#include <QSpinBox>
 
 // 最大扩边尺寸（与原 MFC 工程 OnDeltaposSpinExCols 中 <= 65536 的约束一致）
 static const int sMaxExtendSize = 65536;
@@ -88,18 +88,18 @@ CFreqDomainMultiCpnDlg::~CFreqDomainMultiCpnDlg()
 // 功能：按 .rc 布局创建全部控件并连接信号槽
 void CFreqDomainMultiCpnDlg::initUi()
 {
-    setWindowTitle(QString::fromUtf8("任意磁化方向分量转换"));
+    setWindowTitle(QStringLiteral("任意磁化方向分量转换"));
     setModal(true);
 
     QVBoxLayout* pMainLayout = new QVBoxLayout(this);
 
     // ================= 数据文件输入 =================
-    QGroupBox* pGroupInput = new QGroupBox(QString::fromUtf8("数据文件输入"), this);
+    QGroupBox* pGroupInput = new QGroupBox(QStringLiteral("数据文件输入"), this);
     QGridLayout* pInputLayout = new QGridLayout(pGroupInput);
     mEditOpenFile = new QLineEdit(pGroupInput);
-    mBtnOpenFile = new QPushButton(QString::fromUtf8("..."), pGroupInput);
+    mBtnOpenFile = new QPushButton(QStringLiteral("..."), pGroupInput);
     mBtnOpenFile->setFixedWidth(32);
-    mBtnOpenFileView = new QPushButton(QString::fromUtf8("显示"), pGroupInput);
+    mBtnOpenFileView = new QPushButton(QStringLiteral("显示"), pGroupInput);
     mBtnOpenFileView->setFixedWidth(48);
     pInputLayout->addWidget(mEditOpenFile, 0, 0);
     pInputLayout->addWidget(mBtnOpenFile, 0, 1);
@@ -109,27 +109,27 @@ void CFreqDomainMultiCpnDlg::initUi()
 
     // ================= 网格数据信息（只读显示，2 行 2 列）=================
     // 对应 .rc 中的 IDC_RowsNum / IDC_ColsNum / IDC_RowStep / IDC_ColStep
-    QGroupBox* pGroupInfo = new QGroupBox(QString::fromUtf8("网格数据信息"), this);
+    QGroupBox* pGroupInfo = new QGroupBox(QStringLiteral("网格数据信息"), this);
     QGridLayout* pInfoLayout = new QGridLayout(pGroupInfo);
-    pInfoLayout->addWidget(new QLabel(QString::fromUtf8("网格行数"), pGroupInfo), 0, 0);
+    pInfoLayout->addWidget(new QLabel(QStringLiteral("网格行数"), pGroupInfo), 0, 0);
     mEditRowsNum = new QLineEdit(pGroupInfo);
     mEditRowsNum->setReadOnly(true);
     mEditRowsNum->setAlignment(Qt::AlignCenter);
     mEditRowsNum->setFixedWidth(110);
     pInfoLayout->addWidget(mEditRowsNum, 0, 1);
-    pInfoLayout->addWidget(new QLabel(QString::fromUtf8("网格列数"), pGroupInfo), 0, 2);
+    pInfoLayout->addWidget(new QLabel(QStringLiteral("网格列数"), pGroupInfo), 0, 2);
     mEditColsNum = new QLineEdit(pGroupInfo);
     mEditColsNum->setReadOnly(true);
     mEditColsNum->setAlignment(Qt::AlignCenter);
     mEditColsNum->setFixedWidth(110);
     pInfoLayout->addWidget(mEditColsNum, 0, 3);
-    pInfoLayout->addWidget(new QLabel(QString::fromUtf8("网格行距"), pGroupInfo), 1, 0);
+    pInfoLayout->addWidget(new QLabel(QStringLiteral("网格行距"), pGroupInfo), 1, 0);
     mEditRowStep = new QLineEdit(pGroupInfo);
     mEditRowStep->setReadOnly(true);
     mEditRowStep->setAlignment(Qt::AlignCenter);
     mEditRowStep->setFixedWidth(110);
     pInfoLayout->addWidget(mEditRowStep, 1, 1);
-    pInfoLayout->addWidget(new QLabel(QString::fromUtf8("网格列距"), pGroupInfo), 1, 2);
+    pInfoLayout->addWidget(new QLabel(QStringLiteral("网格列距"), pGroupInfo), 1, 2);
     mEditColStep = new QLineEdit(pGroupInfo);
     mEditColStep->setReadOnly(true);
     mEditColStep->setAlignment(Qt::AlignCenter);
@@ -139,27 +139,33 @@ void CFreqDomainMultiCpnDlg::initUi()
 
     // ================= 数据扩边信息 =================
     // 对应 .rc 中的 IDC_ExRows、IDC_ExCols 及对应微调钮
-    QGroupBox* pGroupExtend = new QGroupBox(QString::fromUtf8("数据扩边信息"), this);
+    QGroupBox* pGroupExtend = new QGroupBox(QStringLiteral("数据扩边信息"), this);
     QGridLayout* pExtendLayout = new QGridLayout(pGroupExtend);
-    pExtendLayout->addWidget(new QLabel(QString::fromUtf8("扩边行数"), pGroupExtend), 0, 0);
-    mSpinExRows = new CPow2SpinBox(pGroupExtend);
+    pExtendLayout->addWidget(new QLabel(QStringLiteral("扩边行数"), pGroupExtend), 0, 0);
+    mSpinExRows = new QSpinBox(pGroupExtend);
+    mSpinExRows->setRange(1, sMaxExtendSize);
+    mSpinExRows->setValue(1);
+    mSpinExRows->setAlignment(Qt::AlignCenter);
     mSpinExRows->setFixedWidth(100);
     pExtendLayout->addWidget(mSpinExRows, 0, 1);
-    pExtendLayout->addWidget(new QLabel(QString::fromUtf8("扩边列数"), pGroupExtend), 0, 2);
-    mSpinExCols = new CPow2SpinBox(pGroupExtend);
+    pExtendLayout->addWidget(new QLabel(QStringLiteral("扩边列数"), pGroupExtend), 0, 2);
+    mSpinExCols = new QSpinBox(pGroupExtend);
+    mSpinExCols->setRange(1, sMaxExtendSize);
+    mSpinExCols->setValue(1);
+    mSpinExCols->setAlignment(Qt::AlignCenter);
     mSpinExCols->setFixedWidth(100);
     pExtendLayout->addWidget(mSpinExCols, 0, 3);
     pMainLayout->addWidget(pGroupExtend);
 
     // ================= 数据扩边方法（单选，4 种）=================
     // 对应 .rc 中的 IDC_CosFun / IDC_AvgDif / IDC_InvPow / IDC_MinCrv
-    QGroupBox* pGroupMethod = new QGroupBox(QString::fromUtf8("数据扩边方法"), this);
+    QGroupBox* pGroupMethod = new QGroupBox(QStringLiteral("数据扩边方法"), this);
     QHBoxLayout* pMethodLayout = new QHBoxLayout(pGroupMethod);
     mButtonGroupExpand = new QButtonGroup(this);
-    mRadioCosFun = new QRadioButton(QString::fromUtf8("余弦函数衰减"), pGroupMethod);
-    mRadioAvgDif = new QRadioButton(QString::fromUtf8("平均值差分"), pGroupMethod);
-    mRadioInvPow = new QRadioButton(QString::fromUtf8("反距离加权"), pGroupMethod);
-    mRadioMinCrv = new QRadioButton(QString::fromUtf8("最小曲率"), pGroupMethod);
+    mRadioCosFun = new QRadioButton(QStringLiteral("余弦函数衰减"), pGroupMethod);
+    mRadioAvgDif = new QRadioButton(QStringLiteral("平均值差分"), pGroupMethod);
+    mRadioInvPow = new QRadioButton(QStringLiteral("反距离加权"), pGroupMethod);
+    mRadioMinCrv = new QRadioButton(QStringLiteral("最小曲率"), pGroupMethod);
     mButtonGroupExpand->addButton(mRadioCosFun, ExpandCosFun);
     mButtonGroupExpand->addButton(mRadioAvgDif, ExpandAvgDif);
     mButtonGroupExpand->addButton(mRadioInvPow, ExpandInvPow);
@@ -176,10 +182,10 @@ void CFreqDomainMultiCpnDlg::initUi()
     // ================= 处理参数（两行）=================
     // 对应 .rc 中的 IDC_Profile / IDC_BaseLine / IDC_DTI0 / IDC_DTD0 /
     //           IDC_TransInc / IDC_TransDec（取值范围与原工程 DDV_MinMaxFloat 一致）
-    QGroupBox* pGroupParams = new QGroupBox(QString::fromUtf8("处理参数"), this);
+    QGroupBox* pGroupParams = new QGroupBox(QStringLiteral("处理参数"), this);
     QGridLayout* pParamsLayout = new QGridLayout(pGroupParams);
     // 第一行：测线方向 / 基线方向
-    pParamsLayout->addWidget(new QLabel(QString::fromUtf8("测线方向"), pGroupParams), 0, 0);
+    pParamsLayout->addWidget(new QLabel(QStringLiteral("测线方向"), pGroupParams), 0, 0);
     mSpinProfile = new QDoubleSpinBox(pGroupParams);
     mSpinProfile->setRange(-360.0, 360.0);
     mSpinProfile->setDecimals(3);
@@ -188,7 +194,7 @@ void CFreqDomainMultiCpnDlg::initUi()
     mSpinProfile->setAlignment(Qt::AlignCenter);
     mSpinProfile->setFixedWidth(110);
     pParamsLayout->addWidget(mSpinProfile, 0, 1);
-    pParamsLayout->addWidget(new QLabel(QString::fromUtf8("基线方向"), pGroupParams), 0, 2);
+    pParamsLayout->addWidget(new QLabel(QStringLiteral("基线方向"), pGroupParams), 0, 2);
     mSpinBaseLine = new QDoubleSpinBox(pGroupParams);
     mSpinBaseLine->setRange(-360.0, 360.0);
     mSpinBaseLine->setDecimals(3);
@@ -198,7 +204,7 @@ void CFreqDomainMultiCpnDlg::initUi()
     mSpinBaseLine->setFixedWidth(110);
     pParamsLayout->addWidget(mSpinBaseLine, 0, 3);
     // 第二行：磁化倾角 / 磁化偏角 / 转换倾角 / 转换偏角
-    pParamsLayout->addWidget(new QLabel(QString::fromUtf8("磁化倾角"), pGroupParams), 1, 0);
+    pParamsLayout->addWidget(new QLabel(QStringLiteral("磁化倾角"), pGroupParams), 1, 0);
     mSpinDti0 = new QDoubleSpinBox(pGroupParams);
     mSpinDti0->setRange(0.0, 180.0);
     mSpinDti0->setDecimals(3);
@@ -207,7 +213,7 @@ void CFreqDomainMultiCpnDlg::initUi()
     mSpinDti0->setAlignment(Qt::AlignCenter);
     mSpinDti0->setFixedWidth(110);
     pParamsLayout->addWidget(mSpinDti0, 1, 1);
-    pParamsLayout->addWidget(new QLabel(QString::fromUtf8("磁化偏角"), pGroupParams), 1, 2);
+    pParamsLayout->addWidget(new QLabel(QStringLiteral("磁化偏角"), pGroupParams), 1, 2);
     mSpinDtd0 = new QDoubleSpinBox(pGroupParams);
     mSpinDtd0->setRange(-360.0, 360.0);
     mSpinDtd0->setDecimals(3);
@@ -216,7 +222,7 @@ void CFreqDomainMultiCpnDlg::initUi()
     mSpinDtd0->setAlignment(Qt::AlignCenter);
     mSpinDtd0->setFixedWidth(110);
     pParamsLayout->addWidget(mSpinDtd0, 1, 3);
-    pParamsLayout->addWidget(new QLabel(QString::fromUtf8("转换倾角"), pGroupParams), 1, 4);
+    pParamsLayout->addWidget(new QLabel(QStringLiteral("转换倾角"), pGroupParams), 1, 4);
     mSpinTransInc = new QDoubleSpinBox(pGroupParams);
     mSpinTransInc->setRange(0.0, 180.0);
     mSpinTransInc->setDecimals(3);
@@ -225,7 +231,7 @@ void CFreqDomainMultiCpnDlg::initUi()
     mSpinTransInc->setAlignment(Qt::AlignCenter);
     mSpinTransInc->setFixedWidth(110);
     pParamsLayout->addWidget(mSpinTransInc, 1, 5);
-    pParamsLayout->addWidget(new QLabel(QString::fromUtf8("转换偏角"), pGroupParams), 1, 6);
+    pParamsLayout->addWidget(new QLabel(QStringLiteral("转换偏角"), pGroupParams), 1, 6);
     mSpinTransDec = new QDoubleSpinBox(pGroupParams);
     mSpinTransDec->setRange(-360.0, 360.0);
     mSpinTransDec->setDecimals(3);
@@ -238,12 +244,12 @@ void CFreqDomainMultiCpnDlg::initUi()
 
     // ================= 数据文件输出 =================
     // 对应 .rc 中的 IDC_SaveFile / ID_SaveFile / ID_SaveFileView
-    QGroupBox* pGroupOutput = new QGroupBox(QString::fromUtf8("数据文件输出"), this);
+    QGroupBox* pGroupOutput = new QGroupBox(QStringLiteral("数据文件输出"), this);
     QGridLayout* pOutputLayout = new QGridLayout(pGroupOutput);
     mEditSaveFile = new QLineEdit(pGroupOutput);
-    mBtnSaveFile = new QPushButton(QString::fromUtf8("..."), pGroupOutput);
+    mBtnSaveFile = new QPushButton(QStringLiteral("..."), pGroupOutput);
     mBtnSaveFile->setFixedWidth(32);
-    mBtnSaveFileView = new QPushButton(QString::fromUtf8("显示"), pGroupOutput);
+    mBtnSaveFileView = new QPushButton(QStringLiteral("显示"), pGroupOutput);
     mBtnSaveFileView->setFixedWidth(48);
     pOutputLayout->addWidget(mEditSaveFile, 0, 0);
     pOutputLayout->addWidget(mBtnSaveFile, 0, 1);
@@ -253,8 +259,8 @@ void CFreqDomainMultiCpnDlg::initUi()
 
     // ================= 确定 / 取消 =================
     QHBoxLayout* pButtonLayout = new QHBoxLayout();
-    mBtnOk = new QPushButton(QString::fromUtf8("确  定"), this);
-    mBtnCancel = new QPushButton(QString::fromUtf8("取  消"), this);
+    mBtnOk = new QPushButton(QStringLiteral("确  定"), this);
+    mBtnCancel = new QPushButton(QStringLiteral("取  消"), this);
     mBtnOk->setDefault(true);
     pButtonLayout->addWidget(mBtnOk);
     pButtonLayout->addStretch(1);
@@ -279,7 +285,7 @@ void CFreqDomainMultiCpnDlg::initUi()
     // 输出文件名编辑框（手工输入时同步成员变量，对应原工程 EN_CHANGE→UpdateData）
     connect(mEditSaveFile, &QLineEdit::textEdited, this, &CFreqDomainMultiCpnDlg::onSaveFileTextEdited);
 
-    // 扩边行数/列数（2 的幂微调）
+    // 扩边行数/列数微调
     connect(mSpinExRows, QOverload<int>::of(&QSpinBox::valueChanged), this, &CFreqDomainMultiCpnDlg::onExRowsValueChanged);
     connect(mSpinExCols, QOverload<int>::of(&QSpinBox::valueChanged), this, &CFreqDomainMultiCpnDlg::onExColsValueChanged);
 
@@ -307,7 +313,7 @@ void CFreqDomainMultiCpnDlg::initUi()
 // 功能：选择输入数据文件（对应原工程 OnOpenFile）
 void CFreqDomainMultiCpnDlg::onOpenFileClicked()
 {
-    QString strFilePath = askOpenFilePath(QString::fromUtf8("请选择处理数据文件"));
+    QString strFilePath = askOpenFilePath(QStringLiteral("请选择处理数据文件"));
     if (strFilePath.isEmpty())
     {
         return;
@@ -345,7 +351,7 @@ void CFreqDomainMultiCpnDlg::loadFile(const QString& strFilePath)
     BackendError error;
     if (!pBackend->readGridFileHead(toBackendString(strFilePath), head, error))
     {
-        QMessageBox::warning(this, QString::fromUtf8("读取文件失败"), fromBackendString(error.message));
+        QMessageBox::warning(this, QStringLiteral("读取文件失败"), fromBackendString(error.message));
         return;
     }
 
@@ -384,7 +390,7 @@ void CFreqDomainMultiCpnDlg::updateDefaultSavePaths(const QString& strFilePath)
         strBase = strFilePath.left(nPos);
     }
 
-    mOutputFilePath = strBase + QString::fromUtf8("_Pro.grd");
+    mOutputFilePath = strBase + QStringLiteral("_Pro.grd");
 
     if (mEditSaveFile != NULL)
     {
@@ -414,7 +420,7 @@ void CFreqDomainMultiCpnDlg::updateGridInfoDisplay()
 }
 
 // 功能：同步设置扩边微调框下限与数值（下限即当前文件要求的最小扩边尺寸）
-void CFreqDomainMultiCpnDlg::setSpinExtendSize(CPow2SpinBox* pSpin, int nSize)
+void CFreqDomainMultiCpnDlg::setSpinExtendSize(QSpinBox* pSpin, int nSize)
 {
     if (pSpin == NULL)
     {
@@ -431,7 +437,7 @@ void CFreqDomainMultiCpnDlg::setSpinExtendSize(CPow2SpinBox* pSpin, int nSize)
 // 功能：选择处理结果数据文件（对应原工程 OnSaveFile）
 void CFreqDomainMultiCpnDlg::onSaveFileClicked()
 {
-    QString strFilePath = askSaveFilePath(QString::fromUtf8("请输入处理结果数据文件名"), mOutputFilePath);
+    QString strFilePath = askSaveFilePath(QStringLiteral("请输入处理结果数据文件名"), mOutputFilePath);
     if (strFilePath.isEmpty())
     {
         return;
@@ -453,14 +459,14 @@ void CFreqDomainMultiCpnDlg::onSaveFileTextEdited(const QString& strText)
 QString CFreqDomainMultiCpnDlg::askOpenFilePath(const QString& strTitle)
 {
     return QFileDialog::getOpenFileName(this, strTitle, QString(),
-        QString::fromUtf8("网格数据文件 (*.grd);;所有数据文件 (*.*)"));
+        QStringLiteral("网格数据文件 (*.grd);;所有数据文件 (*.*)"));
 }
 
 // 功能：弹出保存文件对话框（.grd 网格数据文件）
 QString CFreqDomainMultiCpnDlg::askSaveFilePath(const QString& strTitle, const QString& strDefaultPath)
 {
     return QFileDialog::getSaveFileName(this, strTitle, strDefaultPath,
-        QString::fromUtf8("网格数据文件 (*.grd);;所有数据文件 (*.*)"));
+        QStringLiteral("网格数据文件 (*.grd);;所有数据文件 (*.*)"));
 }
 
 // 功能：检查文件存在并发出发送显示请求（对应原工程 OnOpenFileView / OnSaveFileView）
@@ -473,8 +479,8 @@ void CFreqDomainMultiCpnDlg::viewGridFile(const QString& strFilePath)
     // 文件不存在时提示并返回（与原工程 GetFileAttributes == -1 判断一致）
     if (!QFile::exists(strFilePath))
     {
-        QMessageBox::warning(this, QString::fromUtf8("文件不存在"),
-            QString::fromUtf8("文件") + strFilePath + QString::fromUtf8("不存在!"));
+        QMessageBox::warning(this, QStringLiteral("文件不存在"),
+            QStringLiteral("文件") + strFilePath + QStringLiteral("不存在!"));
         return;
     }
     // 等值线显示窗口由前端后续版本实现，此处交由宿主处理
@@ -553,24 +559,24 @@ bool CFreqDomainMultiCpnDlg::validateInputs(QString& strError)
     // 输入数据文件检查
     if (mInputFilePath.isEmpty())
     {
-        strError = QString::fromUtf8("请先选择输入数据文件。");
+        strError = QStringLiteral("请先选择输入数据文件。");
         return false;
     }
     if (!QFile::exists(mInputFilePath))
     {
-        strError = QString::fromUtf8("输入数据文件不存在：") + mInputFilePath;
+        strError = QStringLiteral("输入数据文件不存在：") + mInputFilePath;
         return false;
     }
     // 输出文件检查
     if (mOutputFilePath.isEmpty())
     {
-        strError = QString::fromUtf8("请输入处理结果数据文件路径。");
+        strError = QStringLiteral("请输入处理结果数据文件路径。");
         return false;
     }
     // 扩边尺寸检查（必须不小于读文件时计算的最小尺寸）
     if (mExCols < mMinExCols || mExRows < mMinExRows)
     {
-        strError = QString::fromUtf8("扩边行数/列数不得小于网格数据要求的最小尺寸。");
+        strError = QStringLiteral("扩边行数/列数不得小于网格数据要求的最小尺寸。");
         return false;
     }
     return true;
@@ -583,7 +589,7 @@ void CFreqDomainMultiCpnDlg::runProcess()
     IRgisBackend* pBackend = CBackendService::rgisBackend();
     if (pBackend == NULL)
     {
-        QMessageBox::warning(this, QString::fromUtf8("处理失败"), QString::fromUtf8("后端接口未初始化。"));
+        QMessageBox::warning(this, QStringLiteral("处理失败"), QStringLiteral("后端接口未初始化。"));
         return;
     }
 
@@ -610,12 +616,12 @@ void CFreqDomainMultiCpnDlg::runProcess()
     if (bOk)
     {
         // 处理完成提示（与原工程一致，处理完成后对话框不关闭，由用户点“取消”退出）
-        QMessageBox::information(this, QString::fromUtf8("处理完成"),
-            QString::fromUtf8("频率域任意方向分量转换结束!"));
+        QMessageBox::information(this, QStringLiteral("处理完成"),
+            QStringLiteral("频率域任意方向分量转换结束!"));
     }
     else
     {
-        QMessageBox::warning(this, QString::fromUtf8("处理失败"), fromBackendString(error.message));
+        QMessageBox::warning(this, QStringLiteral("处理失败"), fromBackendString(error.message));
     }
 }
 
@@ -625,7 +631,7 @@ void CFreqDomainMultiCpnDlg::onOkClicked()
     QString strError;
     if (!validateInputs(strError))
     {
-        QMessageBox::warning(this, QString::fromUtf8("参数错误"), strError);
+        QMessageBox::warning(this, QStringLiteral("参数错误"), strError);
         return;
     }
     runProcess();

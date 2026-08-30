@@ -25,7 +25,7 @@ class QRadioButton;
 class QSpinBox;
 class QDoubleSpinBox;
 class QButtonGroup;
-class CPow2SpinBox;
+class QSpinBox;
 
 // 频率域组合滤波（补偿圆滑滤波）对话框
 class CFreqDomainCmpsFilterDlg : public QDialog
@@ -100,7 +100,7 @@ private:
 
     // ===== 工具 =====
     void addCandidateFiles(const QString& strFileNames);        // 功能：把分号分隔的候选文件加入下拉框
-    void setSpinExtendSize(CPow2SpinBox* pSpin, int nSize);     // 功能：同步设置扩边微调框下限与数值
+    void setSpinExtendSize(QSpinBox* pSpin, int nSize);     // 功能：同步设置扩边微调框下限与数值
 
     // ===== 界面控件（数据文件输入）=====
     QComboBox*      mComboOpenFile;     // 输入数据文件下拉框（可选可编辑）
@@ -114,8 +114,8 @@ private:
     QLineEdit*  mEditRowStep;       // 网格行距（只读）
 
     // ===== 界面控件（数据扩边信息）=====
-    CPow2SpinBox*   mSpinExRows;     // 扩边行数微调框（2 的幂）
-    CPow2SpinBox*   mSpinExCols;     // 扩边列数微调框（2 的幂）
+    QSpinBox*   mSpinExRows;     // 扩边行数微调框（默认值为 2 的幂）
+    QSpinBox*   mSpinExCols;     // 扩边列数微调框（默认值为 2 的幂）
 
     // ===== 界面控件（数据扩边方法，单选）=====
     QRadioButton*   mRadioCosFun;    // 余弦函数衰减（默认选中）

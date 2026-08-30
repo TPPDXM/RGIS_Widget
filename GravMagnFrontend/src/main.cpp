@@ -19,8 +19,8 @@
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
-    app.setApplicationName(QString::fromUtf8("GravMagnFrontend"));
-    app.setOrganizationName(QString::fromUtf8("RGIS"));
+    app.setApplicationName(QStringLiteral("GravMagnFrontend"));
+    app.setOrganizationName(QStringLiteral("RGIS"));
 
     // ===== 后端对接入口 =====
     // 接入正式后端时，取消下面注释并替换为真实后端实现：
