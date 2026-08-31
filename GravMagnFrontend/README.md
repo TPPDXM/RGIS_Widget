@@ -37,7 +37,17 @@ GravMagnFrontend/
         ├── FreqDomainIterwardDlg.h / .cpp     # ★ 频率域迭代向下延拓
         ├── FreqDomainMaxiGradDlg.h / .cpp     # ★ 频率域最大水平方向导数
         ├── FreqDomainMultiCpnDlg.h / .cpp     # ★ 频率域任意方向分量转换（多分量）
-        └── FreqDomainNormFilterDlg.h / .cpp   # ★ 频率域正则化滤波
+        ├── FreqDomainNormFilterDlg.h / .cpp   # ★ 频率域正则化滤波
+        ├── FreqDomainOneDerivDlg.h / .cpp     # ★ 频率域一阶导数
+        ├── FreqDomainPsudoGraDlg.h / .cpp     # ★ 频率域伪重力（磁源重力异常）
+        ├── FreqDomainReToPoleDlg.h / .cpp     # ★ 频率域剩余化极（化极）
+        ├── FreqDomainRmToPoleDlg.h / .cpp     # ★ 频率域剩余磁化极（剩磁化极）
+        ├── FreqDomainStructureDlg.h / .cpp    # ★ 频率域构造（小子域滤波/线性构造增强）
+        ├── FreqDomainThreeCpnDlg.h / .cpp     # ★ 频率域三分量转换
+        ├── FreqDomainTiltGradDlg.h / .cpp     # ★ 频率域 Tilt 梯度（斜导数）计算
+        ├── FreqDomainTotlGradDlg.h / .cpp     # ★ 频率域总梯度（解析信号）
+        ├── FreqDomainTwoDerivDlg.h / .cpp     # ★ 频率域二阶导数
+        └── FreqDomainUpwardDlg.h / .cpp       # ★ 频率域向上延拓
 ```
 
 ## 二、已完成的界面（本次任务）
@@ -59,6 +69,16 @@ GravMagnFrontend/
 | `CFreqDomainMaxiGradDlg` | `CFreqDomainMaxiGradDlg` | `IDD_FreqDomainMaxiGrad` | 频率域最大水平方向导数（窄对话框）：输入文件、网格信息（2×2）、扩边行/列数、扩边方法单选（3 种，无最小曲率）、结果文件输出（默认 _Pro.grd）；方向步长 5 度/36 方向为原工程硬编码 |
 | `CFreqDomainMultiCpnDlg` | `CFreqDomainMultiCpnDlg` | `IDD_FreqDomainMultiCpn` | 频率域任意方向分量转换（多分量）：输入文件、网格信息（2×2）、扩边行/列数、扩边方法单选（4 种）、测线方向/基线方向/磁化倾角/磁化偏角/转换倾角/转换偏角（默认 90/0/90/0/90/0，取值范围与原工程 DDV 一致）、结果文件输出（默认 _Pro.grd） |
 | `CFreqDomainNormFilterDlg` | `CFreqDomainNormFilterDlg` | `IDD_FreqDomainNormFilter` | 频率域正则化滤波：输入文件、网格信息（2×2）、扩边行/列数、扩边方法单选（4 种）、水平几何尺度（默认 10，范围 1~999999）、区域场/剩余场双输出（默认 _Reg.grd / _Res.grd） |
+| `CFreqDomainOneDerivDlg` | `CFreqDomainOneDerivDlg` | `IDD_FreqDomainOneDeriv` | 频率域一阶导数：输入文件、网格信息（2×2）、扩边行/列数、扩边方法单选（4 种）、导数倾角/导数偏角（默认 0/0，范围 0~360）、结果文件输出（默认 _HDR_I.grd） |
+| `CFreqDomainPsudoGraDlg` | `CFreqDomainPsudoGraDlg` | `IDD_FreqDomainPsudoGra` | 频率域伪重力（磁源重力异常）：输入文件、网格信息（2×2）、扩边行/列数、扩边方法单选（4 种）、测线方向/基线方向/磁化倾角/磁化偏角（默认 90/0/90/0）、磁化强度（A/m，默认 1.0）、剩余密度（g/cm^3，默认 0.1）、衰减因子（默认 1，范围 1~20，取值与原工程 DDV 一致）、结果文件输出（默认 _Psudo.grd） |
+| `CFreqDomainReToPoleDlg` | `CFreqDomainReToPoleDlg` | `IDD_FreqDomainReToPole` | 频率域剩余化极（化极）：输入文件、网格信息（2×2）、扩边行/列数、扩边方法单选（4 种）、测线方向/基线方向/磁化倾角/磁化偏角（默认 90/0/90/0，磁化倾角范围 -90~90，其余与原工程 DDV 一致）、结果文件输出（默认 _RTP.grd） |
+| `CFreqDomainRmToPoleDlg` | `CFreqDomainRmToPoleDlg` | `IDD_FreqDomainRmToPole` | 频率域剩余磁化极（剩磁化极，窄对话框，无扩边方法单选组）：输入文件、网格信息（2×2）、扩边行/列数、地磁倾角/地磁偏角/磁化倾角/磁化偏角（默认 60/30/60/30，范围与原工程 DDV 一致）、结果文件输出（默认 _RTP.grd）；原工程算法经外部动态库 FDReRmToPole.dll 完成，后端实现时可桥接或等价重写；主窗口无对应按钮（进度提示“尚未开发”前的对接未接入） |
+| `CFreqDomainStructureDlg` | `CFreqDomainStructureDlg` | `IDD_FreqDomainStructure` | 频率域构造（小子域滤波/线性构造增强，窄对话框，无扩边与处理参数）：输入文件、网格信息（2×2）、结果文件输出（默认 _Str.grd）；原工程经外部函数 MainProcess_2 完成，后端实现时可等价重写 |
+| `CFreqDomainThreeCpnDlg` | `CFreqDomainThreeCpnDlg` | `IDD_FreqDomainThreeCpn` | 频率域三分量转换：输入文件、网格信息（2×2）、扩边行/列数、扩边方法单选（4 种）、测量数据分量/换算数据分量单选（ΔT/Za/Hax/Hay，默认测量 ΔT、换算 Za）、测线方向/基线方向/磁化倾角/磁化偏角（默认 90/0/90/0，范围与原工程 DDV 一致）、结果文件输出（默认 _Za.grd，随换算分量切换为 _DT/_Za/_Hax/_Hay.grd） |
+| `CFreqDomainTiltGradDlg` | `CFreqDomainTiltGradDlg` | `IDD_FreqDomainTiltGrad` | 频率域 Tilt 梯度（斜导数）计算：输入文件、网格信息（2×2）、扩边行/列数、扩边方法单选（3 种，无最小曲率）、梯度计算前滤波/不滤波单选（默认不滤波）、指数因子（默认 150）/补偿因子（默认 20）、5 个结果文件输出（Tilt 梯度、斜导数 X/Y 方向导数、斜导数的水平梯度、斜导数的斜导数，默认 Tdr/Tdx/Tdy/Thd/Ttd.grd） |
+| `CFreqDomainTotlGradDlg` | `CFreqDomainTotlGradDlg` | `IDD_FreqDomainTotlGrad` | 频率域总梯度（解析信号）：输入文件、网格信息（2×2）、扩边方法单选（4 种）、扩边行/列数、结果文件输出（默认 _AS.grd） |
+| `CFreqDomainTwoDerivDlg` | `CFreqDomainTwoDerivDlg` | `IDD_FreqDomainTwoDeriv` | 频率域二阶导数：输入文件、网格信息（2×2）、扩边行/列数、扩边方法单选（4 种）、导数倾角/导数偏角（默认 0/0，范围 0~360）、结果文件输出（默认 _HDR_II.grd） |
+| `CFreqDomainUpwardDlg` | `CFreqDomainUpwardDlg` | `IDD_FreqDomainUpward` | 频率域向上延拓：输入文件、网格信息（2×2）、扩边行/列数、扩边方法单选（4 种）、延拓高度（向上延拓为正，读文件后默认 2 倍列距，范围 0~1e7）、结果文件输出（默认 _Pro.grd） |
 
 对话框样式对照 `example_img/SubWindow.png`：分组框标题居中、只读信息框、
 “...”/“显示”按钮、确定在左下角、取消在右下角、固定尺寸不可缩放。
@@ -101,6 +121,12 @@ public:
 
     // 频率域正则化滤波
     virtual bool processNormFilter(const NormFilterParams& params, BackendError& error) = 0;
+
+    // 频率域一阶导数
+    virtual bool processOneDeriv(const OneDerivParams& params, BackendError& error) = 0;
+
+    // 频率域伪重力（磁源重力异常）
+    virtual bool processPsudoGra(const PsudoGraParams& params, BackendError& error) = 0;
 };
 ```
 
@@ -123,7 +149,7 @@ CBackendService::setRgisBackend(new CYourRgisBackend());
 
 * 未注入时界面自动使用占位后端 `CNullRgisBackend`：`.grd` 文件头**真实可读**
   （DSAA / DSBB / DSRB / #GMD / #GEX，与原 MFC 工程 `CContourFile` 读取逻辑逐字段一致，
-  已用 `data/` 下四种格式的样例文件验证通过），两个处理接口返回“未接入”错误，
+  已用 `data/` 下四种格式的样例文件验证通过），各处理接口返回“未接入”错误，
   界面仍可完整联调（选文件、看网格信息、试参数、点确定看到明确提示）。
 
 ### 3. 前后端接口与 MFC 原工程对照
@@ -136,7 +162,11 @@ CBackendService::setRgisBackend(new CYourRgisBackend());
 | `IRgisBackend::processGradient` | `CFreqDomainGradientDlg::OnOK`（含 `FreqDomainOneDerivCom` 三个方向求导、`TwoArraySquare`/`TriArraySquare`/`TwoArrayDivide`/`TwoArrayAtangle` 组合、写 5 个结果文件） |
 | `IRgisBackend::processGradward` | `CFreqDomainGradwardDlg::OnOK`（含 `FreqDomainNormFilterCom` 正则化滤波 + `FreqDomainDownwardCom` 逐次延拓、中间结果 Out1..n-1.grd、写结果文件） |
 | `IRgisBackend::processMultiCpn` | `CFreqDomainMultiCpnDlg::OnOK`（含 `FreqDomainMultiCmpProcess` 任意磁化方向分量转换、写结果文件） |
+| `IRgisBackend::processTiltGrad` | `CFreqDomainTiltGradDlg::OnOK`（含 `FreqDomainComFilterCom` 前滤波、`FreqDomainOneDerivCom` 三方向求导、`TwoArraySquare`/`TwoArrayAtangle` 组合、写 5 个结果文件） |
+| `IRgisBackend::processTotlGrad` | `CFreqDomainTotlGradDlg::OnOK`（含 `FreqDomainOneDerivCom` 三方向求导、平方和开方解析信号、写结果文件） |
 | `IRgisBackend::processNormFilter` | `CFreqDomainNormFilterDlg::OnOK`（含 `FreqDomainNormFilterProcess` 正则化滤波、区域场/剩余场写文件） |
+| `IRgisBackend::processOneDeriv` | `CFreqDomainOneDerivDlg::OnOK`（含 `FreqDomainOneDerivProcess` 方向导数、写结果文件） |
+| `IRgisBackend::processPsudoGra` | `CFreqDomainPsudoGraDlg::OnOK`（含 `FreqDomainPsudoGraProcess` 伪重力换算、写结果文件） |
 | `viewGridFileRequested` 信号 | `CDrawOpenGLContourDlg` 等值线显示（前端后续版本实现） |
 
 ## 四、命名与代码风格
@@ -180,14 +210,16 @@ GravMagnFrontend.exe [候选文件1;候选文件2;...]
 
 * 主窗口“重磁数据预处理和处理”中，点击“频率域重磁数据处理”分组的
   “补偿圆滑滤波”“向下延拓”“逐次向下延拓”“迭代曲化平”“总水平方向导数”
-  “任意方向分量转换”“正则化滤波”按钮打开对应对话框（其余功能提示“尚未开发”；
-  “梯度计算”等对话框已完成前端但原工程主窗口无对应按钮，未接入）；
+  “任意方向分量转换”“正则化滤波”“一阶导数”“磁源重力异常”“化极”
+  “三分量转换”“线性构造增强”“解析信号”按钮打开对应对话框
+  （其余功能提示“尚未开发”；“梯度计算”“剩余磁化极”“Tilt 梯度（斜导数）”
+  等对话框已完成前端但原工程主窗口无对应按钮，未接入）；
 * 可先用 `data\sample_dsbb.grd` 等样例数据联调界面（选文件 → 网格信息自动填充）。
 
 ## 七、当前状态与后续任务
 
-* ✅ 10 个频率域对话框前端（布局/交互/校验/默认值，与 .rc 对照）；
-* ✅ 后端接口 `IRgisBackend`（10 个处理接口）+ 注入机制 + 占位后端（.grd 文件头四种格式已实现并验证）；
-* ⬜ 后端算法实现（按 `RgisBackend.h` 契约实现 10 个 process 接口）；
+* ✅ 20 个频率域对话框前端（布局/交互/校验/默认值，与 .rc 对照）；
+* ✅ 后端接口 `IRgisBackend`（20 个处理接口）+ 注入机制 + 占位后端（.grd 文件头四种格式已实现并验证）；
+* ⬜ 后端算法实现（按 `RgisBackend.h` 契约实现 20 个 process 接口）；
 * ⬜ 等值线显示窗口（对应 `CDrawOpenGLContourDlg`，“显示”按钮待实现，信号已留好）；
-* ⬜ 其余 70 个功能对话框的同类前端迁移（按 `PfProcesses_DEPENDENCY.md` 推进）。
+* ⬜ 其余 60 个功能对话框的同类前端迁移（按 `PfProcesses_DEPENDENCY.md` 推进）。

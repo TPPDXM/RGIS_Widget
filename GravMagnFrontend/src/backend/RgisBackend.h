@@ -316,6 +316,244 @@ struct NormFilterParams
     }
 };
 
+// 频率域一阶导数处理参数
+// 对应原 MFC 工程 CFreqDomainOneDerivDlg 界面上的全部输入项
+struct OneDerivParams
+{
+    std::string inputFilePath;      // 输入网格数据文件路径（.grd）
+    std::string outputFilePath;     // 处理结果数据文件输出路径（默认 基准名 + "_HDR_I.grd"）
+    int         exRows;             // 扩边后行数（2 的幂，由界面“扩边行数”给定）
+    int         exCols;             // 扩边后列数（2 的幂，由界面“扩边列数”给定）
+    ExpandMethod expandMethod;      // 数据扩边方法（界面“数据扩边方法”单选组，4 种）
+    float       derivInc;           // 导数倾角（界面“导数倾角”，度，原 DerivInc，默认 0.0，范围 0~360）
+    float       derivDec;           // 导数偏角（界面“导数偏角”，度，原 DerivDec，默认 0.0，范围 0~360）
+
+    OneDerivParams()
+        : exRows(0)
+        , exCols(0)
+        , expandMethod(ExpandCosFun)
+        , derivInc(0.0f)
+        , derivDec(0.0f)
+    {
+    }
+};
+
+// 频率域伪重力（磁源重力异常）处理参数
+// 对应原 MFC 工程 CFreqDomainPsudoGraDlg 界面上的全部输入项
+struct PsudoGraParams
+{
+    std::string inputFilePath;      // 输入网格数据文件路径（.grd）
+    std::string outputFilePath;     // 处理结果数据文件输出路径（默认 基准名 + "_Psudo.grd"）
+    int         exRows;             // 扩边后行数（2 的幂，由界面“扩边行数”给定）
+    int         exCols;             // 扩边后列数（2 的幂，由界面“扩边列数”给定）
+    ExpandMethod expandMethod;      // 数据扩边方法（界面“数据扩边方法”单选组，4 种）
+    float       profile;            // 测线方向（界面“测线方向”，度，原 DirectProfile，默认 90.0，范围 -360~360）
+    float       baseLine;           // 基线方向（界面“基线方向”，度，原 DirectBaseline，默认 0.0，范围 -360~360）
+    float       dti0;               // 磁化倾角（界面“磁化倾角”，度，原 dTI0，默认 90.0，范围 0~180）
+    float       dtd0;               // 磁化偏角（界面“磁化偏角”，度，原 dTD0，默认 0.0，范围 -360~360）
+    float       magnetization;      // 磁化强度（界面“磁化强度”，A/m，原 Magnetization，默认 1.0，范围 0~1e12）
+    float       density;            // 剩余密度（界面“剩余密度”，g/cm^3，原 Density，默认 0.1，范围 -5~5）
+    int         cosine;             // 衰减因子（界面“衰减因子”，原 nCosine，默认 1，范围 1~20）
+
+    PsudoGraParams()
+        : exRows(0)
+        , exCols(0)
+        , expandMethod(ExpandCosFun)
+        , profile(90.0f)
+        , baseLine(0.0f)
+        , dti0(90.0f)
+        , dtd0(0.0f)
+        , magnetization(1.0f)
+        , density(0.1f)
+        , cosine(1)
+    {
+    }
+};
+
+// 频率域剩余化极（化极）处理参数
+// 对应原 MFC 工程 CFreqDomainReToPoleDlg 界面上的全部输入项
+struct ReToPoleParams
+{
+    std::string inputFilePath;      // 输入网格数据文件路径（.grd）
+    std::string outputFilePath;     // 处理结果数据文件输出路径（默认 基准名 + "_RTP.grd"）
+    int         exRows;             // 扩边后行数（2 的幂，由界面“扩边行数”给定）
+    int         exCols;             // 扩边后列数（2 的幂，由界面“扩边列数”给定）
+    ExpandMethod expandMethod;      // 数据扩边方法（界面“数据扩边方法”单选组，4 种）
+    float       profile;            // 测线方向（界面“测线方向”，度，原 DirectProfile，默认 90.0，范围 -360~360）
+    float       baseLine;           // 基线方向（界面“基线方向”，度，原 DirectBaseline，默认 0.0，范围 -360~360）
+    float       dti0;               // 磁化倾角（界面“磁化倾角”，度，原 dTI0，默认 90.0，范围 -90~90）
+    float       dtd0;               // 磁化偏角（界面“磁化偏角”，度，原 dTD0，默认 0.0，范围 -360~360）
+
+    ReToPoleParams()
+        : exRows(0)
+        , exCols(0)
+        , expandMethod(ExpandCosFun)
+        , profile(90.0f)
+        , baseLine(0.0f)
+        , dti0(90.0f)
+        , dtd0(0.0f)
+    {
+    }
+};
+
+// 频率域剩余磁化极（剩磁化极）处理参数
+// 对应原 MFC 工程 CFreqDomainRmToPoleDlg 界面上的全部输入项
+// 说明：原工程界面无“数据扩边方法”单选组（该参数由算法内部完成），本结构体亦不包含
+struct RmToPoleParams
+{
+    std::string inputFilePath;      // 输入网格数据文件路径（.grd）
+    std::string outputFilePath;     // 处理结果数据文件输出路径（默认 基准名 + "_RTP.grd"）
+    int         exRows;             // 扩边后行数（2 的幂，由界面“扩边行数”给定）
+    int         exCols;             // 扩边后列数（2 的幂，由界面“扩边列数”给定）
+    float       dti0;               // 地磁倾角（界面“地磁倾角”，度，原 dTI0，默认 60.0，范围 0~180）
+    float       dtd0;               // 地磁偏角（界面“地磁偏角”，度，原 dTD0，默认 30.0，范围 -360~360）
+    float       dti1;               // 磁化倾角（界面“磁化倾角”，度，原 dTI1，默认 60.0，范围 -90~90）
+    float       dtd1;               // 磁化偏角（界面“磁化偏角”，度，原 dTD1，默认 30.0，范围 -360~360）
+
+    RmToPoleParams()
+        : exRows(0)
+        , exCols(0)
+        , dti0(60.0f)
+        , dtd0(30.0f)
+        , dti1(60.0f)
+        , dtd1(30.0f)
+    {
+    }
+};
+
+// 频率域构造（小子域滤波/线性构造增强）处理参数
+// 对应原 MFC 工程 CFreqDomainStructureDlg 界面上的全部输入项
+// 说明：原工程界面无“数据扩边信息”“数据扩边方法”“处理参数”输入（算法为
+//       空间域/频率域直接变换，扩边在算法内部完成），本结构体仅含输入输出文件
+struct StructureParams
+{
+    std::string inputFilePath;      // 输入网格数据文件路径（.grd）
+    std::string outputFilePath;     // 处理结果数据文件输出路径（默认 基准名 + "_Str.grd"）
+
+    StructureParams()
+    {
+    }
+};
+
+// 频率域三分量转换（磁数据三分量转换）处理参数
+// 对应原 MFC 工程 CFreqDomainThreeCpnDlg 界面上的全部输入项
+struct ThreeCpnParams
+{
+    std::string inputFilePath;      // 输入网格数据文件路径（.grd）
+    std::string outputFilePath;     // 处理结果数据文件输出路径（默认 基准名 + "_DT/_Za/_Hax/_Hay.grd"，随换算分量变化）
+    int         exRows;             // 扩边后行数（2 的幂，由界面“扩边行数”给定）
+    int         exCols;             // 扩边后列数（2 的幂，由界面“扩边列数”给定）
+    ExpandMethod expandMethod;      // 数据扩边方法（界面“数据扩边方法”单选组，4 种）
+    int         oriDataType;        // 测量数据分量（界面“测量数据分量”单选组：0=ΔT、1=Za、2=Hax、3=Hay，默认 0）
+    int         calDataType;        // 换算数据分量（界面“换算数据分量”单选组：0=ΔT、1=Za、2=Hax、3=Hay，默认 1）
+    float       profile;            // 测线方向（界面“测线方向”，度，原 DirectProfile，默认 90.0，范围 -360~360）
+    float       baseLine;           // 基线方向（界面“基线方向”，度，原 DirectBaseline，默认 0.0，范围 -360~360）
+    float       dti0;               // 磁化倾角（界面“磁化倾角”，度，原 dTI0，默认 90.0，范围 0~180）
+    float       dtd0;               // 磁化偏角（界面“磁化偏角”，度，原 dTD0，默认 0.0，范围 -360~360）
+
+    ThreeCpnParams()
+        : exRows(0)
+        , exCols(0)
+        , expandMethod(ExpandCosFun)
+        , oriDataType(0)
+        , calDataType(1)
+        , profile(90.0f)
+        , baseLine(0.0f)
+        , dti0(90.0f)
+        , dtd0(0.0f)
+    {
+    }
+};
+
+// 频率域 Tilt 梯度（斜导数）处理参数
+// 对应原 MFC 工程 CFreqDomainTiltGradDlg 界面上的全部输入项
+struct TiltGradParams
+{
+    std::string inputFilePath;              // 输入网格数据文件路径（.grd）
+    std::string tiltGradFilePath;           // Tilt 梯度（斜导数）结果文件路径（默认 基准名 + "Tdr.grd"）
+    std::string tiltDxFilePath;             // 斜导数 X 方向导数结果文件路径（默认 基准名 + "Tdx.grd"）
+    std::string tiltDyFilePath;             // 斜导数 Y 方向导数结果文件路径（默认 基准名 + "Tdy.grd"）
+    std::string tiltHorzGradFilePath;       // 斜导数的水平梯度结果文件路径（默认 基准名 + "Thd.grd"）
+    std::string tiltTiltFilePath;           // 斜导数的斜导数结果文件路径（默认 基准名 + "Ttd.grd"）
+    int         exRows;                     // 扩边后行数（2 的幂，由界面“扩边行数”给定）
+    int         exCols;                     // 扩边后列数（2 的幂，由界面“扩边列数”给定）
+    ExpandMethod expandMethod;              // 数据扩边方法（界面“数据扩边方法”单选组，仅 3 种，无最小曲率）
+    bool        filterBefore;               // 梯度计算前是否滤波（界面“梯度计算前滤波/不滤波”，默认不滤波）
+    int         comNum;                     // 补偿因子（滤波用，界面“补偿因子”，默认 20）
+    float       beta;                       // 指数因子（滤波用，界面“指数因子”，默认 150.0）
+
+    TiltGradParams()
+        : exRows(0)
+        , exCols(0)
+        , expandMethod(ExpandCosFun)
+        , filterBefore(false)
+        , comNum(20)
+        , beta(150.0f)
+    {
+    }
+};
+
+// 频率域总梯度（解析信号）处理参数
+// 对应原 MFC 工程 CFreqDomainTotlGradDlg 界面上的全部输入项
+struct TotlGradParams
+{
+    std::string inputFilePath;      // 输入网格数据文件路径（.grd）
+    std::string outputFilePath;     // 处理结果数据文件输出路径（默认 基准名 + "_AS.grd"）
+    int         exRows;             // 扩边后行数（2 的幂，由界面“扩边行数”给定）
+    int         exCols;             // 扩边后列数（2 的幂，由界面“扩边列数”给定）
+    ExpandMethod expandMethod;      // 数据扩边方法（界面“数据扩边方法”单选组，4 种）
+
+    TotlGradParams()
+        : exRows(0)
+        , exCols(0)
+        , expandMethod(ExpandCosFun)
+    {
+    }
+};
+
+// 频率域二阶导数处理参数
+// 对应原 MFC 工程 CFreqDomainTwoDerivDlg 界面上的全部输入项
+struct TwoDerivParams
+{
+    std::string inputFilePath;      // 输入网格数据文件路径（.grd）
+    std::string outputFilePath;     // 处理结果数据文件输出路径（默认 基准名 + "_HDR_II.grd"）
+    int         exRows;             // 扩边后行数（2 的幂，由界面“扩边行数”给定）
+    int         exCols;             // 扩边后列数（2 的幂，由界面“扩边列数”给定）
+    ExpandMethod expandMethod;      // 数据扩边方法（界面“数据扩边方法”单选组，4 种）
+    float       derivInc;           // 导数倾角（界面“导数倾角”，度，原 DerivInc，默认 0.0，范围 0~360）
+    float       derivDec;           // 导数偏角（界面“导数偏角”，度，原 DerivDec，默认 0.0，范围 0~360）
+
+    TwoDerivParams()
+        : exRows(0)
+        , exCols(0)
+        , expandMethod(ExpandCosFun)
+        , derivInc(0.0f)
+        , derivDec(0.0f)
+    {
+    }
+};
+
+// 频率域向上延拓处理参数
+// 对应原 MFC 工程 CFreqDomainUpwardDlg 界面上的全部输入项
+struct UpwardParams
+{
+    std::string inputFilePath;      // 输入网格数据文件路径（.grd）
+    std::string outputFilePath;     // 处理结果数据文件输出路径（默认 基准名 + "_Pro.grd"）
+    int         exRows;             // 扩边后行数（2 的幂，由界面“扩边行数”给定）
+    int         exCols;             // 扩边后列数（2 的幂，由界面“扩边列数”给定）
+    ExpandMethod expandMethod;      // 数据扩边方法（界面“数据扩边方法”单选组，4 种）
+    float       height;             // 向上延拓高度（界面“延拓高度”，向上延拓为正，默认 2 倍列距，
+                                    //   原工程 OnOK 对负数取绝对值，界面范围 0~1e7）
+
+    UpwardParams()
+        : exRows(0)
+        , exCols(0)
+        , expandMethod(ExpandCosFun)
+        , height(0.0f)
+    {
+    }
+};
+
 //---------------------------------------------------------------------------
 
 // 后端算法接口（前端只通过本接口与后端交互，后端只需实现本接口即可对接）
@@ -528,4 +766,171 @@ public:
     // 约定：同 processCmpsFilter（同步调用、不抛异常、DSBB 格式写出）。
     // 返回：true 成功；false 失败（error 给出原因）
     virtual bool processNormFilter(const NormFilterParams& params, BackendError& error) = 0;
+
+    // ===== 功能：频率域一阶导数处理 =====
+    // 用途：处理流程（与原 MFC 工程 CFreqDomainOneDerivDlg::OnOK 一致）：
+    //   1. 读取 inputFilePath 网格数据；
+    //   2. 缺失数据插值（原 CContourFile::MissingDataIntrepolation）；
+    //   3. 按 expandMethod 对数据扩边到 exRows * exCols；
+    //   4. 二维傅里叶正变换（原 CFastFourierTransform::FFT2D）；
+    //   5. 方向导数算子（参数 derivInc 导数倾角、derivDec 导数偏角，原 FreqDomainOneDerivProcess）；
+    //   6. 二维傅里叶逆变换（原 FFT2D）；
+    //   7. 从扩边后数据中截取原网格范围（去边）；
+    //   8. 缺失数据还原（原 MissingDataResume），写出结果文件 outputFilePath
+    //      （对应原工程提示“频率域一阶导数处理结束!”）。
+    // 约定：同 processCmpsFilter（同步调用、不抛异常、DSBB 格式写出）。
+    // 返回：true 成功；false 失败（error 给出原因）
+    virtual bool processOneDeriv(const OneDerivParams& params, BackendError& error) = 0;
+
+    // ===== 功能：频率域伪重力（磁源重力异常）处理 =====
+    // 用途：处理流程（与原 MFC 工程 CFreqDomainPsudoGraDlg::OnOK 一致）：
+    //   1. 读取 inputFilePath 网格数据；
+    //   2. 缺失数据插值（原 CContourFile::MissingDataIntrepolation）；
+    //   3. 按 expandMethod 对数据扩边到 exRows * exCols；
+    //   4. 二维傅里叶正变换（原 CFastFourierTransform::FFT2D）；
+    //   5. 伪重力（磁源重力异常）换算算子（原 FreqDomainPsudoGraProcess，使用参数：
+    //      dti0 磁化倾角、dtd0 磁化偏角、baseLine 基线方位角、profile 测线方向方位角、
+    //      density 剩余密度、magnetization 磁化强度、cosine 衰减因子）；
+    //   6. 二维傅里叶逆变换（原 FFT2D）；
+    //   7. 从扩边后数据中截取原网格范围（去边）；
+    //   8. 缺失数据还原（原 MissingDataResume），写出结果文件 outputFilePath
+    //      （对应原工程提示“磁源重力异常换算结束!”）。
+    // 约定：同 processCmpsFilter（同步调用、不抛异常、DSBB 格式写出）。
+    // 返回：true 成功；false 失败（error 给出原因）
+    virtual bool processPsudoGra(const PsudoGraParams& params, BackendError& error) = 0;
+
+    // ===== 功能：频率域剩余化极（化极）处理 =====
+    // 用途：处理流程（与原 MFC 工程 CFreqDomainReToPoleDlg::OnOK 一致）：
+    //   1. 读取 inputFilePath 网格数据；
+    //   2. 缺失数据插值（原 CContourFile::MissingDataIntrepolation）；
+    //   3. 按 expandMethod 对数据扩边到 exRows * exCols；
+    //   4. 二维傅里叶正变换（原 CFastFourierTransform::FFT2D）；
+    //   5. 剩余化极算子（原 FreqDomainReToPoleProcess，使用参数：
+    //      dti0 磁化倾角、dtd0 磁化偏角、baseLine 基线方位角、profile 测线方向方位角）；
+    //   6. 二维傅里叶逆变换（原 FFT2D）；
+    //   7. 从扩边后数据中截取原网格范围（去边）；
+    //   8. 缺失数据还原（原 MissingDataResume），写出结果文件 outputFilePath
+    //      （对应原工程提示“化极处理结束!”）。
+    // 约定：同 processCmpsFilter（同步调用、不抛异常、DSBB 格式写出）。
+    // 返回：true 成功；false 失败（error 给出原因）
+    virtual bool processReToPole(const ReToPoleParams& params, BackendError& error) = 0;
+
+    // ===== 功能：频率域剩余磁化极（剩磁化极）处理 =====
+    // 用途：处理流程（与原 MFC 工程 CFreqDomainRmToPoleDlg::OnOK 一致）：
+    //   1. 读取 inputFilePath 网格数据；
+    //   2. 缺失数据插值（原 CContourFile::MissingDataIntrepolation）；
+    //   3. 数据一维化（原 FloatDataDimensionTranslation，网格按行展开为一维数组）；
+    //   4. 剩磁化极计算（原工程经外部动态库 FDReRmToPole.dll 的 _FDRERMTOPOLE@64 入口，
+    //      参数：行数/列数/列距/行距/dti0 地磁倾角/dtd0 地磁偏角/dti1 磁化倾角/dtd1 磁化偏角/
+    //      log2(ExRows)/log2(ExCols)/ExRows/ExCols 等；后端实现时可桥接该 DLL 或等价重写）；
+    //   5. 结果还原为二维网格（原 FloatDataDimensionTranslation 反向转换）；
+    //   6. 缺失数据还原（原 MissingDataResume），写出结果文件 outputFilePath
+    //      （对应原工程提示“化极处理结束!”）。
+    // 约定：
+    //   - 同 processCmpsFilter（同步调用、不抛异常、DSBB 格式写出）；
+    //   - 原工程界面无“数据扩边方法”输入（扩边处理在算法内部完成）。
+    // 返回：true 成功；false 失败（error 给出原因）
+    virtual bool processRmToPole(const RmToPoleParams& params, BackendError& error) = 0;
+
+    // ===== 功能：频率域构造（小子域滤波/线性构造增强）处理 =====
+    // 用途：处理流程（与原 MFC 工程 CFreqDomainStructureDlg::OnOK 一致）：
+    //   1. 读取 inputFilePath 网格数据；
+    //   2. 缺失数据插值（原 CContourFile::MissingDataIntrepolation）；
+    //   3. 线性构造增强计算（原工程经外部函数 MainProcess_2（Structures.h，
+    //      入参 dataInput/dataOutput/rows/columns，0 失败 1 成功），后端实现时可
+    //      等价重写该算法；原工程界面无扩边参数，扩边处理在算法内部完成）；
+    //   4. 缺失数据还原（原 MissingDataResume），写出结果文件 outputFilePath
+    //      （对应原工程提示“线性构造增强处理结束!”）。
+    // 约定：同 processCmpsFilter（同步调用、不抛异常、DSBB 格式写出）。
+    // 返回：true 成功；false 失败（error 给出原因）
+    virtual bool processStructure(const StructureParams& params, BackendError& error) = 0;
+
+    // ===== 功能：频率域三分量转换（磁数据三分量转换）处理 =====
+    // 用途：处理流程（与原 MFC 工程 CFreqDomainThreeCpnDlg::OnOK 一致）：
+    //   1. 读取 inputFilePath 网格数据；
+    //   2. 缺失数据插值（原 CContourFile::MissingDataIntrepolation）；
+    //   3. 按 expandMethod 对数据扩边到 exRows * exCols；
+    //   4. 二维傅里叶正变换（原 CFastFourierTransform::FFT2D）；
+    //   5. 三分量转换算子（原 FreqDomainThreeCmpProcess，使用参数：
+    //      oriDataType 测量数据分量（0=ΔT、1=Za、2=Hax、3=Hay）、
+    //      calDataType 换算数据分量（0=ΔT、1=Za、2=Hax、3=Hay）、
+    //      dti0 磁化倾角、dtd0 磁化偏角、baseLine 测线基线方位角、profile 测线方向方位角）；
+    //   6. 二维傅里叶逆变换（原 FFT2D）；
+    //   7. 从扩边后数据中截取原网格范围（去边）；
+    //   8. 缺失数据还原（原 MissingDataResume），写出结果文件 outputFilePath
+    //      （对应原工程提示“频率域三分量转换结束!”，输出文件名默认随换算分量
+    //      变化为 基准名 + "_DT/_Za/_Hax/_Hay.grd"）。
+    // 约定：同 processCmpsFilter（同步调用、不抛异常、DSBB 格式写出）。
+    // 返回：true 成功；false 失败（error 给出原因）
+    virtual bool processThreeCpn(const ThreeCpnParams& params, BackendError& error) = 0;
+
+    // ===== 功能：频率域 Tilt 梯度（斜导数）计算处理 =====
+    // 用途：处理流程（与原 MFC 工程 CFreqDomainTiltGradDlg::OnOK 一致）：
+    //   1. 读取 inputFilePath 网格数据；
+    //   2. 缺失数据插值（原 CContourFile::MissingDataIntrepolation）；
+    //   3. 按 expandMethod 对数据扩边到 exRows * exCols（仅 3 种方法，无最小曲率）；
+    //   4. 若 filterBefore 为 true：先做补偿圆滑滤波（原 FreqDomainComFilterCom：
+    //      FFT2D + FreqDomainCmpsFilterProcess，参数 comNum / beta + 逆 FFT）；
+    //   5. 分别求 X 方向一阶导数（DerivDec=0/DerivInc=0）、Y 方向一阶导数
+    //      （DerivDec=90/DerivInc=0）、垂直方向一阶导数（DerivDec=0/DerivInc=90）
+    //      （原 FreqDomainOneDerivCom：FFT2D + FreqDomainOneDerivProcess + 逆 FFT）；
+    //   6. 水平梯度 = sqrt(dX^2 + dY^2)（原 TwoArraySquare）；
+    //      Tilt 梯度 = atan2(垂直导数, 水平梯度)（原 TwoArrayAtangle），
+    //      截取原网格范围（原 GridDataExtractFFT）后缺失数据还原（原 MissingDataResume），
+    //      写出 tiltGradFilePath；
+    //   7. 若 filterBefore 为 true：对 Tilt 梯度再做一次补偿圆滑滤波；
+    //   8. 对 Tilt 梯度求 X 方向导数 → tiltDxFilePath、
+    //      Y 方向导数 → tiltDyFilePath、
+    //      水平梯度 = sqrt(dX^2 + dY^2) → tiltHorzGradFilePath、
+    //      斜导数的 Tilt 梯度 = atan2(垂直导数, 水平梯度) → tiltTiltFilePath
+    //      （每步均截取原网格 + 缺失数据还原后写出）。
+    // 约定：同 processCmpsFilter（同步调用、不抛异常、DSBB 格式写出）。
+    // 返回：true 成功；false 失败（error 给出原因）
+    virtual bool processTiltGrad(const TiltGradParams& params, BackendError& error) = 0;
+
+    // ===== 功能：频率域总梯度（解析信号）处理 =====
+    // 用途：处理流程（与原 MFC 工程 CFreqDomainTotlGradDlg::OnOK 一致）：
+    //   1. 读取 inputFilePath 网格数据；
+    //   2. 缺失数据插值（原 CContourFile::MissingDataIntrepolation）；
+    //   3. 分别求 X 方向一阶导数（DerivDec=0/DerivInc=0）、Y 方向一阶导数
+    //      （DerivDec=90/DerivInc=0）、垂直方向一阶导数（DerivDec=0/DerivInc=90）
+    //      （原 FreqDomainOneDerivCom：按 expandMethod 扩边到 exRows * exCols +
+    //      FFT2D + FreqDomainOneDerivProcess + 逆 FFT + 截取原网格）；
+    //   4. 总梯度（解析信号）= sqrt(dX^2 + dY^2 + dZ^2)（原 OnOK 中的平方和开方）；
+    //   5. 缺失数据还原（原 MissingDataResume），写出结果文件 outputFilePath
+    //      （对应原工程提示“解析信号计算结束!”）。
+    // 约定：同 processCmpsFilter（同步调用、不抛异常、DSBB 格式写出）。
+    // 返回：true 成功；false 失败（error 给出原因）
+    virtual bool processTotlGrad(const TotlGradParams& params, BackendError& error) = 0;
+
+    // ===== 功能：频率域二阶导数处理 =====
+    // 用途：处理流程（与原 MFC 工程 CFreqDomainTwoDerivDlg::OnOK 一致）：
+    //   1. 读取 inputFilePath 网格数据；
+    //   2. 缺失数据插值（原 CContourFile::MissingDataIntrepolation）；
+    //   3. 按 expandMethod 对数据扩边到 exRows * exCols；
+    //   4. 二维傅里叶正变换（原 CFastFourierTransform::FFT2D）；
+    //   5. 二阶方向导数算子（参数 derivInc 导数倾角、derivDec 导数偏角，原 FreqDomainTwoDerivProcess）；
+    //   6. 二维傅里叶逆变换（原 FFT2D）；
+    //   7. 从扩边后数据中截取原网格范围（去边）；
+    //   8. 缺失数据还原（原 MissingDataResume），写出结果文件 outputFilePath
+    //      （对应原工程提示“频率域二阶导数处理结束!”）。
+    // 约定：同 processCmpsFilter（同步调用、不抛异常、DSBB 格式写出）。
+    // 返回：true 成功；false 失败（error 给出原因）
+    virtual bool processTwoDeriv(const TwoDerivParams& params, BackendError& error) = 0;
+
+    // ===== 功能：频率域向上延拓处理 =====
+    // 用途：处理流程（与原 MFC 工程 CFreqDomainUpwardDlg::OnOK 一致）：
+    //   1. 读取 inputFilePath 网格数据；
+    //   2. 缺失数据插值（原 CContourFile::MissingDataIntrepolation）；
+    //   3. 按 expandMethod 对数据扩边到 exRows * exCols；
+    //   4. 二维傅里叶正变换（原 CFastFourierTransform::FFT2D）；
+    //   5. 向上延拓算子（参数 height 向上延拓高度，为正，原 FreqDomainUpForwrdProcess；
+    //      原工程 OnOK 对传入高度取绝对值，界面输入范围 0~1e7 已保证非负）；
+    //   6. 二维傅里叶逆变换（原 FFT2D）；
+    //   7. 从扩边后数据中截取原网格范围（去边）；
+    //   8. 缺失数据还原（原 MissingDataResume），写出结果文件 outputFilePath
+    //      （对应原工程提示“频率域向上延拓处理结束!”）。
+    // 约定：同 processCmpsFilter（同步调用、不抛异常、DSBB 格式写出）。
+    // 返回：true 成功；false 失败（error 给出原因）
+    virtual bool processUpward(const UpwardParams& params, BackendError& error) = 0;
 };

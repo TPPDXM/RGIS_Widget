@@ -60,6 +60,26 @@ set(PROJECT_SOURCES
     src/dlg/FreqDomainMultiCpnDlg.cpp
     src/dlg/FreqDomainNormFilterDlg.h
     src/dlg/FreqDomainNormFilterDlg.cpp
+    src/dlg/FreqDomainOneDerivDlg.h
+    src/dlg/FreqDomainOneDerivDlg.cpp
+    src/dlg/FreqDomainPsudoGraDlg.h
+    src/dlg/FreqDomainPsudoGraDlg.cpp
+    src/dlg/FreqDomainReToPoleDlg.h
+    src/dlg/FreqDomainReToPoleDlg.cpp
+    src/dlg/FreqDomainRmToPoleDlg.h
+    src/dlg/FreqDomainRmToPoleDlg.cpp
+    src/dlg/FreqDomainStructureDlg.h
+    src/dlg/FreqDomainStructureDlg.cpp
+    src/dlg/FreqDomainThreeCpnDlg.h
+    src/dlg/FreqDomainThreeCpnDlg.cpp
+    src/dlg/FreqDomainTiltGradDlg.h
+    src/dlg/FreqDomainTiltGradDlg.cpp
+    src/dlg/FreqDomainTotlGradDlg.h
+    src/dlg/FreqDomainTotlGradDlg.cpp
+    src/dlg/FreqDomainTwoDerivDlg.h
+    src/dlg/FreqDomainTwoDerivDlg.cpp
+    src/dlg/FreqDomainUpwardDlg.h
+    src/dlg/FreqDomainUpwardDlg.cpp
 )
 
 add_executable(GravMagnFrontend WIN32 ${PROJECT_SOURCES})

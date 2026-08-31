@@ -491,3 +491,103 @@ bool CNullRgisBackend::processNormFilter(const NormFilterParams& params, Backend
     error.message = "算法后端尚未接入：频率域正则化滤波功能等待后端实现。";
     return false;
 }
+
+// 功能：频率域一阶导数处理（占位，等待正式算法后端实现）
+bool CNullRgisBackend::processOneDeriv(const OneDerivParams& params, BackendError& error)
+{
+    (void)params;   // 参数暂不使用（占位实现）
+
+    error.code = 100;
+    error.message = "算法后端尚未接入：频率域一阶导数功能等待后端实现。";
+    return false;
+}
+
+// 功能：频率域伪重力（磁源重力异常）处理（占位，等待正式算法后端实现）
+bool CNullRgisBackend::processPsudoGra(const PsudoGraParams& params, BackendError& error)
+{
+    (void)params;   // 参数暂不使用（占位实现）
+
+    error.code = 100;
+    error.message = "算法后端尚未接入：频率域伪重力（磁源重力异常）功能等待后端实现。";
+    return false;
+}
+
+// 功能：频率域剩余化极（化极）处理（占位，等待正式算法后端实现）
+bool CNullRgisBackend::processReToPole(const ReToPoleParams& params, BackendError& error)
+{
+    (void)params;   // 参数暂不使用（占位实现）
+
+    error.code = 100;
+    error.message = "算法后端尚未接入：频率域剩余化极（化极）功能等待后端实现。";
+    return false;
+}
+
+// 功能：频率域剩余磁化极（剩磁化极）处理（占位，等待正式算法后端实现）
+bool CNullRgisBackend::processRmToPole(const RmToPoleParams& params, BackendError& error)
+{
+    (void)params;   // 参数暂不使用（占位实现）
+
+    error.code = 100;
+    error.message = "算法后端尚未接入：频率域剩余磁化极（剩磁化极）功能等待后端实现。";
+    return false;
+}
+
+// 功能：频率域构造（小子域滤波/线性构造增强）处理（占位，等待正式算法后端实现）
+bool CNullRgisBackend::processStructure(const StructureParams& params, BackendError& error)
+{
+    (void)params;   // 参数暂不使用（占位实现）
+
+    error.code = 100;
+    error.message = "算法后端尚未接入：频率域构造（小子域滤波/线性构造增强）功能等待后端实现。";
+    return false;
+}
+
+// 功能：频率域三分量转换（磁数据三分量转换）处理（占位，等待正式算法后端实现）
+bool CNullRgisBackend::processThreeCpn(const ThreeCpnParams& params, BackendError& error)
+{
+    (void)params;   // 参数暂不使用（占位实现）
+
+    error.code = 100;
+    error.message = "算法后端尚未接入：频率域三分量转换（磁数据三分量转换）功能等待后端实现。";
+    return false;
+}
+
+// 功能：频率域 Tilt 梯度（斜导数）计算处理（占位，等待正式算法后端实现）
+bool CNullRgisBackend::processTiltGrad(const TiltGradParams& params, BackendError& error)
+{
+    (void)params;   // 参数暂不使用（占位实现）
+
+    error.code = 100;
+    error.message = "算法后端尚未接入：频率域 Tilt 梯度（斜导数）计算功能等待后端实现。";
+    return false;
+}
+
+// 功能：频率域总梯度（解析信号）处理（占位，等待正式算法后端实现）
+bool CNullRgisBackend::processTotlGrad(const TotlGradParams& params, BackendError& error)
+{
+    (void)params;   // 参数暂不使用（占位实现）
+
+    error.code = 100;
+    error.message = "算法后端尚未接入：频率域总梯度（解析信号）功能等待后端实现。";
+    return false;
+}
+
+// 功能：频率域二阶导数处理（占位，等待正式算法后端实现）
+bool CNullRgisBackend::processTwoDeriv(const TwoDerivParams& params, BackendError& error)
+{
+    (void)params;   // 参数暂不使用（占位实现）
+
+    error.code = 100;
+    error.message = "算法后端尚未接入：频率域二阶导数功能等待后端实现。";
+    return false;
+}
+
+// 功能：频率域向上延拓处理（占位，等待正式算法后端实现）
+bool CNullRgisBackend::processUpward(const UpwardParams& params, BackendError& error)
+{
+    (void)params;   // 参数暂不使用（占位实现）
+
+    error.code = 100;
+    error.message = "算法后端尚未接入：频率域向上延拓功能等待后端实现。";
+    return false;
+}

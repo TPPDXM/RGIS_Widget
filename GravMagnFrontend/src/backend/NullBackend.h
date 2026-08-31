@@ -33,6 +33,16 @@ public:
     bool processMaxiGrad(const MaxiGradParams& params, BackendError& error) override;
     bool processMultiCpn(const MultiCpnParams& params, BackendError& error) override;
     bool processNormFilter(const NormFilterParams& params, BackendError& error) override;
+    bool processOneDeriv(const OneDerivParams& params, BackendError& error) override;
+    bool processPsudoGra(const PsudoGraParams& params, BackendError& error) override;
+    bool processReToPole(const ReToPoleParams& params, BackendError& error) override;
+    bool processRmToPole(const RmToPoleParams& params, BackendError& error) override;
+    bool processStructure(const StructureParams& params, BackendError& error) override;
+    bool processThreeCpn(const ThreeCpnParams& params, BackendError& error) override;
+    bool processTiltGrad(const TiltGradParams& params, BackendError& error) override;
+    bool processTotlGrad(const TotlGradParams& params, BackendError& error) override;
+    bool processTwoDeriv(const TwoDerivParams& params, BackendError& error) override;
+    bool processUpward(const UpwardParams& params, BackendError& error) override;
 
 private:
     // ===== 私有工具函数（.grd 文件头解析，对应原 MFC 工程 CContourFile::AReadFile1~4）=====

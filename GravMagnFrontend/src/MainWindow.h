@@ -9,7 +9,10 @@
 // 说明：
 //   已实现的功能（补偿圆滑滤波、频率域向下延拓、频率域逐次向下延拓、
 //   频率域总水平方向导数、频率域迭代曲化平、频率域迭代向下延拓、
-//   频率域最大水平方向导数、频率域任意方向分量转换、频率域正则化滤波）
+//   频率域最大水平方向导数、频率域任意方向分量转换、频率域正则化滤波、
+//   频率域一阶导数、频率域伪重力（磁源重力异常）、频率域剩余化极（化极）、
+//   频率域构造(小子域滤波/线性构造增强)、频率域三分量转换、频率域总梯度(解析信号)、
+//   频率域二阶导数、频率域向上延拓）
 //   打开真实对话框，
 //   其余功能按钮提示“尚未开发”（按迁移计划逐个推进后替换为真实对话框）。
 
@@ -43,6 +46,14 @@ private slots:
     void onOpenMaxiGradClicked();       // 功能：打开“频率域最大水平方向导数”对话框
     void onOpenMultiCpnClicked();       // 功能：打开“频率域任意方向分量转换(多分量)”对话框
     void onOpenNormFilterClicked();     // 功能：打开“频率域正则化滤波”对话框
+    void onOpenOneDerivClicked();       // 功能：打开“频率域一阶导数”对话框
+    void onOpenPsudoGraClicked();       // 功能：打开“频率域伪重力(磁源重力异常)”对话框
+    void onOpenReToPoleClicked();       // 功能：打开“频率域剩余化极(化极)”对话框
+    void onOpenStructureClicked();      // 功能：打开“频率域构造(小子域滤波/线性构造增强)”对话框
+    void onOpenThreeCpnClicked();       // 功能：打开“频率域三分量转换”对话框
+    void onOpenTotlGradClicked();       // 功能：打开“频率域总梯度(解析信号)”对话框
+    void onOpenTwoDerivClicked();       // 功能：打开“频率域二阶导数”对话框
+    void onOpenUpwardClicked();         // 功能：打开“频率域向上延拓”对话框
     void onNotImplementedClicked();     // 功能：提示该功能前端尚未开发（未实现功能统一回调）
     void onExitClicked();               // 功能：“退出”按钮——关闭主窗口退出程序
     void onViewGridFileRequested(const QString& strFilePath);  // 功能：处理对话框的“显示”请求（等值线显示由后续版本实现）
@@ -60,7 +71,15 @@ private:
         FunctionIterward = 6,           // 频率域迭代向下延拓（已实现）
         FunctionMaxiGrad = 7,           // 频率域最大水平方向导数（已实现）
         FunctionMultiCpn = 8,           // 频率域任意方向分量转换(多分量)（已实现）
-        FunctionNormFilter = 9          // 频率域正则化滤波（已实现）
+        FunctionNormFilter = 9,         // 频率域正则化滤波（已实现）
+        FunctionOneDeriv = 10,          // 频率域一阶导数（已实现）
+        FunctionPsudoGra = 11,          // 频率域伪重力(磁源重力异常)（已实现）
+        FunctionReToPole = 12,          // 频率域剩余化极(化极)（已实现）
+        FunctionStructure = 13,         // 频率域构造(小子域滤波/线性构造增强)（已实现）
+        FunctionThreeCpn = 14,          // 频率域三分量转换（已实现）
+        FunctionTotlGrad = 15,          // 频率域总梯度(解析信号)（已实现）
+        FunctionTwoDeriv = 16,          // 频率域二阶导数（已实现）
+        FunctionUpward = 17             // 频率域向上延拓（已实现）
     };
 
     // ===== 界面初始化 =====
@@ -79,6 +98,14 @@ private:
     void openMaxiGradDlg();                             // 功能：打开频率域最大水平方向导数对话框（模态）
     void openMultiCpnDlg();                             // 功能：打开频率域任意方向分量转换(多分量)对话框（模态）
     void openNormFilterDlg();                           // 功能：打开频率域正则化滤波对话框（模态）
+    void openOneDerivDlg();                             // 功能：打开频率域一阶导数对话框（模态）
+    void openPsudoGraDlg();                             // 功能：打开频率域伪重力(磁源重力异常)对话框（模态）
+    void openReToPoleDlg();                             // 功能：打开频率域剩余化极(化极)对话框（模态）
+    void openStructureDlg();                            // 功能：打开频率域构造(小子域滤波/线性构造增强)对话框（模态）
+    void openThreeCpnDlg();                             // 功能：打开频率域三分量转换对话框（模态）
+    void openTotlGradDlg();                             // 功能：打开频率域总梯度(解析信号)对话框（模态）
+    void openTwoDerivDlg();                             // 功能：打开频率域二阶导数对话框（模态）
+    void openUpwardDlg();                               // 功能：打开频率域向上延拓对话框（模态）
 
     QString mStrFileNames;  // 候选数据文件列表（分号分隔，传递给功能对话框）
 };
