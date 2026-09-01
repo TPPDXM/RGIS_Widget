@@ -77,6 +77,22 @@ set(PROJECT_SOURCES
     src/dlg/FreqDomainTwoDerivDlg.cpp
     src/dlg/FreqDomainUpwardDlg.h
     src/dlg/FreqDomainUpwardDlg.cpp
+    src/dlg/MagnGradCoImagingDlg.h
+    src/dlg/MagnGradCoImagingDlg.cpp
+    src/dlg/MagnIntensityCalculationDlg.h
+    src/dlg/MagnIntensityCalculationDlg.cpp
+    src/dlg/GravGradCoImagingDlg.h
+    src/dlg/GravGradCoImagingDlg.cpp
+    src/dlg/GravMagnVolumeInvDlg.h
+    src/dlg/GravMagnVolumeInvDlg.cpp
+    src/dlg/GravMidTerrainCorrectionDlg.h
+    src/dlg/GravMidTerrainCorrectionDlg.cpp
+    src/dlg/GravUnionTerrainCorrectionDlg.h
+    src/dlg/GravUnionTerrainCorrectionDlg.cpp
+    src/dlg/GridDataRecoveryDlg.h
+    src/dlg/GridDataRecoveryDlg.cpp
+    src/dlg/GridFileNameDlg.h
+    src/dlg/GridFileNameDlg.cpp
 )
 
 add_executable(GravMagnFrontend WIN32 ${PROJECT_SOURCES})

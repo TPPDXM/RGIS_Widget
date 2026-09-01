@@ -44,7 +44,15 @@ GravMagnFrontend/
         ├── FreqDomainTiltGradDlg.h / .cpp     # ★ 频率域 Tilt 梯度（斜导数）计算
         ├── FreqDomainTotlGradDlg.h / .cpp     # ★ 频率域总梯度（解析信号）
         ├── FreqDomainTwoDerivDlg.h / .cpp     # ★ 频率域二阶导数
-        └── FreqDomainUpwardDlg.h / .cpp       # ★ 频率域向上延拓
+        ├── FreqDomainUpwardDlg.h / .cpp       # ★ 频率域向上延拓
+        ├── GravGradCoImagingDlg.h / .cpp      # ★ 三维重力异常和梯度相关成像
+        ├── GravMagnVolumeInvDlg.h / .cpp      # ★ 重磁三维体反演（处理流程类，界面复用网格文件名对话框）
+        ├── GravMidTerrainCorrectionDlg.h / .cpp   # ★ 重力中区地形改正
+        ├── GravUnionTerrainCorrectionDlg.h / .cpp # ★ 重力联合（平面带）地形改正
+        ├── MagnGradCoImagingDlg.h / .cpp      # ★ 三维磁异常和梯度相关成像
+        ├── MagnIntensityCalculationDlg.h / .cpp   # ★ 磁化强度计算（纯参数计算，无后端接口）
+        ├── GridDataRecoveryDlg.h / .cpp       # ★ 网格数据空白区还原
+        └── GridFileNameDlg.h / .cpp           # ★ 网格文件名对话框（三维重磁异常自动反演参数设置，原 IDD_DLG_INVERSION_PARAMS，多个反演功能共用）
 ```
 
 ## 二、已完成的界面（本次任务）
@@ -76,6 +84,10 @@ GravMagnFrontend/
 | `CFreqDomainTotlGradDlg` | `CFreqDomainTotlGradDlg` | `IDD_FreqDomainTotlGrad` | 频率域总梯度（解析信号）：输入文件、网格信息（2×2）、扩边方法单选（4 种）、扩边行/列数、结果文件输出（默认 _AS.grd） |
 | `CFreqDomainTwoDerivDlg` | `CFreqDomainTwoDerivDlg` | `IDD_FreqDomainTwoDeriv` | 频率域二阶导数：输入文件、网格信息（2×2）、扩边行/列数、扩边方法单选（4 种）、导数倾角/导数偏角（默认 0/0，范围 0~360）、结果文件输出（默认 _HDR_II.grd） |
 | `CFreqDomainUpwardDlg` | `CFreqDomainUpwardDlg` | `IDD_FreqDomainUpward` | 频率域向上延拓：输入文件、网格信息（2×2）、扩边行/列数、扩边方法单选（4 种）、延拓高度（向上延拓为正，读文件后默认 2 倍列距，范围 0~1e7）、结果文件输出（默认 _Pro.grd） |
+| `CGravGradCoImagingDlg` | `CGravGradCoImagingDlg` | `IDD_GravGradCoImaging` | 三维重力异常和梯度相关成像：场值数据文件、网格信息（行/列/行距/列距）、滤波选择（进行/不进行熵滤波，默认不进行）、场值类型单选（Gz/Gxz/Gyz/Gzz，默认 Gz，切换后刷新默认输出名）、处理参数（观测面高度、深度层间距（读文件后默认 (行距+列距)/2）、起点（默认 (行距+列距)/4）、终点）、相关系数体数据（_Z/_XZ/_YZ/_ZZ.vol）与信息文件（_*.log）双输出；校验：深度终点>起点、成像深度不超过网格最小尺寸一半 |
+| `CGravMagnVolumeInvProc` + `CGridFileNameDlg` | `CMyGravMagnVolumeInvProc` + `CGridFileNameDlg` | `IDD_DLG_INVERSION_PARAMS` | 重磁三维体反演（按原工程：无独立对话框，界面为网格文件名对话框"三维重磁异常自动反演参数设置"）：场值/地形文件输入（下拉+浏览+显示）、网格信息与数据范围、重/磁力单选（默认重力：显示"公里"、隐藏磁参；磁力显示磁化倾角/偏角/测线/基线方位角 90/0/90/0）、初始模型（复选框显隐）、控制参数文件（.par）、网格剖分（X/Y 自动取数据范围与点线距、Z 最小/最大/网格距可编辑，默认 Zmin=Xstep、Zmax=Zmin+Xstep×(列数奇偶)/2）、反演结果输出（正演场值 _Fwd.grd、模型数据 _Vol.vol、反演信息 _Inf.txt）；"开始反演"需场值+地形+控制参数齐全才显示 |
+| `CGravMidTerrainCorrectionDlg` | `CGravMidTerrainCorrectionDlg` | `IDD_GravMidTerrainCorrection` | 重力中区地形改正：重力测点数据文件(.txt)与地形高程网格数据文件(.grd)输入（含"显示"）、高程网格数据文件信息（重力测点数/网格行/列/高程网格距（整数规整）/高程最小/最大值，只读）、外接口形状选择（方形/圆形，默认方形）、内接口形状选择（方形/圆形，默认方形）、地形改正参数输入（起始半径=20、终止半径=500、地壳密度=2.67）、地形改正结果数据文件(.txt)输出；校验：起始/终止半径>0、可被高程网格距整除；超出高程范围的点由后端记录到结果文件同目录 Exceptdata.txt |
+| `CGravUnionTerrainCorrectionDlg` | `CGravUnionTerrainCorrectionDlg` | `IDD_GravUnionTerrainCorrection` | 重力联合（平面带）地形改正：重力测点数据文件(.dat)与地形高程网格数据文件(.grd)输入（含"显示"）、网格数据信息（行/列/行距/列距，只读）、地形改正方法选择（常规计算/三观测列方差分解，默认常规）、地形改正形状选择（环形/回形/钱形/枷形，默认环形）、地形改正类型选择（常规/陆岛/广义地形改正，默认常规）、地形改正输入参数（地改内环半径=50、外环半径=2000、密度=2.67、第一/二/三列方位数=72/36/24）、地形改正数据文件(.dat)输出（默认 测点文件基准 + "_Out" + 原扩展名） |
 
 对话框样式对照 `example_img/SubWindow.png`：分组框标题居中、只读信息框、
 “...”/“显示”按钮、确定在左下角、取消在右下角、固定尺寸不可缩放。
@@ -215,8 +227,8 @@ GravMagnFrontend.exe [候选文件1;候选文件2;...]
 
 ## 七、当前状态与后续任务
 
-* ✅ 20 个频率域对话框前端（布局/交互/校验/默认值，与 .rc 对照）；
-* ✅ 后端接口 `IRgisBackend`（20 个处理接口）+ 注入机制 + 占位后端（.grd 文件头四种格式已实现并验证）；
-* ⬜ 后端算法实现（按 `RgisBackend.h` 契约实现 20 个 process 接口）；
+* ✅ 27 个功能对话框前端（20 个频率域 + 三维重力/磁异常和梯度相关成像 + 重磁三维体反演（网格文件名对话框）+ 重力中区/联合地形改正 + 磁化强度计算 + 网格数据空白区还原）；
+* ✅ 后端接口 `IRgisBackend`（22 个处理接口；其中重力梯度成像/体反演/网格空白区还原等等待后端提供，前端以 `readGridFileHead` + 占位提示运行；磁化强度计算为纯参数计算，由前端直接完成，无后端接口）；
+* ⬜ 后端算法实现（按 `RgisBackend.h` 契约实现已有 22 个 process 接口）；
 * ⬜ 等值线显示窗口（对应 `CDrawOpenGLContourDlg`，“显示”按钮待实现，信号已留好）；
-* ⬜ 其余 60 个功能对话框的同类前端迁移（按 `PfProcesses_DEPENDENCY.md` 推进）。
+* ⬜ 其余 53 个功能对话框的同类前端迁移（按 `PfProcesses_DEPENDENCY.md` 推进）。

@@ -591,3 +591,23 @@ bool CNullRgisBackend::processUpward(const UpwardParams& params, BackendError& e
     error.message = "算法后端尚未接入：频率域向上延拓功能等待后端实现。";
     return false;
 }
+
+// 功能：重力中区地形改正处理（占位，等待正式算法后端实现）
+bool CNullRgisBackend::processMidTerrain(const MidTerrainParams& params, BackendError& error)
+{
+    (void)params;   // 参数暂不使用（占位实现）
+
+    error.code = 100;
+    error.message = "算法后端尚未接入：重力中区地形改正功能等待后端实现。";
+    return false;
+}
+
+// 功能：重力联合（平面带）地形改正处理（占位，等待正式算法后端实现）
+bool CNullRgisBackend::processUnionTerrain(const UnionTerrainParams& params, BackendError& error)
+{
+    (void)params;   // 参数暂不使用（占位实现）
+
+    error.code = 100;
+    error.message = "算法后端尚未接入：重力联合（平面带）地形改正功能等待后端实现。";
+    return false;
+}

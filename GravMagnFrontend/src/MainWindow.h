@@ -54,9 +54,17 @@ private slots:
     void onOpenTotlGradClicked();       // 功能：打开“频率域总梯度(解析信号)”对话框
     void onOpenTwoDerivClicked();       // 功能：打开“频率域二阶导数”对话框
     void onOpenUpwardClicked();         // 功能：打开“频率域向上延拓”对话框
+    void onOpenGravGradCoImagingClicked(); // 功能：打开“三维重力异常和梯度相关成像”对话框
+    void onOpenGravMagnVolumeInvClicked();  // 功能：打开“重磁三维体反演(网格文件名对话框)”流程
+    void onOpenGravMidTerrainClicked();   // 功能：打开“重力中区地形改正”对话框
+    void onOpenGravUnionTerrainClicked(); // 功能：打开“重力联合(平面带)地形改正”对话框
+    void onOpenMagnGradCoImagingClicked();// 功能：打开“三维磁异常和梯度相关成像”对话框
+    void onOpenMagnIntensityClicked();    // 功能：打开“磁化强度计算”对话框
+    void onOpenGridDataRecoveryClicked(); // 功能：打开“网格数据空白区还原”对话框
     void onNotImplementedClicked();     // 功能：提示该功能前端尚未开发（未实现功能统一回调）
     void onExitClicked();               // 功能：“退出”按钮——关闭主窗口退出程序
     void onViewGridFileRequested(const QString& strFilePath);  // 功能：处理对话框的“显示”请求（等值线显示由后续版本实现）
+    void onViewVolumeFileRequested(const QString& strFilePath); // 功能：处理对话框的体数据“显示”请求（三维体数据视图由后续版本实现）
 
 private:
     // 功能类型枚举（决定按钮点击后打开哪个功能）
@@ -79,7 +87,14 @@ private:
         FunctionThreeCpn = 14,          // 频率域三分量转换（已实现）
         FunctionTotlGrad = 15,          // 频率域总梯度(解析信号)（已实现）
         FunctionTwoDeriv = 16,          // 频率域二阶导数（已实现）
-        FunctionUpward = 17             // 频率域向上延拓（已实现）
+        FunctionUpward = 17,            // 频率域向上延拓（已实现）
+        FunctionGravGradCoImaging = 18, // 三维重力异常和梯度相关成像（已实现）
+        FunctionGravMagnVolumeInv = 19, // 重磁三维体反演（已实现）
+        FunctionGravMidTerrain = 20,   // 重力中区地形改正（已实现）
+        FunctionGravUnionTerrain = 21,  // 重力联合(平面带)地形改正（已实现）
+        FunctionMagnGradCoImaging = 22, // 三维磁异常和梯度相关成像（已实现）
+        FunctionMagnIntensity = 23,     // 磁化强度计算（已实现）
+        FunctionGridDataRecovery = 24   // 网格数据空白区还原（已实现）
     };
 
     // ===== 界面初始化 =====
@@ -104,8 +119,15 @@ private:
     void openStructureDlg();                            // 功能：打开频率域构造(小子域滤波/线性构造增强)对话框（模态）
     void openThreeCpnDlg();                             // 功能：打开频率域三分量转换对话框（模态）
     void openTotlGradDlg();                             // 功能：打开频率域总梯度(解析信号)对话框（模态）
+    void openGravMidTerrainDlg();                       // 功能：打开重力中区地形改正对话框（模态）
+    void openGravUnionTerrainDlg();                     // 功能：打开重力联合(平面带)地形改正对话框（模态）
     void openTwoDerivDlg();                             // 功能：打开频率域二阶导数对话框（模态）
     void openUpwardDlg();                               // 功能：打开频率域向上延拓对话框（模态）
+    void openGridDataRecoveryDlg();                     // 功能：打开网格数据空白区还原对话框（模态）
+    void openGravGradCoImagingDlg();                    // 功能：打开三维重力异常和梯度相关成像对话框（模态）
+    void openGravMagnVolumeInvDlg();                    // 功能：打开重磁三维体反演参数设置对话框（模态）
+    void openMagnGradCoImagingDlg();                    // 功能：打开三维磁异常和梯度相关成像对话框（模态）
+    void openMagnIntensityDlg();                        // 功能：打开磁化强度计算对话框（模态）
 
     QString mStrFileNames;  // 候选数据文件列表（分号分隔，传递给功能对话框）
 };

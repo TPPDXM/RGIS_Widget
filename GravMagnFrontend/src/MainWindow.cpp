@@ -28,12 +28,19 @@
 #include "dlg/FreqDomainNormFilterDlg.h"
 #include "dlg/FreqDomainTwoDerivDlg.h"
 #include "dlg/FreqDomainUpwardDlg.h"
+#include "dlg/GravGradCoImagingDlg.h"
+#include "dlg/GravMagnVolumeInvDlg.h"
 #include "dlg/FreqDomainOneDerivDlg.h"
 #include "dlg/FreqDomainPsudoGraDlg.h"
 #include "dlg/FreqDomainReToPoleDlg.h"
 #include "dlg/FreqDomainStructureDlg.h"
 #include "dlg/FreqDomainThreeCpnDlg.h"
 #include "dlg/FreqDomainTotlGradDlg.h"
+#include "dlg/GravMidTerrainCorrectionDlg.h"
+#include "dlg/GravUnionTerrainCorrectionDlg.h"
+#include "dlg/MagnGradCoImagingDlg.h"
+#include "dlg/MagnIntensityCalculationDlg.h"
+#include "dlg/GridDataRecoveryDlg.h"
 
 // 功能按钮的固定尺寸（与原工程 71*20 对话框单位按钮比例协调，
 // 宽度取值保证“归一化标准差垂向导数”等长名称完整显示）
@@ -71,12 +78,12 @@ void CGravMagnMainWindow::initUi()
     QGridLayout* pLayout1 = createGroupLayout(pMainLayout, QStringLiteral("重磁数据预处理"));
     addFunctionButton(pLayout1, 0, 0, QStringLiteral("网格数据差分扩边"), FunctionNotImplemented);
     addFunctionButton(pLayout1, 0, 1, QStringLiteral("网格数据差分补空"), FunctionNotImplemented);
-    addFunctionButton(pLayout1, 0, 2, QStringLiteral("空区还原"), FunctionNotImplemented);
-    addFunctionButton(pLayout1, 0, 3, QStringLiteral("五万中区地形改正"), FunctionNotImplemented);
-    addFunctionButton(pLayout1, 0, 4, QStringLiteral("磁化强度计算"), FunctionNotImplemented);
+    addFunctionButton(pLayout1, 0, 2, QStringLiteral("空区还原"), FunctionGridDataRecovery);   // 已实现：网格数据空白区还原
+    addFunctionButton(pLayout1, 0, 3, QStringLiteral("五万中区地形改正"), FunctionGravMidTerrain);   // 已实现：重力中区地形改正
+    addFunctionButton(pLayout1, 0, 4, QStringLiteral("磁化强度计算"), FunctionMagnIntensity);   // 已实现：磁化强度计算
     addFunctionButton(pLayout1, 0, 5, QStringLiteral("单点地磁要素计算"), FunctionNotImplemented);
     addFunctionButton(pLayout1, 0, 6, QStringLiteral("多点地磁要素计算"), FunctionNotImplemented);
-    addFunctionButton(pLayout1, 0, 7, QStringLiteral("海陆连片重力地形改正"), FunctionNotImplemented);
+    addFunctionButton(pLayout1, 0, 7, QStringLiteral("海陆连片重力地形改正"), FunctionGravUnionTerrain); // 已实现：重力联合(平面带)地形改正
     addFunctionButton(pLayout1, 1, 0, QStringLiteral("观测系统误差计算"), FunctionNotImplemented);
     addFunctionButton(pLayout1, 1, 1, QStringLiteral("延时改正"), FunctionNotImplemented);
     addFunctionButton(pLayout1, 1, 2, QStringLiteral("一致性试验"), FunctionNotImplemented);
@@ -84,7 +91,7 @@ void CGravMagnMainWindow::initUi()
     addFunctionButton(pLayout1, 1, 4, QStringLiteral("不含基点正常场改正"), FunctionNotImplemented);
     addFunctionButton(pLayout1, 1, 5, QStringLiteral("含基点正常场改正"), FunctionNotImplemented);
     addFunctionButton(pLayout1, 1, 6, QStringLiteral("日变校正"), FunctionNotImplemented);
-    addFunctionButton(pLayout1, 1, 7, QStringLiteral("三维重磁自动反演"), FunctionNotImplemented);
+    addFunctionButton(pLayout1, 1, 7, QStringLiteral("三维重磁自动反演"), FunctionGravMagnVolumeInv); // 已实现：重磁三维体反演(网格文件名对话框)
 
     // ================= 分组 2：频率域重磁数据处理 =================
     QGridLayout* pLayout2 = createGroupLayout(pMainLayout, QStringLiteral("频率域重磁数据处理"));
@@ -108,8 +115,8 @@ void CGravMagnMainWindow::initUi()
     addFunctionButton(pLayout2, 2, 1, QStringLiteral("化极"), FunctionReToPole);      // 已实现：频率域剩余化极(化极)
     addFunctionButton(pLayout2, 2, 2, QStringLiteral("低磁纬度化极"), FunctionNotImplemented);
     addFunctionButton(pLayout2, 2, 3, QStringLiteral("分带变磁倾角化极"), FunctionNotImplemented);
-    addFunctionButton(pLayout2, 2, 4, QStringLiteral("三维重力相关成像"), FunctionNotImplemented);
-    addFunctionButton(pLayout2, 2, 5, QStringLiteral("三维磁力相关成像"), FunctionNotImplemented);
+    addFunctionButton(pLayout2, 2, 4, QStringLiteral("三维重力相关成像"), FunctionGravGradCoImaging); // 已实现：三维重力异常和梯度相关成像
+    addFunctionButton(pLayout2, 2, 5, QStringLiteral("三维磁力相关成像"), FunctionMagnGradCoImaging); // 已实现：三维磁异常和梯度相关成像
     addFunctionButton(pLayout2, 2, 6, QStringLiteral("三维密度界面反演"), FunctionNotImplemented);
     addFunctionButton(pLayout2, 2, 7, QStringLiteral("三维磁性界面反演"), FunctionNotImplemented);
 
@@ -287,6 +294,41 @@ void CGravMagnMainWindow::addFunctionButton(QGridLayout* pLayout, int nRow, int 
     {
         // 已实现：打开“频率域向上延拓”对话框
         connect(pButton, &QPushButton::clicked, this, &CGravMagnMainWindow::onOpenUpwardClicked);
+    }
+    else if (eType == FunctionGravGradCoImaging)
+    {
+        // 已实现：打开“三维重力异常和梯度相关成像”对话框
+        connect(pButton, &QPushButton::clicked, this, &CGravMagnMainWindow::onOpenGravGradCoImagingClicked);
+    }
+    else if (eType == FunctionGravMagnVolumeInv)
+    {
+        // 已实现：打开“重磁三维体反演(网格文件名对话框)”流程
+        connect(pButton, &QPushButton::clicked, this, &CGravMagnMainWindow::onOpenGravMagnVolumeInvClicked);
+    }
+    else if (eType == FunctionGravMidTerrain)
+    {
+        // 已实现：打开“重力中区地形改正”对话框
+        connect(pButton, &QPushButton::clicked, this, &CGravMagnMainWindow::onOpenGravMidTerrainClicked);
+    }
+    else if (eType == FunctionGravUnionTerrain)
+    {
+        // 已实现：打开“重力联合(平面带)地形改正”对话框
+        connect(pButton, &QPushButton::clicked, this, &CGravMagnMainWindow::onOpenGravUnionTerrainClicked);
+    }
+    else if (eType == FunctionMagnGradCoImaging)
+    {
+        // 已实现：打开“三维磁异常和梯度相关成像”对话框
+        connect(pButton, &QPushButton::clicked, this, &CGravMagnMainWindow::onOpenMagnGradCoImagingClicked);
+    }
+    else if (eType == FunctionMagnIntensity)
+    {
+        // 已实现：打开“磁化强度计算”对话框
+        connect(pButton, &QPushButton::clicked, this, &CGravMagnMainWindow::onOpenMagnIntensityClicked);
+    }
+    else if (eType == FunctionGridDataRecovery)
+    {
+        // 已实现：打开“网格数据空白区还原”对话框
+        connect(pButton, &QPushButton::clicked, this, &CGravMagnMainWindow::onOpenGridDataRecoveryClicked);
     }
     else
     {
@@ -467,6 +509,75 @@ void CGravMagnMainWindow::openUpwardDlg()
     dlg.exec();
 }
 
+// 功能：打开三维重力异常和梯度相关成像对话框（模态）
+void CGravMagnMainWindow::openGravGradCoImagingDlg()
+{
+    CGravGradCoImagingDlg dlg(this);
+    // 连接对话框的“显示”请求信号（等值线/体数据显示由前端后续版本提供）
+    connect(&dlg, &CGravGradCoImagingDlg::viewGridFileRequested,
+        this, &CGravMagnMainWindow::onViewGridFileRequested);
+    connect(&dlg, &CGravGradCoImagingDlg::viewVolumeFileRequested,
+        this, &CGravMagnMainWindow::onViewGridFileRequested);
+    dlg.exec();
+}
+
+// 功能：打开重磁三维体反演参数设置对话框（模态，网格文件名对话框）
+void CGravMagnMainWindow::openGravMagnVolumeInvDlg()
+{
+    // 创建处理流程类并打开参数设置对话框（对应原工程 CMyGravMagnVolumeInvProc::OnDoInvsProcess）
+    CGravMagnVolumeInvProc proc;
+    proc.onDoInvsProcess(mStrFileNames, this);
+}
+
+// 功能：打开重力中区地形改正对话框（模态）
+void CGravMagnMainWindow::openGravMidTerrainDlg()
+{
+    CGravMidTerrainCorrectionDlg dlg(this);
+    // 连接对话框的“显示”请求信号（等值线显示由前端后续版本提供）
+    connect(&dlg, &CGravMidTerrainCorrectionDlg::viewGridFileRequested,
+        this, &CGravMagnMainWindow::onViewGridFileRequested);
+    dlg.exec();
+}
+
+// 功能：打开重力联合(平面带)地形改正对话框（模态）
+void CGravMagnMainWindow::openGravUnionTerrainDlg()
+{
+    CGravUnionTerrainCorrectionDlg dlg(this);
+    // 连接对话框的“显示”请求信号（等值线显示由前端后续版本提供）
+    connect(&dlg, &CGravUnionTerrainCorrectionDlg::viewGridFileRequested,
+        this, &CGravMagnMainWindow::onViewGridFileRequested);
+    dlg.exec();
+}
+
+// 功能：打开三维磁异常和梯度相关成像对话框（模态）
+void CGravMagnMainWindow::openMagnGradCoImagingDlg()
+{
+    CMagnGradCoImagingDlg dlg(this);
+    // 连接对话框的“显示”请求信号（等值线/体数据由前端后续版本提供）
+    connect(&dlg, &CMagnGradCoImagingDlg::viewGridFileRequested,
+        this, &CGravMagnMainWindow::onViewGridFileRequested);
+    connect(&dlg, &CMagnGradCoImagingDlg::viewVolumeFileRequested,
+        this, &CGravMagnMainWindow::onViewVolumeFileRequested);
+    dlg.exec();
+}
+
+// 功能：打开磁化强度计算对话框（模态）
+void CGravMagnMainWindow::openMagnIntensityDlg()
+{
+    CMagnIntensityCalculationDlg dlg(this);
+    dlg.exec();
+}
+
+// 功能：打开网格数据空白区还原对话框（模态）
+void CGravMagnMainWindow::openGridDataRecoveryDlg()
+{
+    CGridDataRecoveryDlg dlg(this);
+    // 连接对话框的“显示”请求信号（等值线显示由前端后续版本提供）
+    connect(&dlg, &CGridDataRecoveryDlg::viewGridFileRequested,
+        this, &CGravMagnMainWindow::onViewGridFileRequested);
+    dlg.exec();
+}
+
 // 功能：打开“补偿圆滑滤波”（频率域组合滤波）对话框
 void CGravMagnMainWindow::onOpenCmpsFilterClicked()
 {
@@ -569,6 +680,48 @@ void CGravMagnMainWindow::onOpenUpwardClicked()
     openUpwardDlg();
 }
 
+// 功能：打开“三维重力异常和梯度相关成像”对话框
+void CGravMagnMainWindow::onOpenGravGradCoImagingClicked()
+{
+    openGravGradCoImagingDlg();
+}
+
+// 功能：打开“重磁三维体反演(网格文件名对话框)”流程
+void CGravMagnMainWindow::onOpenGravMagnVolumeInvClicked()
+{
+    openGravMagnVolumeInvDlg();
+}
+
+// 功能：打开“重力中区地形改正”对话框
+void CGravMagnMainWindow::onOpenGravMidTerrainClicked()
+{
+    openGravMidTerrainDlg();
+}
+
+// 功能：打开“重力联合(平面带)地形改正”对话框
+void CGravMagnMainWindow::onOpenGravUnionTerrainClicked()
+{
+    openGravUnionTerrainDlg();
+}
+
+// 功能：打开“三维磁异常和梯度相关成像”对话框
+void CGravMagnMainWindow::onOpenMagnGradCoImagingClicked()
+{
+    openMagnGradCoImagingDlg();
+}
+
+// 功能：打开“磁化强度计算”对话框
+void CGravMagnMainWindow::onOpenMagnIntensityClicked()
+{
+    openMagnIntensityDlg();
+}
+
+// 功能：打开“网格数据空白区还原”对话框
+void CGravMagnMainWindow::onOpenGridDataRecoveryClicked()
+{
+    openGridDataRecoveryDlg();
+}
+
 // 功能：提示该功能前端尚未开发（未实现功能统一回调）
 void CGravMagnMainWindow::onNotImplementedClicked()
 {
@@ -586,7 +739,11 @@ void CGravMagnMainWindow::onNotImplementedClicked()
             "频率域一阶导数、频率域伪重力（磁源重力异常）、\n"
             "频率域剩余化极（化极）、频率域构造（小子域滤波/线性构造增强）、\n"
             "频率域三分量转换、频率域总梯度（解析信号）、\n"
-            "频率域二阶导数、频率域向上延拓。")
+            "频率域二阶导数、频率域向上延拓、\n"
+            "三维重力异常和梯度相关成像、重磁三维体反演、\n"
+            "重力中区地形改正、重力联合（平面带）地形改正、\n"
+            "三维磁异常和梯度相关成像、磁化强度计算、\n"
+            "网格数据空白区还原。")
             .arg(pButton->text()));
 }
 
@@ -601,4 +758,11 @@ void CGravMagnMainWindow::onViewGridFileRequested(const QString& strFilePath)
 {
     QMessageBox::information(this, QStringLiteral("等值线显示"),
         QStringLiteral("等值线显示功能将在前端后续版本提供。\n文件：") + strFilePath);
+}
+
+// 功能：处理对话框的体数据“显示”请求（三维体数据视图将在前端后续版本实现）
+void CGravMagnMainWindow::onViewVolumeFileRequested(const QString& strFilePath)
+{
+    QMessageBox::information(this, QStringLiteral("体数据视图"),
+        QStringLiteral("三维体数据视图功能将在前端后续版本提供。\n文件：") + strFilePath);
 }

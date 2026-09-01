@@ -43,6 +43,8 @@ public:
     bool processTotlGrad(const TotlGradParams& params, BackendError& error) override;
     bool processTwoDeriv(const TwoDerivParams& params, BackendError& error) override;
     bool processUpward(const UpwardParams& params, BackendError& error) override;
+    bool processMidTerrain(const MidTerrainParams& params, BackendError& error) override;
+    bool processUnionTerrain(const UnionTerrainParams& params, BackendError& error) override;
 
 private:
     // ===== 私有工具函数（.grd 文件头解析，对应原 MFC 工程 CContourFile::AReadFile1~4）=====

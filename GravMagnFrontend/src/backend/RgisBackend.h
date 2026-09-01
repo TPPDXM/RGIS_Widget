@@ -554,6 +554,60 @@ struct UpwardParams
     }
 };
 
+// 重力中区地形改正处理参数
+// 对应原 MFC 工程 CGravMidTerrainCorrectionDlg 界面上的全部输入项
+struct MidTerrainParams
+{
+    std::string txtFilePath;      // 重力测点数据文件路径（.txt，界面“重力测点数据文件输入”）
+    std::string grdFilePath;      // 地形高程网格数据文件路径（.grd，界面“高程网格数据文件输入”）
+    std::string resFilePath;      // 地形改正结果数据文件输出路径（.txt，界面“地形改正结果数据文件输出”）
+    float       startRadius;      // 起始半径（界面“起始半径”，原 m_startraid，默认 20）
+    float       endRadius;        // 终止半径（界面“终止半径”，原 m_EndRaid，默认 500）
+    float       rockDensity;      // 地壳密度（界面“地壳密度”，原 m_rockdentisy，默认 2.67）
+    int         outerShape;       // 外接口形状（界面“外接口形状选择”，0=方形 1=圆形）
+    int         innerShape;       // 内接口形状（界面“内接口形状选择”，0=方形 1=圆形）
+
+    MidTerrainParams()
+        : startRadius(20.0f)
+        , endRadius(500.0f)
+        , rockDensity(2.67f)
+        , outerShape(0)
+        , innerShape(0)
+    {
+    }
+};
+
+// 重力联合（平面带）地形改正处理参数
+// 对应原 MFC 工程 CGravUnionTerrainCorrectionDlg 界面上的全部输入项
+struct UnionTerrainParams
+{
+    std::string txtFilePath;      // 重力测点数据文件路径（.dat，界面“重力测点数据文件输入”）
+    std::string grdFilePath;      // 地形高程网格数据文件路径（.grd，界面“高程网格数据文件输入”）
+    std::string resFilePath;      // 地形改正结果数据文件输出路径（.dat，默认 测点文件基准 + "_Out" + 原扩展名）
+    int         kindsType;        // 地形改正方法（0=常规计算 1=三观测列方差分解）
+    int         shapeType;        // 地形改正形状（0=环形 1=回形 2=钱形 3=枷形）
+    int         typesType;        // 地形改正类型（0=常规地形改正 1=陆岛地形改正 2=广义地形改正）
+    float       minRadius;        // 地改内环半径（界面“地改内环半径”，原 m_fMinRads，默认 50）
+    float       maxRadius;        // 地改外环半径（界面“地改外环半径”，原 m_fMaxRads，默认 2000）
+    float       rockDensity;      // 地形改正密度（界面“地形改正密度”，原 m_fDensity，默认 2.67）
+    int         aziNum1;          // 第一列方位数（界面“第一列方位数”，原 m_AziNum1，默认 72）
+    int         aziNum2;          // 第二列方位数（界面“第二列方位数”，原 m_AziNum2，默认 36）
+    int         aziNum3;          // 第三列方位数（界面“第三列方位数”，原 m_AziNum3，默认 24）
+
+    UnionTerrainParams()
+        : kindsType(0)
+        , shapeType(0)
+        , typesType(0)
+        , minRadius(50.0f)
+        , maxRadius(2000.0f)
+        , rockDensity(2.67f)
+        , aziNum1(72)
+        , aziNum2(36)
+        , aziNum3(24)
+    {
+    }
+};
+
 //---------------------------------------------------------------------------
 
 // 后端算法接口（前端只通过本接口与后端交互，后端只需实现本接口即可对接）
@@ -933,4 +987,37 @@ public:
     // 约定：同 processCmpsFilter（同步调用、不抛异常、DSBB 格式写出）。
     // 返回：true 成功；false 失败（error 给出原因）
     virtual bool processUpward(const UpwardParams& params, BackendError& error) = 0;
+
+    // ===== 功能：重力中区地形改正处理 =====
+    // 用途：处理流程（与原 MFC 工程 CGravMidTerrainCorrectionDlg::OnOK 一致）：
+    //   1. 读取 txtFilePath 重力测点数据（原 OnOpenFileTxt 解析：首行为列数/文件头，
+    //      数据行含 x、y（、z）等），读取 grdFilePath 高程网格数据头；
+    //   2. 校验：起始/终止半径 > 0、地壳密度 > 0、起始/终止半径能被高程网格距 hstep 整除
+    //      （原工程 fmod 校验，余差 > 0.0001 时报错）；
+    //   3. 判断各测点在高程数据范围内（超出范围的点剔除，记录到 resFilePath 同目录
+    //      Exceptdata.txt，原工程 m_filenameExp）；
+    //   4. 按外接口形状（outerShape：方形/圆形）计算外环 Cij 系数、内接口形状（innerShape）
+    //      计算内环 Cij 系数（原工程 OnOK 中矩形/圆形接口的系数计算）；
+    //   5. 逐测点计算地形改正：对环内节点加权（Aij = Cij * 密度 逐项累加，
+    //      (1 - 1/sqrt(1+TempHR^2))），4 邻域节点双线性插值，(原 OnOK 循环)；
+    //   6. 结果乘以 6.67 * 0.001 * hstep * hstep，写出 resFilePath；
+    //   7. 超出范围的点记录到 Exceptdata.txt（原工程 m_filenameExp，位于 resFilePath 同目录）。
+    // 约定：
+    //   - 同步调用、不抛异常，一律通过返回值 + BackendError 报告；
+    //   - 结果文件为文本格式（测点被改正后结果，逐行写出，与原工程一致）。
+    // 返回：true 成功；false 失败（error 给出原因）
+    virtual bool processMidTerrain(const MidTerrainParams& params, BackendError& error) = 0;
+
+    // ===== 功能：重力联合（平面带）地形改正处理 =====
+    // 用途：处理流程（与原 MFC 工程 CGravUnionTerrainCorrectionDlg::OnOK 一致）：
+    //   1. 读取 txtFilePath 重力测点数据（.dat），读取 grdFilePath 高程网格数据头；
+    //   2. 按 kindsType（0=常规计算/1=三观测列方差分解）、shapeType
+    //      （0=环形/1=回形/2=钱形/3=枷形）、typesType（0=常规地形改正/1=陆岛地形改正/
+    //      2=广义地形改正）选择计算分支（原 OnOK 中 3 组单选按钮决定）；
+    //   3. 使用 minRadius/maxRadius 地改内/外环半径、rockDensity 地形改正密度、
+    //      aziNum1/2/3 三个方位列数进行分区带地形改正计算（原 OnOK 内 NFW/分带计算）；
+    //   4. 写出 resFilePath（文本格式），原工程完成无固定提示。
+    // 约定：同步调用、不抛异常，一律通过返回值 + BackendError 报告；结果文件为文本格式。
+    // 返回：true 成功；false 失败（error 给出原因）
+    virtual bool processUnionTerrain(const UnionTerrainParams& params, BackendError& error) = 0;
 };
