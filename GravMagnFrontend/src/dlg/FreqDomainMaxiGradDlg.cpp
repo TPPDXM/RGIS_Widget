@@ -12,6 +12,7 @@
 
 #include "FreqDomainMaxiGradDlg.h"
 #include "backend/RgisBackend.h"
+#include "FrontendUtils.h"
 
 #include <QApplication>
 #include <QButtonGroup>
@@ -27,9 +28,6 @@
 #include <QRadioButton>
 #include <QVBoxLayout>
 
-#include "core/BackendConvert.h"
-#include "core/BackendService.h"
-#include "core/ExtendGridSize.h"
 #include <QSpinBox>
 
 // 最大扩边尺寸（与原 MFC 工程 OnDeltaposSpinExCols 中 <= 65536 的约束一致）
@@ -290,7 +288,7 @@ void CFreqDomainMaxiGradDlg::loadFile(const QString& strFilePath)
     updateDefaultSavePaths(strFilePath);
     updateGridInfoDisplay();
 
-    // 默认扩边尺寸（2 的幂，规则见 ExtendGridSize.h，与原工程一致）
+    // 默认扩边尺寸（2 的幂，规则见 FrontendUtils.h，与原工程一致）
     mMinExCols = suggestExtendSize(mColsNum);
     mMinExRows = suggestExtendSize(mRowsNum);
     setSpinExtendSize(mSpinExCols, mMinExCols);

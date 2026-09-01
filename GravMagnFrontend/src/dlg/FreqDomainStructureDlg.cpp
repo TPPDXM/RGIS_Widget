@@ -19,8 +19,6 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
-#include "core/BackendConvert.h"
-#include "core/BackendService.h"
 
 // 构造函数：初始化全部成员并创建界面
 // 参数：pParent —— 父窗口（可为 NULL）

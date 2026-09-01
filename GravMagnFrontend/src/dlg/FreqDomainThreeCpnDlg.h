@@ -18,6 +18,7 @@
 #include <QDialog>
 
 #include "backend/RgisBackend.h"
+#include "FrontendUtils.h"
 
 // 前置声明（减少头文件之间的相互包含）
 class QLineEdit;

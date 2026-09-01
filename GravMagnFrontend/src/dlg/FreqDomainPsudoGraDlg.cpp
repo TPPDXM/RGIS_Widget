@@ -24,9 +24,7 @@
 #include <QVBoxLayout>
 
 #include "backend/RgisBackend.h"
-#include "core/BackendConvert.h"
-#include "core/BackendService.h"
-#include "core/ExtendGridSize.h"
+#include "FrontendUtils.h"
 
 // 最大扩边尺寸（与原 MFC 工程 OnDeltaposSpinExCols 中 <= 65536 的约束一致）
 static const int sMaxExtendSize = 65536;
@@ -383,7 +381,7 @@ void CFreqDomainPsudoGraDlg::loadFile(const QString& strFilePath)
     updateDefaultSavePaths(strFilePath);
     updateGridInfoDisplay();
 
-    // 默认扩边尺寸（2 的幂，规则见 ExtendGridSize.h，与原工程一致）
+    // 默认扩边尺寸（2 的幂，规则见 FrontendUtils.h，与原工程一致）
     mMinExCols = suggestExtendSize(mColsNum);
     mMinExRows = suggestExtendSize(mRowsNum);
     setSpinExtendSize(mSpinExCols, mMinExCols);

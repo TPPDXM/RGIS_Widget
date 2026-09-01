@@ -12,9 +12,9 @@
 
 #include <QApplication>
 #include <QStringList>
+#include "FrontendUtils.h"
 
 #include "MainWindow.h"
-#include "core/BackendService.h"
 
 int main(int argc, char* argv[])
 {

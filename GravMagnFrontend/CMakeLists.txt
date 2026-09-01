@@ -32,14 +32,11 @@ find_package(Qt5 5.15 REQUIRED COMPONENTS Widgets)
 set(PROJECT_SOURCES
     src/main.cpp
     src/MainWindow.h
+    src/FrontendUtils.h
     src/MainWindow.cpp
     src/backend/RgisBackend.h
     src/backend/NullBackend.h
     src/backend/NullBackend.cpp
-    src/core/BackendService.h
-    src/core/BackendService.cpp
-    src/core/BackendConvert.h
-    src/core/ExtendGridSize.h
     src/dlg/FreqDomainCmpsFilterDlg.h
     src/dlg/FreqDomainCmpsFilterDlg.cpp
     src/dlg/FreqDomainDownwardDlg.h
