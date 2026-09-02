@@ -28,6 +28,9 @@
 #include "dlg/FreqDomainNormFilterDlg.h"
 #include "dlg/FreqDomainTwoDerivDlg.h"
 #include "dlg/FreqDomainUpwardDlg.h"
+#include "dlg/ProfDataInterpolationDlg.h"
+#include "dlg/TimeDomainLinearRegressionDlg.h"
+#include "dlg/DrawOpenGLContourDlg.h"
 #include "dlg/GravGradCoImagingDlg.h"
 #include "dlg/GravMagnVolumeInvDlg.h"
 #include "dlg/FreqDomainOneDerivDlg.h"
@@ -41,6 +44,9 @@
 #include "dlg/MagnGradCoImagingDlg.h"
 #include "dlg/MagnIntensityCalculationDlg.h"
 #include "dlg/GridDataRecoveryDlg.h"
+#include "dlg/MagnToPoleLowDlg.h"
+#include "dlg/MagnToPoleVarIncDecDlg.h"
+#include "dlg/MagnToPoleVarInclineDlg.h"
 
 // 功能按钮的固定尺寸（与原工程 71*20 对话框单位按钮比例协调，
 // 宽度取值保证“归一化标准差垂向导数”等长名称完整显示）
@@ -101,7 +107,7 @@ void CGravMagnMainWindow::initUi()
     addFunctionButton(pLayout2, 0, 3, QStringLiteral("迭代向下延拓"), FunctionIterward);    // 已实现：频率域迭代向下延拓
     addFunctionButton(pLayout2, 0, 4, QStringLiteral("迭代曲化平"), FunctionIterDrape);     // 已实现：频率域迭代曲化平
     addFunctionButton(pLayout2, 0, 5, QStringLiteral("一阶导数"), FunctionOneDeriv);    // 已实现：频率域一阶导数
-    addFunctionButton(pLayout2, 0, 6, QStringLiteral("变磁倾角化极"), FunctionNotImplemented);
+    addFunctionButton(pLayout2, 0, 6, QStringLiteral("变磁倾角化极"), FunctionMagnToPoleVarIncDec); // 已实现：变磁化倾角化极
     addFunctionButton(pLayout2, 0, 7, QStringLiteral("二阶导数"), FunctionTwoDeriv);  // 已实现：频率域二阶导数
     addFunctionButton(pLayout2, 1, 0, QStringLiteral("总水平方向导数"), FunctionHorzGrad);   // 已实现：频率域总水平方向导数
     addFunctionButton(pLayout2, 1, 1, QStringLiteral("解析信号"), FunctionTotlGrad);   // 已实现：频率域总梯度(解析信号)
@@ -113,8 +119,8 @@ void CGravMagnMainWindow::initUi()
     addFunctionButton(pLayout2, 1, 7, QStringLiteral("线性构造增强"), FunctionStructure); // 已实现：频率域构造(小子域滤波/线性构造增强)
     addFunctionButton(pLayout2, 2, 0, QStringLiteral("补偿圆滑滤波"), FunctionCmpsFilter);   // 已实现：频率域组合滤波
     addFunctionButton(pLayout2, 2, 1, QStringLiteral("化极"), FunctionReToPole);      // 已实现：频率域剩余化极(化极)
-    addFunctionButton(pLayout2, 2, 2, QStringLiteral("低磁纬度化极"), FunctionNotImplemented);
-    addFunctionButton(pLayout2, 2, 3, QStringLiteral("分带变磁倾角化极"), FunctionNotImplemented);
+    addFunctionButton(pLayout2, 2, 2, QStringLiteral("低磁纬度化极"), FunctionMagnToPoleLow);     // 已实现：低磁纬度化极
+    addFunctionButton(pLayout2, 2, 3, QStringLiteral("分带变磁倾角化极"), FunctionMagnToPoleVarIncline); // 已实现：分带变磁倾角化极
     addFunctionButton(pLayout2, 2, 4, QStringLiteral("三维重力相关成像"), FunctionGravGradCoImaging); // 已实现：三维重力异常和梯度相关成像
     addFunctionButton(pLayout2, 2, 5, QStringLiteral("三维磁力相关成像"), FunctionMagnGradCoImaging); // 已实现：三维磁异常和梯度相关成像
     addFunctionButton(pLayout2, 2, 6, QStringLiteral("三维密度界面反演"), FunctionNotImplemented);
@@ -128,7 +134,7 @@ void CGravMagnMainWindow::initUi()
     addFunctionButton(pLayout3, 0, 3, QStringLiteral("水平一阶导数"), FunctionNotImplemented);
     addFunctionButton(pLayout3, 0, 4, QStringLiteral("水平二阶导数"), FunctionNotImplemented);
     addFunctionButton(pLayout3, 0, 5, QStringLiteral("垂向一阶导数"), FunctionNotImplemented);
-    addFunctionButton(pLayout3, 0, 6, QStringLiteral("线性回归分析"), FunctionNotImplemented);
+    addFunctionButton(pLayout3, 0, 6, QStringLiteral("线性回归分析"), FunctionLinearRegression); // 已实现：一元线性回归分析
     addFunctionButton(pLayout3, 0, 7, QStringLiteral("滑动平均滤波"), FunctionNotImplemented);
     addFunctionButton(pLayout3, 1, 0, QStringLiteral("垂向二阶导数"), FunctionNotImplemented);
     addFunctionButton(pLayout3, 1, 1, QStringLiteral("趋势分析"), FunctionNotImplemented);
@@ -156,7 +162,7 @@ void CGravMagnMainWindow::initUi()
 
     // ================= 分组 5：重磁数据预处理（含退出按钮）=================
     QGridLayout* pLayout5 = createGroupLayout(pMainLayout, QStringLiteral("重磁数据预处理"));
-    addFunctionButton(pLayout5, 0, 0, QStringLiteral("剖面数据插值"), FunctionNotImplemented);
+    addFunctionButton(pLayout5, 0, 0, QStringLiteral("剖面数据插值"), FunctionProfDataInterpolation); // 已实现：剖面数据插值
     addFunctionButton(pLayout5, 0, 1, QStringLiteral("剖面数据余弦函数扩边"), FunctionNotImplemented);
     addFunctionButton(pLayout5, 0, 2, QStringLiteral("剖面数据曲化平"), FunctionNotImplemented);
     addFunctionButton(pLayout5, 0, 3, QStringLiteral("剖面数据最小曲率扩边"), FunctionNotImplemented);
@@ -329,6 +335,31 @@ void CGravMagnMainWindow::addFunctionButton(QGridLayout* pLayout, int nRow, int 
     {
         // 已实现：打开“网格数据空白区还原”对话框
         connect(pButton, &QPushButton::clicked, this, &CGravMagnMainWindow::onOpenGridDataRecoveryClicked);
+    }
+    else if (eType == FunctionMagnToPoleLow)
+    {
+        // 已实现：打开“低磁纬度化极”对话框
+        connect(pButton, &QPushButton::clicked, this, &CGravMagnMainWindow::onOpenMagnToPoleLowClicked);
+    }
+    else if (eType == FunctionMagnToPoleVarIncDec)
+    {
+        // 已实现：打开“变磁化倾角化极”对话框
+        connect(pButton, &QPushButton::clicked, this, &CGravMagnMainWindow::onOpenMagnToPoleVarIncDecClicked);
+    }
+    else if (eType == FunctionMagnToPoleVarIncline)
+    {
+        // 已实现：打开“分带变磁倾角化极”对话框
+        connect(pButton, &QPushButton::clicked, this, &CGravMagnMainWindow::onOpenMagnToPoleVarInclineClicked);
+    }
+    else if (eType == FunctionLinearRegression)
+    {
+        // 已实现：打开“一元线性回归分析”对话框
+        connect(pButton, &QPushButton::clicked, this, &CGravMagnMainWindow::onOpenLinearRegressionClicked);
+    }
+    else if (eType == FunctionProfDataInterpolation)
+    {
+        // 已实现：打开“剖面数据插值”对话框
+        connect(pButton, &QPushButton::clicked, this, &CGravMagnMainWindow::onOpenProfDataInterpolationClicked);
     }
     else
     {
@@ -568,6 +599,36 @@ void CGravMagnMainWindow::openMagnIntensityDlg()
     dlg.exec();
 }
 
+// 功能：打开低磁纬度化极对话框（模态）
+void CGravMagnMainWindow::openMagnToPoleLowDlg()
+{
+    CMagnToPoleLowDlg dlg(this);
+    // 连接对话框的“显示”请求信号（等值线显示由前端后续版本提供）
+    connect(&dlg, &CMagnToPoleLowDlg::viewGridFileRequested,
+        this, &CGravMagnMainWindow::onViewGridFileRequested);
+    dlg.exec();
+}
+
+// 功能：打开变磁化倾角化极对话框（模态）
+void CGravMagnMainWindow::openMagnToPoleVarIncDecDlg()
+{
+    CMagnToPoleVarIncDecDlg dlg(this);
+    // 连接对话框的“显示”请求信号（等值线显示由前端后续版本提供）
+    connect(&dlg, &CMagnToPoleVarIncDecDlg::viewGridFileRequested,
+        this, &CGravMagnMainWindow::onViewGridFileRequested);
+    dlg.exec();
+}
+
+// 功能：打开分带变磁倾角化极对话框（模态）
+void CGravMagnMainWindow::openMagnToPoleVarInclineDlg()
+{
+    CMagnToPoleVarInclineDlg dlg(this);
+    // 连接对话框的“显示”请求信号（等值线显示由前端后续版本提供）
+    connect(&dlg, &CMagnToPoleVarInclineDlg::viewGridFileRequested,
+        this, &CGravMagnMainWindow::onViewGridFileRequested);
+    dlg.exec();
+}
+
 // 功能：打开网格数据空白区还原对话框（模态）
 void CGravMagnMainWindow::openGridDataRecoveryDlg()
 {
@@ -575,6 +636,20 @@ void CGravMagnMainWindow::openGridDataRecoveryDlg()
     // 连接对话框的“显示”请求信号（等值线显示由前端后续版本提供）
     connect(&dlg, &CGridDataRecoveryDlg::viewGridFileRequested,
         this, &CGravMagnMainWindow::onViewGridFileRequested);
+    dlg.exec();
+}
+
+// 功能：打开一元线性回归分析对话框（模态）
+void CGravMagnMainWindow::openLinearRegressionDlg()
+{
+    CTimeDomainLinearRegressionDlg dlg(this);
+    dlg.exec();
+}
+
+// 功能：打开剖面数据插值对话框（模态）
+void CGravMagnMainWindow::openProfDataInterpolationDlg()
+{
+    CProfDataInterpolationDlg dlg(this);
     dlg.exec();
 }
 
@@ -722,6 +797,39 @@ void CGravMagnMainWindow::onOpenGridDataRecoveryClicked()
     openGridDataRecoveryDlg();
 }
 
+// 功能：打开“低磁纬度化极”对话框
+void CGravMagnMainWindow::onOpenMagnToPoleLowClicked()
+{
+    openMagnToPoleLowDlg();
+}
+
+// 功能：打开“变磁化倾角化极”对话框
+void CGravMagnMainWindow::onOpenMagnToPoleVarIncDecClicked()
+{
+    openMagnToPoleVarIncDecDlg();
+}
+
+// 功能：打开“分带变磁倾角化极”对话框
+void CGravMagnMainWindow::onOpenMagnToPoleVarInclineClicked()
+{
+    openMagnToPoleVarInclineDlg();
+}
+
+// 功能：打开“频率域向上延拓”对话框的展示器（占位，不改变原内容）
+// 此处为 onViewGridFileRequested 前的“一元线性回归分析”等打开函数，见下方。
+
+// 功能：打开“一元线性回归分析”对话框
+void CGravMagnMainWindow::onOpenLinearRegressionClicked()
+{
+    openLinearRegressionDlg();
+}
+
+// 功能：打开“剖面数据插值”对话框
+void CGravMagnMainWindow::onOpenProfDataInterpolationClicked()
+{
+    openProfDataInterpolationDlg();
+}
+
 // 功能：提示该功能前端尚未开发（未实现功能统一回调）
 void CGravMagnMainWindow::onNotImplementedClicked()
 {
@@ -753,11 +861,14 @@ void CGravMagnMainWindow::onExitClicked()
     close();
 }
 
-// 功能：处理对话框的“显示”请求（等值线显示窗口将在前端后续版本实现）
+// 功能：处理对话框的“显示”请求——打开 OpenGL 等值线显示窗口
+// 参数：strFilePath —— 待显示的 .grd 网格文件路径
 void CGravMagnMainWindow::onViewGridFileRequested(const QString& strFilePath)
 {
-    QMessageBox::information(this, QStringLiteral("等值线显示"),
-        QStringLiteral("等值线显示功能将在前端后续版本提供。\n文件：") + strFilePath);
+    // 以无模态方式打开等值线显示窗口（同原工程 new CDrawOpenGLContourDlg + Create 方式）
+    CDrawOpenGLContourDlg* pViewDlg = new CDrawOpenGLContourDlg(strFilePath, this);
+    pViewDlg->setAttribute(Qt::WA_DeleteOnClose);
+    pViewDlg->show();
 }
 
 // 功能：处理对话框的体数据“显示”请求（三维体数据视图将在前端后续版本实现）

@@ -52,7 +52,14 @@ GravMagnFrontend/
         ├── MagnGradCoImagingDlg.h / .cpp      # ★ 三维磁异常和梯度相关成像
         ├── MagnIntensityCalculationDlg.h / .cpp   # ★ 磁化强度计算（纯参数计算，无后端接口）
         ├── GridDataRecoveryDlg.h / .cpp       # ★ 网格数据空白区还原
-        └── GridFileNameDlg.h / .cpp           # ★ 网格文件名对话框（三维重磁异常自动反演参数设置，原 IDD_DLG_INVERSION_PARAMS，多个反演功能共用）
+        ├── MagnToPoleLowDlg.h / .cpp          # ★ 低磁纬度化极
+        ├── MagnToPoleVarIncDecDlg.h / .cpp    # ★ 变磁化倾角化极
+        ├── MagnToPoleVarInclineDlg.h / .cpp   # ★ 分带变磁倾角化极
+        ├── GridFileNameDlg.h / .cpp           # ★ 网格文件名对话框（三维重磁异常自动反演参数设置，原 IDD_DLG_INVERSION_PARAMS，多个反演功能共用）
+        ├── ProfDataInterpolationDlg.h / .cpp  # ★ 剖面数据插值（纯前端：读剖面/线性插值/写结果）
+        ├── TimeDomainLinearRegressionDlg.h / .cpp  # ★ 一元线性回归分析（纯前端：读表/最小二乘/散点+回归线）
+        ├── ContourGLWidget.h / .cpp           # ★ OpenGL 等值线绘制控件（读 .grd + Marching Squares + jet 色带）
+        └── DrawOpenGLContourDlg.h / .cpp      # ★ OpenGL 等值线显示窗口（对应原“显示”按钮）
 ```
 
 ## 二、已完成的界面（本次任务）
@@ -220,15 +227,18 @@ GravMagnFrontend.exe [候选文件1;候选文件2;...]
 * 主窗口“重磁数据预处理和处理”中，点击“频率域重磁数据处理”分组的
   “补偿圆滑滤波”“向下延拓”“逐次向下延拓”“迭代曲化平”“总水平方向导数”
   “任意方向分量转换”“正则化滤波”“一阶导数”“磁源重力异常”“化极”
-  “三分量转换”“线性构造增强”“解析信号”按钮打开对应对话框
+  “三分量转换”“线性构造增强”“解析信号”，以及“空间域”分组的“线性回归分析”、
+  “重磁数据预处理”分组的“剖面数据插值”按钮打开对应对话框
   （其余功能提示“尚未开发”；“梯度计算”“剩余磁化极”“Tilt 梯度（斜导数）”
   等对话框已完成前端但原工程主窗口无对应按钮，未接入）；
+* 各处理对话框点“显示”按钮，会打开 OpenGL 等值线显示窗口（`CDrawOpenGLContourDlg`，
+  读 .grd 用 Marching Squares 生成等值线并以 jet 色带绘制，支持滚轮缩放/左键拖拽平移/双击还原）；
 * 可先用 `data\sample_dsbb.grd` 等样例数据联调界面（选文件 → 网格信息自动填充）。
 
 ## 七、当前状态与后续任务
 
-* ✅ 27 个功能对话框前端（20 个频率域 + 三维重力/磁异常和梯度相关成像 + 重磁三维体反演（网格文件名对话框）+ 重力中区/联合地形改正 + 磁化强度计算 + 网格数据空白区还原）；
-* ✅ 后端接口 `IRgisBackend`（22 个处理接口；其中重力梯度成像/体反演/网格空白区还原等等待后端提供，前端以 `readGridFileHead` + 占位提示运行；磁化强度计算为纯参数计算，由前端直接完成，无后端接口）；
-* ⬜ 后端算法实现（按 `RgisBackend.h` 契约实现已有 22 个 process 接口）；
-* ⬜ 等值线显示窗口（对应 `CDrawOpenGLContourDlg`，“显示”按钮待实现，信号已留好）；
-* ⬜ 其余 53 个功能对话框的同类前端迁移（按 `PfProcesses_DEPENDENCY.md` 推进）。
+* ✅ 33 个功能对话框前端（20 个频率域 + 三维重力/磁异常和梯度相关成像 + 重磁三维体反演 + 重力中区/联合地形改正 + 磁化强度计算 + 网格数据空白区还原 + 低磁纬度化极 + 变磁化倾角化极 + 分带变磁倾角化极 + 剖面数据插值 + 一元线性回归分析）；
+* ✅ OpenGL 等值线显示窗口（`CDrawOpenGLContourDlg` + `CContourGLWidget`，对应原工程“显示”按钮，信号已接入）；
+* ✅ 后端接口 `IRgisBackend`（22 个处理接口；其中重力梯度成像/体反演/网格空白区还原/三个磁法化极等后端接口尚未由后端提供，前端以 `readGridFileHead` + 占位提示运行；磁化强度计算、剖面数据插值、一元线性回归分析为纯参数/源码功能，由前端直接完成，无后端接口）；
+* ⬜ 后端算法实现（按 `RgisBackend.h` 契约实现已有 22 个 process 接口，并为未提供的接口补上 processMagnToPoleLow / processMagnToPoleVarIncDec / processMagnToPoleVarIncline 等）；
+* ⬜ 其余 47 个功能对话框的同类前端迁移（按 `PfProcesses_DEPENDENCY.md` 推进）。

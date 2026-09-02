@@ -61,6 +61,11 @@ private slots:
     void onOpenMagnGradCoImagingClicked();// 功能：打开“三维磁异常和梯度相关成像”对话框
     void onOpenMagnIntensityClicked();    // 功能：打开“磁化强度计算”对话框
     void onOpenGridDataRecoveryClicked(); // 功能：打开“网格数据空白区还原”对话框
+    void onOpenMagnToPoleLowClicked();       // 功能：打开“低磁纬度化极”对话框
+    void onOpenMagnToPoleVarIncDecClicked(); // 功能：打开“变磁化倾角化极”对话框
+    void onOpenMagnToPoleVarInclineClicked();// 功能：打开“分带变磁倾角化极”对话框
+    void onOpenLinearRegressionClicked();   // 功能：打开“一元线性回归分析”对话框
+    void onOpenProfDataInterpolationClicked();  // 功能：打开“剖面数据插值”对话框
     void onNotImplementedClicked();     // 功能：提示该功能前端尚未开发（未实现功能统一回调）
     void onExitClicked();               // 功能：“退出”按钮——关闭主窗口退出程序
     void onViewGridFileRequested(const QString& strFilePath);  // 功能：处理对话框的“显示”请求（等值线显示由后续版本实现）
@@ -94,7 +99,12 @@ private:
         FunctionGravUnionTerrain = 21,  // 重力联合(平面带)地形改正（已实现）
         FunctionMagnGradCoImaging = 22, // 三维磁异常和梯度相关成像（已实现）
         FunctionMagnIntensity = 23,     // 磁化强度计算（已实现）
-        FunctionGridDataRecovery = 24   // 网格数据空白区还原（已实现）
+        FunctionGridDataRecovery = 24,  // 网格数据空白区还原（已实现）
+        FunctionMagnToPoleLow = 25,     // 低磁纬度化极（已实现）
+        FunctionMagnToPoleVarIncDec = 26,   // 变磁化倾角化极（已实现）
+        FunctionMagnToPoleVarIncline = 27,  // 分带变磁倾角化极（已实现）
+        FunctionLinearRegression = 28,      // 一元线性回归分析（已实现）
+        FunctionProfDataInterpolation = 29  // 剖面数据插值（已实现）
     };
 
     // ===== 界面初始化 =====
@@ -128,6 +138,11 @@ private:
     void openGravMagnVolumeInvDlg();                    // 功能：打开重磁三维体反演参数设置对话框（模态）
     void openMagnGradCoImagingDlg();                    // 功能：打开三维磁异常和梯度相关成像对话框（模态）
     void openMagnIntensityDlg();                        // 功能：打开磁化强度计算对话框（模态）
+    void openMagnToPoleLowDlg();                        // 功能：打开低磁纬度化极对话框（模态）
+    void openMagnToPoleVarIncDecDlg();                  // 功能：打开变磁化倾角化极对话框（模态）
+    void openMagnToPoleVarInclineDlg();                 // 功能：打开分带变磁倾角化极对话框（模态）
+    void openLinearRegressionDlg();                     // 功能：打开一元线性回归分析对话框（模态）
+    void openProfDataInterpolationDlg();                // 功能：打开剖面数据插值对话框（模态）
 
     QString mStrFileNames;  // 候选数据文件列表（分号分隔，传递给功能对话框）
 };

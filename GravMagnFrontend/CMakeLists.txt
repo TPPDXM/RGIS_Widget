@@ -91,8 +91,22 @@ set(PROJECT_SOURCES
     src/dlg/GravUnionTerrainCorrectionDlg.cpp
     src/dlg/GridDataRecoveryDlg.h
     src/dlg/GridDataRecoveryDlg.cpp
+    src/dlg/MagnToPoleLowDlg.h
+    src/dlg/MagnToPoleLowDlg.cpp
+    src/dlg/MagnToPoleVarIncDecDlg.h
+    src/dlg/MagnToPoleVarIncDecDlg.cpp
+    src/dlg/MagnToPoleVarInclineDlg.h
+    src/dlg/MagnToPoleVarInclineDlg.cpp
     src/dlg/GridFileNameDlg.h
     src/dlg/GridFileNameDlg.cpp
+    src/dlg/ProfDataInterpolationDlg.h
+    src/dlg/ProfDataInterpolationDlg.cpp
+    src/dlg/TimeDomainLinearRegressionDlg.h
+    src/dlg/TimeDomainLinearRegressionDlg.cpp
+    src/dlg/ContourGLWidget.h
+    src/dlg/ContourGLWidget.cpp
+    src/dlg/DrawOpenGLContourDlg.h
+    src/dlg/DrawOpenGLContourDlg.cpp
 )
 
 add_executable(GravMagnFrontend WIN32 ${PROJECT_SOURCES})
@@ -101,6 +115,11 @@ add_executable(GravMagnFrontend WIN32 ${PROJECT_SOURCES})
 target_include_directories(GravMagnFrontend PRIVATE src)
 
 target_link_libraries(GravMagnFrontend PRIVATE Qt5::Widgets)
+
+if(WIN32)
+    # OpenGL 等值线显示窗口需要系统 OpenGL 库（基于 QOpenGLWidget）
+    target_link_libraries(GravMagnFrontend PRIVATE opengl32)
+endif()
 
 if(MSVC)
     # 源码统一按 UTF-8 解析，避免中文注释/字符串在 MSVC 下出现乱码
