@@ -82,6 +82,10 @@ set(PROJECT_SOURCES
     src/dlg/FreqDomainDzToPoleDlg.cpp
     src/dlg/FreqMaximumDerivativeDlg.h
     src/dlg/FreqMaximumDerivativeDlg.cpp
+    src/dlg/FreqNormalizationSTDDlg.h
+    src/dlg/FreqNormalizationSTDDlg.cpp
+    src/dlg/FreqNVDRofNSTDDlg.h
+    src/dlg/FreqNVDRofNSTDDlg.cpp
     src/dlg/MagnGradCoImagingDlg.h
     src/dlg/MagnGradCoImagingDlg.cpp
     src/dlg/MagnIntensityCalculationDlg.h

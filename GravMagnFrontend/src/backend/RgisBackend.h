@@ -682,6 +682,46 @@ struct MaximumDerivativeParams
     }
 };
 
+// 频率域归一化标准差（归一化标准方差）处理参数
+// 对应原 MFC 工程 CFreqNormalizationSTDDlg 界面上的全部输入项
+// 说明：原工程此对话框无扩边信息（扩边由算法内部完成）；算法经外部动态库
+//       PfProcesses.dll 的 _PFPROCESSES@680 入口完成（iComType = 503）。
+struct NormalizationSTDParams
+{
+    std::string inputFilePath;      // 输入网格数据文件路径（.grd）
+    std::string outputFilePath;     // 处理结果数据文件输出路径（默认 基准名 + "_NSTD.grd"）
+    int         winRows;            // 窗口行数（界面“窗口行数”，原 m_nWinRows，默认 3）
+    int         winCols;            // 窗口列数（界面“窗口列数”，原 m_nWinCols，默认 3）
+    float       alfa;               // 正则化因子（界面“正则化因子”，原 m_fAlfa，默认 0.0001，范围 0~1）
+
+    NormalizationSTDParams()
+        : winRows(3)
+        , winCols(3)
+        , alfa(0.0001f)
+    {
+    }
+};
+
+// 频率域归一化标准差的垂直导数比（NVDR-of-NSTD）处理参数
+// 对应原 MFC 工程 CFreqNVDRofNSTDDlg 界面上的全部输入项
+// 说明：原工程此对话框无扩边信息（扩边由算法内部完成）；算法经外部动态库
+//       PfProcesses.dll 的 _PFPROCESSES@680 入口完成（iComType = 504）。
+struct NVDRofNSTDParams
+{
+    std::string inputFilePath;      // 输入网格数据文件路径（.grd）
+    std::string outputFilePath;     // 处理结果数据文件输出路径（默认 基准名 + "_NVDR_NSTD.grd"）
+    int         winRows;            // 窗口行数（界面“窗口行数”，原 m_nWinRows，默认 3）
+    int         winCols;            // 窗口列数（界面“窗口列数”，原 m_nWinCols，默认 3）
+    float       alfa;               // 正则化因子（界面“正则化因子”，原 m_fAlfa，默认 0.0001，范围 0~1）
+
+    NVDRofNSTDParams()
+        : winRows(3)
+        , winCols(3)
+        , alfa(0.0001f)
+    {
+    }
+};
+
 //---------------------------------------------------------------------------
 
 // 后端算法接口（前端只通过本接口与后端交互，后端只需实现本接口即可对接）
@@ -1122,6 +1162,35 @@ public:
     // 约定：同 processCmpsFilter（同步调用、不抛异常、DSBB 格式写出）。
     // 返回：true 成功；false 失败（error 给出原因）
     virtual bool processMaximumDerivative(const MaximumDerivativeParams& params, BackendError& error) = 0;
+
+    // ===== 功能：频率域归一化标准差（归一化标准方差）处理 =====
+    // 用途：处理流程（与原 MFC 工程 CFreqNormalizationSTDDlg::OnOK 一致）：
+    //   1. 读取 inputFilePath 网格数据（界面已校验：网格行列距需相等，
+    //      否则前端给出“您读入的网格数据行列距不相等！”提示并不发起处理）；
+    //   2. 缺失数据插值（原 CContourFile::MissingDataIntrepolation）；
+    //   3. 归一化标准差计算（原工程经外部动态库 PfProcesses.dll 的 _PFPROCESSES@680 入口完成，
+    //      iComType = 503；参数：行数/列数/列距/行距/窗口行数 winRows/窗口列数 winCols/
+    //      正则化因子 alfa 等；后端实现时可桥接该 DLL 或等价重写；界面无扩边输入，扩边在算法内部完成）；
+    //   4. 缺失数据还原（原 MissingDataResume），写出结果文件 outputFilePath
+    //      （对应原工程提示“归一化标准方差计算结束!”）。
+    // 约定：同 processCmpsFilter（同步调用、不抛异常、DSBB 格式写出）。
+    // 返回：true 成功；false 失败（error 给出原因）
+    virtual bool processNormalizationSTD(const NormalizationSTDParams& params, BackendError& error) = 0;
+
+    // ===== 功能：频率域归一化标准差的垂直导数比（NVDR-of-NSTD）处理 =====
+    // 用途：处理流程（与原 MFC 工程 CFreqNVDRofNSTDDlg::OnOK 一致）：
+    //   1. 读取 inputFilePath 网格数据（界面已校验：网格行列距需相等，
+    //      否则前端给出“您读入的网格数据行列距不相等！”提示并不发起处理）；
+    //   2. 缺失数据插值（原 CContourFile::MissingDataIntrepolation）；
+    //   3. 归一化标准差的垂直导数比计算（原工程经外部动态库 PfProcesses.dll 的
+    //      _PFPROCESSES@680 入口完成，iComType = 504；参数：行数/列数/列距/行距/
+    //      窗口行数 winRows/窗口列数 winCols/正则化因子 alfa 等；后端实现时可桥接该 DLL
+    //      或等价重写；界面无扩边输入，扩边在算法内部完成）；
+    //   4. 缺失数据还原（原 MissingDataResume），写出结果文件 outputFilePath
+    //      （对应原工程提示“归一化标准方差垂向导数计算结束!”）。
+    // 约定：同 processCmpsFilter（同步调用、不抛异常、DSBB 格式写出）。
+    // 返回：true 成功；false 失败（error 给出原因）
+    virtual bool processNVDRofNSTD(const NVDRofNSTDParams& params, BackendError& error) = 0;
 
     // ===== 功能：读取三维体数据 =====
     // 用途：三维体数据视图对话框（原 MFC 工程 CVolumeDataViewDlg 内嵌 ActiveX 体渲染控件

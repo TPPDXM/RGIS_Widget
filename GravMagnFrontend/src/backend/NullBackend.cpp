@@ -642,3 +642,23 @@ bool CNullRgisBackend::processMaximumDerivative(const MaximumDerivativeParams& p
     error.message = "算法后端尚未接入：频率域最大导数（最大水平方向导数）功能等待后端实现。";
     return false;
 }
+
+// 功能：频率域归一化标准差（归一化标准方差）处理（占位，等待正式算法后端实现）
+bool CNullRgisBackend::processNormalizationSTD(const NormalizationSTDParams& params, BackendError& error)
+{
+    (void)params;   // 参数暂不使用（占位实现）
+
+    error.code = 100;
+    error.message = "算法后端尚未接入：频率域归一化标准差（归一化标准方差）功能等待后端实现。";
+    return false;
+}
+
+// 功能：频率域归一化标准差的垂直导数比（NVDR-of-NSTD）处理（占位，等待正式算法后端实现）
+bool CNullRgisBackend::processNVDRofNSTD(const NVDRofNSTDParams& params, BackendError& error)
+{
+    (void)params;   // 参数暂不使用（占位实现）
+
+    error.code = 100;
+    error.message = "算法后端尚未接入：频率域归一化标准差的垂直导数比（NVDR-of-NSTD）功能等待后端实现。";
+    return false;
+}

@@ -30,6 +30,8 @@
 #include "dlg/FreqDomainUpwardDlg.h"
 #include "dlg/FreqDomainDzToPoleDlg.h"
 #include "dlg/FreqMaximumDerivativeDlg.h"
+#include "dlg/FreqNormalizationSTDDlg.h"
+#include "dlg/FreqNVDRofNSTDDlg.h"
 #include "dlg/ProfDataInterpolationDlg.h"
 #include "dlg/TimeDomainLinearRegressionDlg.h"
 #include "dlg/DrawOpenGLContourDlg.h"
@@ -157,9 +159,9 @@ void CGravMagnMainWindow::initUi()
     addFunctionButton(pLayout4, 1, 1, QStringLiteral("倾斜角总水平方向导数"), FunctionNotImplemented);
     addFunctionButton(pLayout4, 1, 2, QStringLiteral("最大水平方向导数"), FunctionMaximumDerivative); // 已实现：频率域最大导数(最大水平方向导数)
     addFunctionButton(pLayout4, 1, 3, QStringLiteral("Theta 图"), FunctionNotImplemented);
-    addFunctionButton(pLayout4, 1, 4, QStringLiteral("归一化标准差"), FunctionNotImplemented);
+    addFunctionButton(pLayout4, 1, 4, QStringLiteral("归一化标准差"), FunctionNormalizationSTD); // 已实现：频率域归一化标准差(归一化标准方差)
     addFunctionButton(pLayout4, 1, 5, QStringLiteral("归一化总水平导数垂向导数"), FunctionNotImplemented);
-    addFunctionButton(pLayout4, 1, 6, QStringLiteral("归一化标准差垂向导数"), FunctionNotImplemented);
+    addFunctionButton(pLayout4, 1, 6, QStringLiteral("归一化标准差垂向导数"), FunctionNVDRofNSTD); // 已实现：NVDR-of-NSTD
     addFunctionButton(pLayout4, 1, 7, QStringLiteral("归一化 Theta 图垂向导数"), FunctionNotImplemented);
 
     // ================= 分组 5：重磁数据预处理（含退出按钮）=================
@@ -312,6 +314,16 @@ void CGravMagnMainWindow::addFunctionButton(QGridLayout* pLayout, int nRow, int 
     {
         // 已实现：打开“频率域最大导数(最大水平方向导数)”对话框
         connect(pButton, &QPushButton::clicked, this, &CGravMagnMainWindow::onOpenMaximumDerivativeClicked);
+    }
+    else if (eType == FunctionNormalizationSTD)
+    {
+        // 已实现：打开“频率域归一化标准差(归一化标准方差)”对话框
+        connect(pButton, &QPushButton::clicked, this, &CGravMagnMainWindow::onOpenNormalizationSTDClicked);
+    }
+    else if (eType == FunctionNVDRofNSTD)
+    {
+        // 已实现：打开“频率域归一化标准差的垂直导数比(NVDR-of-NSTD)”对话框
+        connect(pButton, &QPushButton::clicked, this, &CGravMagnMainWindow::onOpenNVDRofNSTDClicked);
     }
     else if (eType == FunctionGravGradCoImaging)
     {
@@ -572,6 +584,26 @@ void CGravMagnMainWindow::openMaximumDerivativeDlg()
     dlg.exec();
 }
 
+// 功能：打开频率域归一化标准差(归一化标准方差)对话框（模态）
+void CGravMagnMainWindow::openNormalizationSTDDlg()
+{
+    CFreqNormalizationSTDDlg dlg(this);
+    // 连接对话框的“显示”请求信号（等值线显示由前端后续版本提供）
+    connect(&dlg, &CFreqNormalizationSTDDlg::viewGridFileRequested,
+        this, &CGravMagnMainWindow::onViewGridFileRequested);
+    dlg.exec();
+}
+
+// 功能：打开频率域归一化标准差的垂直导数比(NVDR-of-NSTD)对话框（模态）
+void CGravMagnMainWindow::openNVDRofNSTDDlg()
+{
+    CFreqNVDRofNSTDDlg dlg(this);
+    // 连接对话框的“显示”请求信号（等值线显示由前端后续版本提供）
+    connect(&dlg, &CFreqNVDRofNSTDDlg::viewGridFileRequested,
+        this, &CGravMagnMainWindow::onViewGridFileRequested);
+    dlg.exec();
+}
+
 // 功能：打开三维重力异常和梯度相关成像对话框（模态）
 void CGravMagnMainWindow::openGravGradCoImagingDlg()
 {
@@ -799,6 +831,18 @@ void CGravMagnMainWindow::onOpenMaximumDerivativeClicked()
     openMaximumDerivativeDlg();
 }
 
+// 功能：打开“频率域归一化标准差(归一化标准方差)”对话框
+void CGravMagnMainWindow::onOpenNormalizationSTDClicked()
+{
+    openNormalizationSTDDlg();
+}
+
+// 功能：打开“频率域归一化标准差的垂直导数比(NVDR-of-NSTD)”对话框
+void CGravMagnMainWindow::onOpenNVDRofNSTDClicked()
+{
+    openNVDRofNSTDDlg();
+}
+
 // 功能：打开“三维重力异常和梯度相关成像”对话框
 void CGravMagnMainWindow::onOpenGravGradCoImagingClicked()
 {
@@ -892,6 +936,9 @@ void CGravMagnMainWindow::onNotImplementedClicked()
             "频率域剩余化极（化极）、频率域构造（小子域滤波/线性构造增强）、\n"
             "频率域三分量转换、频率域总梯度（解析信号）、\n"
             "频率域二阶导数、频率域向上延拓、\n"
+            "频率域 ΔZ 化极、频率域最大导数（最大水平方向导数）、\n"
+            "频率域归一化标准差（归一化标准方差）、\n"
+            "频率域归一化标准差的垂直导数比（NVDR-of-NSTD）、\n"
             "三维重力异常和梯度相关成像、重磁三维体反演、\n"
             "重力中区地形改正、重力联合（平面带）地形改正、\n"
             "三维磁异常和梯度相关成像、磁化强度计算、\n"

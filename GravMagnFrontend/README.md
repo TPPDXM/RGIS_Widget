@@ -45,6 +45,8 @@ GravMagnFrontend/
         ├── FreqDomainTotlGradDlg.h / .cpp     # ★ 频率域总梯度（解析信号）
         ├── FreqDomainTwoDerivDlg.h / .cpp     # ★ 频率域二阶导数
         ├── FreqDomainUpwardDlg.h / .cpp       # ★ 频率域向上延拓
+        ├── FreqNormalizationSTDDlg.h / .cpp   # ★ 频率域归一化标准差（归一化标准方差）
+        └── FreqNVDRofNSTDDlg.h / .cpp         # ★ 频率域归一化标准差的垂直导数比（NVDR-of-NSTD）
         ├── FreqDomainDzToPoleDlg.h / .cpp     # ★ 频率域 ΔZ 化极（Za 化极）
         └── FreqMaximumDerivativeDlg.h / .cpp  # ★ 频率域最大导数（最大水平方向导数）
         ├── GravGradCoImagingDlg.h / .cpp      # ★ 三维重力异常和梯度相关成像
@@ -243,11 +245,11 @@ GravMagnFrontend.exe [候选文件1;候选文件2;...]
 
 ## 七、当前状态与后续任务
 
-* ✅ 37 个功能对话框前端（22 个频率域 + 三维重力/磁异常和梯度相关成像 + 重磁三维体反演 + 重力中区/联合地形改正 + 磁化强度计算 + 网格数据空白区还原 + 低磁纬度化极 + 变磁化倾角化极 + 分带变磁倾角化极 + 剖面数据插值 + 一元线性回归分析 + 网格文件名对话框 + 三维体数据视图）；
+* ✅ 39 个功能对话框前端（24 个频率域 + 三维重力/磁异常和梯度相关成像 + 重磁三维体反演 + 重力中区/联合地形改正 + 磁化强度计算 + 网格数据空白区还原 + 低磁纬度化极 + 变磁化倾角化极 + 分带变磁倾角化极 + 剖面数据插值 + 一元线性回归分析 + 网格文件名对话框 + 三维体数据视图）；
 * ✅ OpenGL 等值线显示窗口（`CDrawOpenGLContourDlg` + `CContourGLWidget`，对应原工程“显示”按钮，信号已接入）；
 * ✅ 三维体数据视图（`CVolumeDataViewDlg` + `CVolumeDataGLView`，Qt OpenGL 三方向正交切片示意；体数据经后端接口 `readVolumeData` 读取；原工程主窗口无对应按钮，未接入主窗）；
-* ✅ 后端接口 `IRgisBackend`（24 个处理接口 + `readVolumeData` 体数据读取接口）；
-* ⬜ 后端算法实现（按 `RgisBackend.h` 契约实现已有 24 个 process 接口与 `readVolumeData`，并为未提供的接口补上 processMagnToPoleLow / processMagnToPoleVarIncDec / processMagnToPoleVarIncline 等）；
-* ⬜ 其余 43 个功能对话框的同类前端迁移（按 `PfProcesses_DEPENDENCY.md` 推进）。
+* ✅ 后端接口 `IRgisBackend`（26 个处理接口 + `readVolumeData` 体数据读取接口）；
+* ⬜ 后端算法实现（按 `RgisBackend.h` 契约实现已有 26 个 process 接口与 `readVolumeData`，并为未提供的接口补上 processMagnToPoleLow / processMagnToPoleVarIncDec / processMagnToPoleVarIncline 等）；
+* ⬜ 其余 41 个功能对话框的同类前端迁移（按 `PfProcesses_DEPENDENCY.md` 推进）。
 
 > 说明：主窗“最大水平方向导数”按钮按原工程模块映射（模块 62 → `CFreqMaximumDerivativeDlg`）接入最大导数；`CFreqDomainMaxiGradDlg`（最大梯度）原工程主窗无对应按钮，未接入主窗（与“梯度计算”等一致）。

@@ -48,6 +48,8 @@ public:
     bool readVolumeData(const std::string& filePath, VolumeData& vol, BackendError& error) override;
     bool processDzToPole(const DzToPoleParams& params, BackendError& error) override;
     bool processMaximumDerivative(const MaximumDerivativeParams& params, BackendError& error) override;
+    bool processNormalizationSTD(const NormalizationSTDParams& params, BackendError& error) override;
+    bool processNVDRofNSTD(const NVDRofNSTDParams& params, BackendError& error) override;
 
 private:
     // ===== 私有工具函数（.grd 文件头解析，对应原 MFC 工程 CContourFile::AReadFile1~4）=====
