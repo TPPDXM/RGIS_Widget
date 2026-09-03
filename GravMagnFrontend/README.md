@@ -45,6 +45,8 @@ GravMagnFrontend/
         ├── FreqDomainTotlGradDlg.h / .cpp     # ★ 频率域总梯度（解析信号）
         ├── FreqDomainTwoDerivDlg.h / .cpp     # ★ 频率域二阶导数
         ├── FreqDomainUpwardDlg.h / .cpp       # ★ 频率域向上延拓
+        ├── FreqDomainDzToPoleDlg.h / .cpp     # ★ 频率域 ΔZ 化极（Za 化极）
+        └── FreqMaximumDerivativeDlg.h / .cpp  # ★ 频率域最大导数（最大水平方向导数）
         ├── GravGradCoImagingDlg.h / .cpp      # ★ 三维重力异常和梯度相关成像
         ├── GravMagnVolumeInvDlg.h / .cpp      # ★ 重磁三维体反演（处理流程类，界面复用网格文件名对话框）
         ├── GravMidTerrainCorrectionDlg.h / .cpp   # ★ 重力中区地形改正
@@ -93,6 +95,8 @@ GravMagnFrontend/
 | `CFreqDomainTotlGradDlg` | `CFreqDomainTotlGradDlg` | `IDD_FreqDomainTotlGrad` | 频率域总梯度（解析信号）：输入文件、网格信息（2×2）、扩边方法单选（4 种）、扩边行/列数、结果文件输出（默认 _AS.grd） |
 | `CFreqDomainTwoDerivDlg` | `CFreqDomainTwoDerivDlg` | `IDD_FreqDomainTwoDeriv` | 频率域二阶导数：输入文件、网格信息（2×2）、扩边行/列数、扩边方法单选（4 种）、导数倾角/导数偏角（默认 0/0，范围 0~360）、结果文件输出（默认 _HDR_II.grd） |
 | `CFreqDomainUpwardDlg` | `CFreqDomainUpwardDlg` | `IDD_FreqDomainUpward` | 频率域向上延拓：输入文件、网格信息（2×2）、扩边行/列数、扩边方法单选（4 种）、延拓高度（向上延拓为正，读文件后默认 2 倍列距，范围 0~1e7）、结果文件输出（默认 _Pro.grd） |
+| `CFreqDomainDzToPoleDlg` | `CFreqDomainDzToPoleDlg` | `IDD_FreqDomainDzToPole` | 频率域 ΔZ 化极（Za 化极）：输入文件、网格信息（2×2）、扩边行/列数、磁化倾角/磁化偏角（默认 60/30，范围 -90~90 / -360~360，无扩边方法单选组）、结果文件输出（默认 _RTP.grd）；原工程算法经外部动态库完成，后端实现时可桥接或等价重写 |
+| `CFreqMaximumDerivativeDlg` | `CFreqMaximumDerivativeDlg` | `IDD_FreqMaximumDerivative` | 频率域最大导数（最大水平方向导数）：输入文件、网格信息（2×2）、水平方向角度间隔（默认 5，范围 1~20，无扩边信息）、结果文件输出（默认 _MaxHDR.grd）；原工程算法经 PfProcesses.dll 完成（iAngleStep=角度间隔），后端实现时可桥接或等价重写 |
 | `CGravGradCoImagingDlg` | `CGravGradCoImagingDlg` | `IDD_GravGradCoImaging` | 三维重力异常和梯度相关成像：场值数据文件、网格信息（行/列/行距/列距）、滤波选择（进行/不进行熵滤波，默认不进行）、场值类型单选（Gz/Gxz/Gyz/Gzz，默认 Gz，切换后刷新默认输出名）、处理参数（观测面高度、深度层间距（读文件后默认 (行距+列距)/2）、起点（默认 (行距+列距)/4）、终点）、相关系数体数据（_Z/_XZ/_YZ/_ZZ.vol）与信息文件（_*.log）双输出；校验：深度终点>起点、成像深度不超过网格最小尺寸一半 |
 | `CGravMagnVolumeInvProc` + `CGridFileNameDlg` | `CMyGravMagnVolumeInvProc` + `CGridFileNameDlg` | `IDD_DLG_INVERSION_PARAMS` | 重磁三维体反演（按原工程：无独立对话框，界面为网格文件名对话框"三维重磁异常自动反演参数设置"）：场值/地形文件输入（下拉+浏览+显示）、网格信息与数据范围、重/磁力单选（默认重力：显示"公里"、隐藏磁参；磁力显示磁化倾角/偏角/测线/基线方位角 90/0/90/0）、初始模型（复选框显隐）、控制参数文件（.par）、网格剖分（X/Y 自动取数据范围与点线距、Z 最小/最大/网格距可编辑，默认 Zmin=Xstep、Zmax=Zmin+Xstep×(列数奇偶)/2）、反演结果输出（正演场值 _Fwd.grd、模型数据 _Vol.vol、反演信息 _Inf.txt）；"开始反演"需场值+地形+控制参数齐全才显示 |
 | `CGravMidTerrainCorrectionDlg` | `CGravMidTerrainCorrectionDlg` | `IDD_GravMidTerrainCorrection` | 重力中区地形改正：重力测点数据文件(.txt)与地形高程网格数据文件(.grd)输入（含"显示"）、高程网格数据文件信息（重力测点数/网格行/列/高程网格距（整数规整）/高程最小/最大值，只读）、外接口形状选择（方形/圆形，默认方形）、内接口形状选择（方形/圆形，默认方形）、地形改正参数输入（起始半径=20、终止半径=500、地壳密度=2.67）、地形改正结果数据文件(.txt)输出；校验：起始/终止半径>0、可被高程网格距整除；超出高程范围的点由后端记录到结果文件同目录 Exceptdata.txt |
@@ -239,9 +243,11 @@ GravMagnFrontend.exe [候选文件1;候选文件2;...]
 
 ## 七、当前状态与后续任务
 
-* ✅ 35 个功能对话框前端（20 个频率域 + 三维重力/磁异常和梯度相关成像 + 重磁三维体反演 + 重力中区/联合地形改正 + 磁化强度计算 + 网格数据空白区还原 + 低磁纬度化极 + 变磁化倾角化极 + 分带变磁倾角化极 + 剖面数据插值 + 一元线性回归分析 + 网格文件名对话框 + 三维体数据视图）；
+* ✅ 37 个功能对话框前端（22 个频率域 + 三维重力/磁异常和梯度相关成像 + 重磁三维体反演 + 重力中区/联合地形改正 + 磁化强度计算 + 网格数据空白区还原 + 低磁纬度化极 + 变磁化倾角化极 + 分带变磁倾角化极 + 剖面数据插值 + 一元线性回归分析 + 网格文件名对话框 + 三维体数据视图）；
 * ✅ OpenGL 等值线显示窗口（`CDrawOpenGLContourDlg` + `CContourGLWidget`，对应原工程“显示”按钮，信号已接入）；
 * ✅ 三维体数据视图（`CVolumeDataViewDlg` + `CVolumeDataGLView`，Qt OpenGL 三方向正交切片示意；体数据经后端接口 `readVolumeData` 读取；原工程主窗口无对应按钮，未接入主窗）；
-* ✅ 后端接口 `IRgisBackend`（22 个处理接口 + `readVolumeData` 体数据读取接口）；
-* ⬜ 后端算法实现（按 `RgisBackend.h` 契约实现已有 22 个 process 接口与 `readVolumeData`，并为未提供的接口补上 processMagnToPoleLow / processMagnToPoleVarIncDec / processMagnToPoleVarIncline 等）；
-* ⬜ 其余 45 个功能对话框的同类前端迁移（按 `PfProcesses_DEPENDENCY.md` 推进）。
+* ✅ 后端接口 `IRgisBackend`（24 个处理接口 + `readVolumeData` 体数据读取接口）；
+* ⬜ 后端算法实现（按 `RgisBackend.h` 契约实现已有 24 个 process 接口与 `readVolumeData`，并为未提供的接口补上 processMagnToPoleLow / processMagnToPoleVarIncDec / processMagnToPoleVarIncline 等）；
+* ⬜ 其余 43 个功能对话框的同类前端迁移（按 `PfProcesses_DEPENDENCY.md` 推进）。
+
+> 说明：主窗“最大水平方向导数”按钮按原工程模块映射（模块 62 → `CFreqMaximumDerivativeDlg`）接入最大导数；`CFreqDomainMaxiGradDlg`（最大梯度）原工程主窗无对应按钮，未接入主窗（与“梯度计算”等一致）。

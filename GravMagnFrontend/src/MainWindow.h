@@ -54,6 +54,8 @@ private slots:
     void onOpenTotlGradClicked();       // 功能：打开“频率域总梯度(解析信号)”对话框
     void onOpenTwoDerivClicked();       // 功能：打开“频率域二阶导数”对话框
     void onOpenUpwardClicked();         // 功能：打开“频率域向上延拓”对话框
+    void onOpenDzToPoleClicked();       // 功能：打开“频率域 ΔZ 化极(Za 化极)”对话框
+    void onOpenMaximumDerivativeClicked(); // 功能：打开“频率域最大导数(最大水平方向导数)”对话框
     void onOpenGravGradCoImagingClicked(); // 功能：打开“三维重力异常和梯度相关成像”对话框
     void onOpenGravMagnVolumeInvClicked();  // 功能：打开“重磁三维体反演(网格文件名对话框)”流程
     void onOpenGravMidTerrainClicked();   // 功能：打开“重力中区地形改正”对话框
@@ -104,7 +106,9 @@ private:
         FunctionMagnToPoleVarIncDec = 26,   // 变磁化倾角化极（已实现）
         FunctionMagnToPoleVarIncline = 27,  // 分带变磁倾角化极（已实现）
         FunctionLinearRegression = 28,      // 一元线性回归分析（已实现）
-        FunctionProfDataInterpolation = 29  // 剖面数据插值（已实现）
+        FunctionProfDataInterpolation = 29, // 剖面数据插值（已实现）
+        FunctionDzToPole = 30,          // 频率域 ΔZ 化极(Za 化极)（已实现）
+        FunctionMaximumDerivative = 31  // 频率域最大导数(最大水平方向导数)（已实现）
     };
 
     // ===== 界面初始化 =====
@@ -143,6 +147,8 @@ private:
     void openMagnToPoleVarInclineDlg();                 // 功能：打开分带变磁倾角化极对话框（模态）
     void openLinearRegressionDlg();                     // 功能：打开一元线性回归分析对话框（模态）
     void openProfDataInterpolationDlg();                // 功能：打开剖面数据插值对话框（模态）
+    void openDzToPoleDlg();                             // 功能：打开频率域 ΔZ 化极(Za 化极)对话框（模态）
+    void openMaximumDerivativeDlg();                    // 功能：打开频率域最大导数(最大水平方向导数)对话框（模态）
 
     QString mStrFileNames;  // 候选数据文件列表（分号分隔，传递给功能对话框）
 };

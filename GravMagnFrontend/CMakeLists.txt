@@ -78,6 +78,10 @@ set(PROJECT_SOURCES
     src/dlg/FreqDomainTwoDerivDlg.cpp
     src/dlg/FreqDomainUpwardDlg.h
     src/dlg/FreqDomainUpwardDlg.cpp
+    src/dlg/FreqDomainDzToPoleDlg.h
+    src/dlg/FreqDomainDzToPoleDlg.cpp
+    src/dlg/FreqMaximumDerivativeDlg.h
+    src/dlg/FreqMaximumDerivativeDlg.cpp
     src/dlg/MagnGradCoImagingDlg.h
     src/dlg/MagnGradCoImagingDlg.cpp
     src/dlg/MagnIntensityCalculationDlg.h

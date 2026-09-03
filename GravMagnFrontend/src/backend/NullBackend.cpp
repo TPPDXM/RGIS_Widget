@@ -622,3 +622,23 @@ bool CNullRgisBackend::readVolumeData(const std::string& filePath, VolumeData& v
     error.message = "数据后端尚未接入：三维体数据读取功能等待后端实现。";
     return false;
 }
+
+// 功能：频率域 ΔZ 化极（Za 化极）处理（占位，等待正式算法后端实现）
+bool CNullRgisBackend::processDzToPole(const DzToPoleParams& params, BackendError& error)
+{
+    (void)params;   // 参数暂不使用（占位实现）
+
+    error.code = 100;
+    error.message = "算法后端尚未接入：频率域 ΔZ 化极（Za 化极）功能等待后端实现。";
+    return false;
+}
+
+// 功能：频率域最大导数（最大水平方向导数）处理（占位，等待正式算法后端实现）
+bool CNullRgisBackend::processMaximumDerivative(const MaximumDerivativeParams& params, BackendError& error)
+{
+    (void)params;   // 参数暂不使用（占位实现）
+
+    error.code = 100;
+    error.message = "算法后端尚未接入：频率域最大导数（最大水平方向导数）功能等待后端实现。";
+    return false;
+}

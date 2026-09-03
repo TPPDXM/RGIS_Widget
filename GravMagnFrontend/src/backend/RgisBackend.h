@@ -645,6 +645,45 @@ struct VolumeData
 
 //---------------------------------------------------------------------------
 
+// 频率域 ΔZ 化极（Za 化极）处理参数
+// 对应原 MFC 工程 CFreqDomainDzToPoleDlg 界面上的全部输入项
+// 说明：原工程此对话框无“数据扩边方法”单选组（扩边由算法内部完成）
+struct DzToPoleParams
+{
+    std::string inputFilePath;      // 输入网格数据文件路径（.grd）
+    std::string outputFilePath;     // 处理结果数据文件输出路径（默认 基准名 + "_RTP.grd"）
+    int         exRows;             // 扩边后行数（2 的幂，由界面“扩边行数”给定）
+    int         exCols;             // 扩边后列数（2 的幂，由界面“扩边列数”给定）
+    float       dtd0;               // 磁化偏角（界面“磁化偏角”，度，原 dTD0，默认 30.0，范围 -360~360）
+    float       dti0;               // 磁化倾角（界面“磁化倾角”，度，原 dTI0，默认 60.0，范围 -90~90）
+
+    DzToPoleParams()
+        : exRows(0)
+        , exCols(0)
+        , dtd0(30.0f)
+        , dti0(60.0f)
+    {
+    }
+};
+
+// 频率域最大导数（最大水平方向导数）处理参数
+// 对应原 MFC 工程 CFreqMaximumDerivativeDlg 界面上的全部输入项
+// 说明：原工程此对话框无扩边信息（扩边由算法内部完成）
+struct MaximumDerivativeParams
+{
+    std::string inputFilePath;      // 输入网格数据文件路径（.grd）
+    std::string outputFilePath;     // 处理结果数据文件输出路径（默认 基准名 + "_MaxHDR.grd"）
+    int         azimuthStep;        // 水平方向角度间隔（界面“水平方向角度间隔”，度/步长，
+                                    //   原 m_nAzimuthStep，默认 5，范围 1~20）
+
+    MaximumDerivativeParams()
+        : azimuthStep(5)
+    {
+    }
+};
+
+//---------------------------------------------------------------------------
+
 // 后端算法接口（前端只通过本接口与后端交互，后端只需实现本接口即可对接）
 class IRgisBackend
 {
@@ -1055,6 +1094,34 @@ public:
     // 约定：同步调用、不抛异常，一律通过返回值 + BackendError 报告；结果文件为文本格式。
     // 返回：true 成功；false 失败（error 给出原因）
     virtual bool processUnionTerrain(const UnionTerrainParams& params, BackendError& error) = 0;
+
+    // ===== 功能：频率域 ΔZ 化极（Za 化极）处理 =====
+    // 用途：处理流程（与原 MFC 工程 CFreqDomainDzToPoleDlg::OnOK 一致）：
+    //   1. 读取 inputFilePath 网格数据；
+    //   2. 缺失数据插值（原 CContourFile::MissingDataIntrepolation）；
+    //   3. 按原工程内部扩边规则对数据扩边到 exRows * exCols（原工程经外部动态库
+    //      FDReRmToPole.dll 完成，后端实现时可桥接该 DLL 或等价重写；界面无扩边方法输入，
+    //      扩边处理在算法内部完成）；
+    //   4. ΔZ 化极计算（参数 dtd0 磁化偏角、dti0 磁化倾角，原工程经动态库 FDReRmToPole.dll 的
+    //      入口处理）；结果还原为二维网格（原 FloatDataDimensionTranslation 反向转换）；
+    //   5. 缺失数据还原（原 MissingDataResume），写出结果文件 outputFilePath
+    //      （对应原工程提示“化极处理结束!”）。
+    // 约定：同 processCmpsFilter（同步调用、不抛异常、DSBB 格式写出）。
+    // 返回：true 成功；false 失败（error 给出原因）
+    virtual bool processDzToPole(const DzToPoleParams& params, BackendError& error) = 0;
+
+    // ===== 功能：频率域最大导数（最大水平方向导数）处理 =====
+    // 用途：处理流程（与原 MFC 工程 CFreqMaximumDerivativeDlg::OnOK 一致）：
+    //   1. 读取 inputFilePath 网格数据；
+    //   2. 缺失数据插值（原 CContourFile::MissingDataIntrepolation）；
+    //   3. 以 azimuthStep 为水平方向角度间隔（度），枚举多个方向求一阶导数并逐点取最大
+    //      （原工程经外部动态库 PfProcesses.dll 的 _PFPROCESSES@680 入口处理，参数
+    //      iAngleStep = azimuthStep；后端实现时可桥接该 DLL 或等价重写）；
+    //   4. 缺失数据还原（原 MissingDataResume），写出结果文件 outputFilePath
+    //      （对应原工程提示“最大水平方向导数计算结束!”）。
+    // 约定：同 processCmpsFilter（同步调用、不抛异常、DSBB 格式写出）。
+    // 返回：true 成功；false 失败（error 给出原因）
+    virtual bool processMaximumDerivative(const MaximumDerivativeParams& params, BackendError& error) = 0;
 
     // ===== 功能：读取三维体数据 =====
     // 用途：三维体数据视图对话框（原 MFC 工程 CVolumeDataViewDlg 内嵌 ActiveX 体渲染控件

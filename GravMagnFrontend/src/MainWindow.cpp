@@ -28,6 +28,8 @@
 #include "dlg/FreqDomainNormFilterDlg.h"
 #include "dlg/FreqDomainTwoDerivDlg.h"
 #include "dlg/FreqDomainUpwardDlg.h"
+#include "dlg/FreqDomainDzToPoleDlg.h"
+#include "dlg/FreqMaximumDerivativeDlg.h"
 #include "dlg/ProfDataInterpolationDlg.h"
 #include "dlg/TimeDomainLinearRegressionDlg.h"
 #include "dlg/DrawOpenGLContourDlg.h"
@@ -114,7 +116,7 @@ void CGravMagnMainWindow::initUi()
     addFunctionButton(pLayout2, 1, 2, QStringLiteral("三分量转换"), FunctionThreeCpn); // 已实现：频率域三分量转换
     addFunctionButton(pLayout2, 1, 3, QStringLiteral("任意方向分量转换"), FunctionMultiCpn); // 已实现：任意磁化方向分量转换
     addFunctionButton(pLayout2, 1, 4, QStringLiteral("正则化滤波"), FunctionNormFilter);     // 已实现：频率域正则化滤波
-    addFunctionButton(pLayout2, 1, 5, QStringLiteral("Dz 化极"), FunctionNotImplemented);
+    addFunctionButton(pLayout2, 1, 5, QStringLiteral("Dz 化极"), FunctionDzToPole);    // 已实现：频率域 ΔZ 化极(Za 化极)
     addFunctionButton(pLayout2, 1, 6, QStringLiteral("磁源重力异常"), FunctionPsudoGra);  // 已实现：频率域伪重力(磁源重力异常)
     addFunctionButton(pLayout2, 1, 7, QStringLiteral("线性构造增强"), FunctionStructure); // 已实现：频率域构造(小子域滤波/线性构造增强)
     addFunctionButton(pLayout2, 2, 0, QStringLiteral("补偿圆滑滤波"), FunctionCmpsFilter);   // 已实现：频率域组合滤波
@@ -153,7 +155,7 @@ void CGravMagnMainWindow::initUi()
     addFunctionButton(pLayout4, 0, 7, QStringLiteral("三维磁性界面反演"), FunctionNotImplemented);
     addFunctionButton(pLayout4, 1, 0, QStringLiteral("倾斜角"), FunctionNotImplemented);
     addFunctionButton(pLayout4, 1, 1, QStringLiteral("倾斜角总水平方向导数"), FunctionNotImplemented);
-    addFunctionButton(pLayout4, 1, 2, QStringLiteral("最大水平方向导数"), FunctionMaxiGrad);  // 已实现：频率域最大水平方向导数
+    addFunctionButton(pLayout4, 1, 2, QStringLiteral("最大水平方向导数"), FunctionMaximumDerivative); // 已实现：频率域最大导数(最大水平方向导数)
     addFunctionButton(pLayout4, 1, 3, QStringLiteral("Theta 图"), FunctionNotImplemented);
     addFunctionButton(pLayout4, 1, 4, QStringLiteral("归一化标准差"), FunctionNotImplemented);
     addFunctionButton(pLayout4, 1, 5, QStringLiteral("归一化总水平导数垂向导数"), FunctionNotImplemented);
@@ -300,6 +302,16 @@ void CGravMagnMainWindow::addFunctionButton(QGridLayout* pLayout, int nRow, int 
     {
         // 已实现：打开“频率域向上延拓”对话框
         connect(pButton, &QPushButton::clicked, this, &CGravMagnMainWindow::onOpenUpwardClicked);
+    }
+    else if (eType == FunctionDzToPole)
+    {
+        // 已实现：打开“频率域 ΔZ 化极(Za 化极)”对话框
+        connect(pButton, &QPushButton::clicked, this, &CGravMagnMainWindow::onOpenDzToPoleClicked);
+    }
+    else if (eType == FunctionMaximumDerivative)
+    {
+        // 已实现：打开“频率域最大导数(最大水平方向导数)”对话框
+        connect(pButton, &QPushButton::clicked, this, &CGravMagnMainWindow::onOpenMaximumDerivativeClicked);
     }
     else if (eType == FunctionGravGradCoImaging)
     {
@@ -540,6 +552,26 @@ void CGravMagnMainWindow::openUpwardDlg()
     dlg.exec();
 }
 
+// 功能：打开频率域 ΔZ 化极(Za 化极)对话框（模态）
+void CGravMagnMainWindow::openDzToPoleDlg()
+{
+    CFreqDomainDzToPoleDlg dlg(this);
+    // 连接对话框的“显示”请求信号（等值线显示由前端后续版本提供）
+    connect(&dlg, &CFreqDomainDzToPoleDlg::viewGridFileRequested,
+        this, &CGravMagnMainWindow::onViewGridFileRequested);
+    dlg.exec();
+}
+
+// 功能：打开频率域最大导数(最大水平方向导数)对话框（模态）
+void CGravMagnMainWindow::openMaximumDerivativeDlg()
+{
+    CFreqMaximumDerivativeDlg dlg(this);
+    // 连接对话框的“显示”请求信号（等值线显示由前端后续版本提供）
+    connect(&dlg, &CFreqMaximumDerivativeDlg::viewGridFileRequested,
+        this, &CGravMagnMainWindow::onViewGridFileRequested);
+    dlg.exec();
+}
+
 // 功能：打开三维重力异常和梯度相关成像对话框（模态）
 void CGravMagnMainWindow::openGravGradCoImagingDlg()
 {
@@ -753,6 +785,18 @@ void CGravMagnMainWindow::onOpenTwoDerivClicked()
 void CGravMagnMainWindow::onOpenUpwardClicked()
 {
     openUpwardDlg();
+}
+
+// 功能：打开“频率域 ΔZ 化极(Za 化极)”对话框
+void CGravMagnMainWindow::onOpenDzToPoleClicked()
+{
+    openDzToPoleDlg();
+}
+
+// 功能：打开“频率域最大导数(最大水平方向导数)”对话框
+void CGravMagnMainWindow::onOpenMaximumDerivativeClicked()
+{
+    openMaximumDerivativeDlg();
 }
 
 // 功能：打开“三维重力异常和梯度相关成像”对话框
