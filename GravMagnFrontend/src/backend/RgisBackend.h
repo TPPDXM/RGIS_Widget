@@ -608,6 +608,41 @@ struct UnionTerrainParams
     }
 };
 
+// 三维体数据（三维体数据视图用）
+// 对应原 MFC 工程 CVolumeData 类（见 VolumeData.h）与 VolumeDataViewCtl 控件所加载的体数据
+struct VolumeData
+{
+    int             layers;     // 层数（z 轴方向，原 m_nVol_layers）
+    int             rows;       // 行数（y 轴方向，原 m_nVol_rows）
+    int             cols;       // 列数（x 轴方向，原 m_nVol_columns）
+    double          xMin;       // x 范围最小值（原 m_fVol_xmin）
+    double          xMax;       // x 范围最大值（原 m_fVol_xmax）
+    double          yMin;       // y 范围最小值（原 m_fVol_ymin）
+    double          yMax;       // y 范围最大值（原 m_fVol_ymax）
+    double          zMin;       // z 范围最小值（原 m_fVol_zmin）
+    double          zMax;       // z 范围最大值（原 m_fVol_zmax）
+    double          valueMin;   // 属性值最小值（原 m_fVol_minValue）
+    double          valueMax;   // 属性值最大值（原 m_fVol_maxValue）
+    std::vector<float> data;    // 属性数据体，长度 = layers * rows * cols，
+                                //   索引 = (layer * rows + row) * cols + column（原 pppfVol_Properties[layer][row][column]）
+
+    // 构造函数：全部清零，防止未初始化的垃圾值
+    VolumeData()
+        : layers(0)
+        , rows(0)
+        , cols(0)
+        , xMin(0.0)
+        , xMax(0.0)
+        , yMin(0.0)
+        , yMax(0.0)
+        , zMin(0.0)
+        , zMax(0.0)
+        , valueMin(0.0)
+        , valueMax(0.0)
+    {
+    }
+};
+
 //---------------------------------------------------------------------------
 
 // 后端算法接口（前端只通过本接口与后端交互，后端只需实现本接口即可对接）
@@ -1020,4 +1055,18 @@ public:
     // 约定：同步调用、不抛异常，一律通过返回值 + BackendError 报告；结果文件为文本格式。
     // 返回：true 成功；false 失败（error 给出原因）
     virtual bool processUnionTerrain(const UnionTerrainParams& params, BackendError& error) = 0;
+
+    // ===== 功能：读取三维体数据 =====
+    // 用途：三维体数据视图对话框（原 MFC 工程 CVolumeDataViewDlg 内嵌 ActiveX 体渲染控件
+    //       VolumeDataViewCtl 的 OnFileOpen）需要加载体数据文件进行 3D 显示。
+    //       本接口返回体数据的尺寸（layers/rows/cols）、坐标范围（x/y/z min/max）、
+    //       属性值范围（valueMin/valueMax）以及属性数据体 data（见 VolumeData 注释）。
+    // 对应原 MFC 工程：VolumeDataViewCtl::OnFileOpen 内部读取体数据文件（原工程经 ActiveX 控件
+    //       读取某三维体数据二进制格式），后端实现时应等价读取该格式并填充 VolumeData。
+    // 约定：
+    //   - 同步调用、不得抛出异常（严禁 try/catch），一律通过返回值 + BackendError 报告；
+    //   - data 长度为 layers * rows * cols，顺序 (layer,row,column)，由后端负责读取并填充；
+    //   - 若后端尚未接入，应返回 false 并给出“未接入”的错误信息（与其它占位实现一致）。
+    // 返回：true 成功（vol 被填充）；false 失败（error 给出原因）
+    virtual bool readVolumeData(const std::string& filePath, VolumeData& vol, BackendError& error) = 0;
 };

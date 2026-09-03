@@ -611,3 +611,14 @@ bool CNullRgisBackend::processUnionTerrain(const UnionTerrainParams& params, Bac
     error.message = "算法后端尚未接入：重力联合（平面带）地形改正功能等待后端实现。";
     return false;
 }
+
+// 功能：读取三维体数据（占位，等待正式算法后端实现）
+bool CNullRgisBackend::readVolumeData(const std::string& filePath, VolumeData& vol, BackendError& error)
+{
+    (void)filePath; // 参数暂不使用（占位实现）
+    (void)vol;      // 参数暂不使用（占位实现）
+
+    error.code = 100;
+    error.message = "数据后端尚未接入：三维体数据读取功能等待后端实现。";
+    return false;
+}

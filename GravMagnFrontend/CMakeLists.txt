@@ -28,6 +28,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
 
 find_package(Qt5 5.15 REQUIRED COMPONENTS Widgets)
+find_package(OpenGL REQUIRED)
 
 set(PROJECT_SOURCES
     src/main.cpp
@@ -107,14 +108,18 @@ set(PROJECT_SOURCES
     src/dlg/ContourGLWidget.cpp
     src/dlg/DrawOpenGLContourDlg.h
     src/dlg/DrawOpenGLContourDlg.cpp
+    src/dlg/VolumeDataGLView.h
+    src/dlg/VolumeDataGLView.cpp
+    src/dlg/VolumeDataViewDlg.h
+    src/dlg/VolumeDataViewDlg.cpp
 )
 
 add_executable(GravMagnFrontend WIN32 ${PROJECT_SOURCES})
 
-# 源代码目录加入包含路径（头文件按 "backend/xxx.h"、"core/xxx.h"、"dlg/xxx.h" 引用）
+# 源代码目录加入包含路径（头文件按 "backend/xxx.h"、"dlg/xxx.h" 引用）
 target_include_directories(GravMagnFrontend PRIVATE src)
 
-target_link_libraries(GravMagnFrontend PRIVATE Qt5::Widgets)
+target_link_libraries(GravMagnFrontend PRIVATE Qt5::Widgets OpenGL::GL)
 
 if(WIN32)
     # OpenGL 等值线显示窗口需要系统 OpenGL 库（基于 QOpenGLWidget）

@@ -59,7 +59,9 @@ GravMagnFrontend/
         ├── ProfDataInterpolationDlg.h / .cpp  # ★ 剖面数据插值（纯前端：读剖面/线性插值/写结果）
         ├── TimeDomainLinearRegressionDlg.h / .cpp  # ★ 一元线性回归分析（纯前端：读表/最小二乘/散点+回归线）
         ├── ContourGLWidget.h / .cpp           # ★ OpenGL 等值线绘制控件（读 .grd + Marching Squares + jet 色带）
-        └── DrawOpenGLContourDlg.h / .cpp      # ★ OpenGL 等值线显示窗口（对应原“显示”按钮）
+        ├── DrawOpenGLContourDlg.h / .cpp      # ★ OpenGL 等值线显示窗口（对应原“显示”按钮）
+        ├── VolumeDataGLView.h / .cpp          # ★ 三维体数据 OpenGL 视图控件（三方向正交切片）
+        └── VolumeDataViewDlg.h / .cpp         # ★ 三维体数据视图（简化切片示意；原工程为 ActiveX 体渲染控件宿主；经 readVolumeData 接口取数据；原工程主窗口无对应按钮，未接入主窗）
 ```
 
 ## 二、已完成的界面（本次任务）
@@ -237,8 +239,9 @@ GravMagnFrontend.exe [候选文件1;候选文件2;...]
 
 ## 七、当前状态与后续任务
 
-* ✅ 33 个功能对话框前端（20 个频率域 + 三维重力/磁异常和梯度相关成像 + 重磁三维体反演 + 重力中区/联合地形改正 + 磁化强度计算 + 网格数据空白区还原 + 低磁纬度化极 + 变磁化倾角化极 + 分带变磁倾角化极 + 剖面数据插值 + 一元线性回归分析）；
+* ✅ 35 个功能对话框前端（20 个频率域 + 三维重力/磁异常和梯度相关成像 + 重磁三维体反演 + 重力中区/联合地形改正 + 磁化强度计算 + 网格数据空白区还原 + 低磁纬度化极 + 变磁化倾角化极 + 分带变磁倾角化极 + 剖面数据插值 + 一元线性回归分析 + 网格文件名对话框 + 三维体数据视图）；
 * ✅ OpenGL 等值线显示窗口（`CDrawOpenGLContourDlg` + `CContourGLWidget`，对应原工程“显示”按钮，信号已接入）；
-* ✅ 后端接口 `IRgisBackend`（22 个处理接口；其中重力梯度成像/体反演/网格空白区还原/三个磁法化极等后端接口尚未由后端提供，前端以 `readGridFileHead` + 占位提示运行；磁化强度计算、剖面数据插值、一元线性回归分析为纯参数/源码功能，由前端直接完成，无后端接口）；
-* ⬜ 后端算法实现（按 `RgisBackend.h` 契约实现已有 22 个 process 接口，并为未提供的接口补上 processMagnToPoleLow / processMagnToPoleVarIncDec / processMagnToPoleVarIncline 等）；
-* ⬜ 其余 47 个功能对话框的同类前端迁移（按 `PfProcesses_DEPENDENCY.md` 推进）。
+* ✅ 三维体数据视图（`CVolumeDataViewDlg` + `CVolumeDataGLView`，Qt OpenGL 三方向正交切片示意；体数据经后端接口 `readVolumeData` 读取；原工程主窗口无对应按钮，未接入主窗）；
+* ✅ 后端接口 `IRgisBackend`（22 个处理接口 + `readVolumeData` 体数据读取接口）；
+* ⬜ 后端算法实现（按 `RgisBackend.h` 契约实现已有 22 个 process 接口与 `readVolumeData`，并为未提供的接口补上 processMagnToPoleLow / processMagnToPoleVarIncDec / processMagnToPoleVarIncline 等）；
+* ⬜ 其余 45 个功能对话框的同类前端迁移（按 `PfProcesses_DEPENDENCY.md` 推进）。

@@ -45,6 +45,7 @@ public:
     bool processUpward(const UpwardParams& params, BackendError& error) override;
     bool processMidTerrain(const MidTerrainParams& params, BackendError& error) override;
     bool processUnionTerrain(const UnionTerrainParams& params, BackendError& error) override;
+    bool readVolumeData(const std::string& filePath, VolumeData& vol, BackendError& error) override;
 
 private:
     // ===== 私有工具函数（.grd 文件头解析，对应原 MFC 工程 CContourFile::AReadFile1~4）=====
